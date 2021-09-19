@@ -48,23 +48,20 @@ jobs:
           # Strip git ref prefix from version
           VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
 
-          if [ "$VERSION" == "main" ]; then
-            IMAGE_ID=ghcr.io/${{ github.repository }}/$IMAGE_NAME
+          IMAGE_ID=ghcr.io/${{ github.repository }}/$IMAGE_NAME
 
-            # Change all uppercase to lowercase
-            IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
+          # Change all uppercase to lowercase
+          IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
 
-            # Strip "v" prefix from tag name
-            [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
+          # Strip "v" prefix from tag name
+          [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
 
-            # Use Docker `latest` tag convention
-            [ "$VERSION" == "main" ] && VERSION=latest
+          # Use Docker `latest` tag convention
+          [ "$VERSION" == "main" ] && VERSION=latest
 
-            echo IMAGE_ID=$IMAGE_ID
-            echo VERSION=$VERSION
-            echo IMAGE_NAME=$IMAGE_NAME
+          echo IMAGE_ID=$IMAGE_ID
+          echo VERSION=$VERSION
+          echo IMAGE_NAME=$IMAGE_NAME
 
-            docker tag hsteinshiromoto/$IMAGE_NAME $IMAGE_ID:$VERSION
-            docker push $IMAGE_ID:$VERSION
-          fi
-            echo "Skipping push step, because this branch is ${VERSION}."
+          docker tag hsteinshiromoto/$IMAGE_NAME $IMAGE_ID:$VERSION
+          docker push $IMAGE_ID:$VERSION
