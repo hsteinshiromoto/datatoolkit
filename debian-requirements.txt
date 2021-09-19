@@ -1,0 +1,10 @@
+# Misc.
+build-essential
+curl
+git
+gosu
+gnupg2
+make
+sudo
+vim
+wget
