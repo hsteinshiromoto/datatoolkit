@@ -1,0 +1,70 @@
+name: Docker Build and Publish
+
+on:
+  push:
+    # Publish `master` as Docker `latest` image.
+    branches:       # See https://stackoverflow.com/questions/57699839/github-actions-how-to-target-all-branches-except-master for choices
+      - '**'        # matches every branch
+
+    # Publish `v1.2.3` tags as releases.
+    tags:
+      - v*
+
+  # Run tests for any PRs.
+  pull_request:
+
+env:
+  # TODO: Change variable to your image's name.
+  IMAGE_NAME: exploratory_data_analysis
+
+jobs:
+  test_build:
+    name: Test image build
+    runs-on: ubuntu-latest
+    if: ${{ github.ref != 'refs/heads/main' }}
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Build image
+        run: make image
+
+  build_and_push:
+    name: Build image and push
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/')
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Build image
+        run: make image
+
+      - name: Log into registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+      - name: Push image to Github Registry
+        run: |
+          # Strip git ref prefix from version
+          VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
+
+          if [ "$VERSION" == "main" ]; then
+            IMAGE_ID=ghcr.io/${{ github.repository }}/$IMAGE_NAME
+
+            # Change all uppercase to lowercase
+            IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
+
+            # Strip "v" prefix from tag name
+            [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
+
+            # Use Docker `latest` tag convention
+            [ "$VERSION" == "main" ] && VERSION=latest
+
+            echo IMAGE_ID=$IMAGE_ID
+            echo VERSION=$VERSION
+            echo IMAGE_NAME=$IMAGE_NAME
+
+            docker tag hsteinshiromoto/$IMAGE_NAME $IMAGE_ID:$VERSION
+            docker push $IMAGE_ID:$VERSION
+          fi
+            echo "Skipping push step, because this branch is ${VERSION}."
