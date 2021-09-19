@@ -43,6 +43,7 @@
 		"mgesbert.python-path",
 		"njqdev.vscode-python-typehint",
 		"ms-python.vscode-pylance",
+		"mhutchie.git-graph",
 	],
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
