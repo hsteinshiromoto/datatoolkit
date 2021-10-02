@@ -5,7 +5,7 @@ SHELL:=/bin/bash
 
 # Files to be copied in build phase of the container
 ifndef DOCKER_TAG
-DOCKER_TAG=latest
+DOCKER_TAG=$(shell git tag -l --sort=-creatordate | head -n 1 | cut -d "v" -f2-)
 endif
 
 ifndef DOCKER_PARENT_IMAGE
@@ -31,11 +31,12 @@ test:
 	$(eval DOCKER_IMAGE_TAG=${DOCKER_IMAGE_NAME}:${DOCKER_TAG})
 
 	@echo "${DOCKER_IMAGE_TAG}"
-
+	
 ## Bump minor version number
 bump_minor:
-	$(eval CURRENT_VERSION=$(shell git tag -l --sort=-creatordate | head -n 1 | cut -d "v" -f2-))
-	bumpversion --current-version ${CURRENT_VERSION} minor setup.py reader/__init__.py
+	$(eval DOCKER_TAG=$(shell git describe --tags `git rev-list --tags --max-count=1` | awk -F. '{OFS="."; $NF+=1; print $0}' | head -n 1 | cut -d "v" -f2-))
+	
+	# bumpversion --current-version ${CURRENT_VERSION} minor setup.py reader/__init__.py
 
 ## Bump patch version number
 bump_patch:
