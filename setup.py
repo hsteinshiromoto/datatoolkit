@@ -9,9 +9,9 @@ README = (HERE / "README.md").read_text()
 
 # This call to setup() does all the work
 setup(
-    name="exploratory_data_analysis",
+    name="pandas_multitool",
     version="0.0.1",
-    description="Exploratory Data Analysis: A library for logging",
+    description="A multitool library for pandas",
     long_description=README,
     long_description_content_type="text/markdown",
     url="https://github.com/hsteinshiromoto/cartorio",
@@ -27,7 +27,7 @@ setup(
     include_package_data=True,
     entry_points={
         "console_scripts": [
-            "exploratory_data_analysis=exploratory_data_analysis.__main__:main",
+            "pandas_multitool=pandas_multitool.__main__:main",
         ]
     },
 )
