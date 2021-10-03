@@ -9,9 +9,9 @@ README = (HERE / "README.md").read_text()
 
 # This call to setup() does all the work
 setup(
-    name="pandas_multitool",
+    name="data_tools",
     version="0.0.1",
-    description="A multitool library for pandas",
+    description="A Dataset Utilities Library for Pandas",
     long_description=README,
     long_description_content_type="text/markdown",
     url="https://github.com/hsteinshiromoto/cartorio",
@@ -23,11 +23,11 @@ setup(
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.9",
     ],
-    packages=["pandas_multitool"],
+    packages=["data_tools"],
     include_package_data=True,
     entry_points={
         "console_scripts": [
-            "pandas_multitool=pandas_multitool.__main__:main",
+            "data_tools=data_tools.__main__:main",
         ]
     },
 )
