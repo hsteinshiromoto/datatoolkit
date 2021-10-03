@@ -9,7 +9,7 @@ README = (HERE / "README.md").read_text()
 
 # This call to setup() does all the work
 setup(
-    name="data_tools",
+    name="data_toolkit",
     version="0.0.1",
     description="A Dataset Utilities Library for Pandas",
     long_description=README,
@@ -23,11 +23,11 @@ setup(
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.9",
     ],
-    packages=["data_tools"],
+    packages=["data_toolkit"],
     include_package_data=True,
     entry_points={
         "console_scripts": [
-            "data_tools=data_tools.__main__:main",
+            "data_toolkit=data_toolkit.__main__:main",
         ]
     },
 )
