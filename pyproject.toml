@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "explatory_data_analysis"
+name = "datatoolkit"
 version = "0.0.1"
 description = ""
 authors = ["Humberto STEIN SHIROMOTO <h.stein.shiromoto@gmail.com>"]
