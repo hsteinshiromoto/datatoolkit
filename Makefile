@@ -47,6 +47,14 @@ bump_patch:
 build:
 	python setup.py sdist bdist_wheel
 
+## Check package build
+check:
+	twine check dist/*
+
+## Publish to PyPI
+publish: build
+	twine upload --repository-url https://test.pypi.org/legacy/ dist/*
+
 ## Build Docker image
 image:
 	$(eval DOCKER_IMAGE_TAG=${DOCKER_IMAGE_NAME}:${DOCKER_TAG})
