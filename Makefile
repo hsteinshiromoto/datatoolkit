@@ -51,9 +51,13 @@ build:
 check:
 	twine check dist/*
 
-## Publish to PyPI
-publish: build
+## Publish to Test PyPI
+publish_test: build check
 	twine upload --repository-url https://test.pypi.org/legacy/ dist/*
+
+## Publish to PyPI
+publish: build check
+	twine upload dist/*
 
 ## Build Docker image
 image:
