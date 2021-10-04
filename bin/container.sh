@@ -16,8 +16,7 @@ display_help() {
 }
 
 make_variables() {
-    GIT_REMOTE=$(basename $(git remote get-url origin))
-    PROJECT_NAME=$(echo $(GIT_REMOTE:.git=))
+    PROJECT_NAME=$(basename $(git remote get-url origin) | sed 's/\.[^.]*$//')
     LATEST_VERSION=$(git tag -l --sort=-creatordate | head -n 1 | cut -d "v" -f2-)
 
     IMAGE="ghcr.io/hsteinshiromoto/${PROJECT_NAME}/${PROJECT_NAME}:${LATEST_VERSION}"
