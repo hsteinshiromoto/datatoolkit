@@ -11,7 +11,7 @@ README = (HERE / "README.md").read_text()
 setup(
     name="datatoolkit",
     version="0.0.2",
-    description="A Dataset Utilities Library for Pandas",
+    description="A collection of tools for visualization and data processing for exploratory data analysis.",
     long_description=README,
     long_description_content_type="text/markdown",
     url="https://github.com/hsteinshiromoto/cartorio",
