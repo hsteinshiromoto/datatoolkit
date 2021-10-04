@@ -41,7 +41,7 @@ bump_minor:
 ## Bump patch version number
 bump_patch:
 	$(eval CURRENT_VERSION=$(shell git tag -l --sort=-creatordate | head -n 1 | cut -d "v" -f2-))
-	bumpversion --current-version ${CURRENT_VERSION} patch setup.py reader/__init__.py
+	bumpversion --current-version ${CURRENT_VERSION} patch setup.py ${PROJECT_NAME}/__init__.py
 
 ## Build Python package
 build:
