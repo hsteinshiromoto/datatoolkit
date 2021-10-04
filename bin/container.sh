@@ -18,7 +18,7 @@ display_help() {
 make_variables() {
     GIT_REMOTE=$(basename $(git remote get-url origin))
     PROJECT_NAME=$(echo $(GIT_REMOTE:.git=))
-    LATEST_VERSION=$(git describe --tags `git rev-list --tags --max-count=1` | head -n 1 | cut -d "v" -f2-)
+    LATEST_VERSION=$(git tag -l --sort=-creatordate | head -n 1 | cut -d "v" -f2-)
 
     IMAGE="ghcr.io/hsteinshiromoto/${PROJECT_NAME}/${PROJECT_NAME}:${LATEST_VERSION}"
     LOCAL_IMAGE="hsteinshiromoto/${PROJECT_NAME}:${LATEST_VERSION}"
