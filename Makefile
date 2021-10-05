@@ -31,6 +31,11 @@ test:
 	$(eval DOCKER_IMAGE_TAG=${DOCKER_IMAGE_NAME}:${DOCKER_TAG})
 
 	@echo "${DOCKER_IMAGE_TAG}"
+
+## Bump major version number
+bump_major:
+	$(eval CURRENT_VERSION=$(shell git tag -l --sort=-creatordate | head -n 1 | cut -d "v" -f2-))
+	bumpversion --current-version ${CURRENT_VERSION} major setup.py ${PROJECT_NAME}/__init__.py
 	
 ## Bump minor version number
 bump_minor:
@@ -64,8 +69,8 @@ image:
 
 	@echo "Building docker image ${DOCKER_IMAGE_TAG}"
 	docker build --build-arg BUILD_DATE=${BUILD_DATE} \
-				 --build-arg PROJECT_NAME=${PROJECT_NAME} \
-				 -t ${DOCKER_IMAGE_TAG} .
+				--build-arg PROJECT_NAME=${PROJECT_NAME} \
+				-t ${DOCKER_IMAGE_TAG} .
 	@echo "Done"
 
 #################################################################################
