@@ -1,0 +1,15 @@
+#!/bin/bash
+
+BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD)
+BRANCH_TYPE=$(echo ${BRANCH_NAME}| cut -d/ -f1)
+NEXT_VERSION=$(echo ${BRANCH_NAME} | cut -d "v" -f2- | cut -d "v" -f2-)
+PREVIOUS_VERSION=$(git tag -l --sort=-creatordate | head -n 1 | cut -d "v" -f2-)
+
+if [ "$BRANCH_TYPE" == "release" ]; then
+	echo "Running post-checkout git hook on branch $BRANCH_NAME"
+
+	echo "Updating version $PREVIOUS_VERSION to $NEXT_VERSION"
+	sed -i -e "s/$PREVIOUS_VERSION/$NEXT_VERSION/g" /workspaces/datatoolkit/setup.py
+	sed -i -e "s/$PREVIOUS_VERSION/$NEXT_VERSION/g" /workspaces/datatoolkit/datatoolkit/__init__.py	
+
+fi
