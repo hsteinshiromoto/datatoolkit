@@ -1,27 +1,24 @@
 SHELL:=/bin/bash
-# ---
-# Arguments
-# ---
 
-# Files to be copied in build phase of the container
+# ---
+# Variables
+# ---
+PROJECT_PATH := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
+GIT_REMOTE=$(shell basename $(shell git remote get-url origin))
+PROJECT_NAME=$(shell echo $(GIT_REMOTE:.git=))
+CURRENT_VERSION=$(shell git tag -l --sort=-creatordate | head -n 1 | cut -d "v" -f2-)
+
+DOCKER_IMAGE_NAME=hsteinshiromoto/${PROJECT_NAME}
+
+BUILD_DATE = $(shell date +%Y%m%d-%H:%M:%S)
+
 ifndef DOCKER_TAG
-DOCKER_TAG=$(shell git tag -l --sort=-creatordate | head -n 1 | cut -d "v" -f2-)
+DOCKER_TAG=${CURRENT_VERSION}
 endif
 
 ifndef DOCKER_PARENT_IMAGE
 DOCKER_PARENT_IMAGE="python:3.9-slim"
 endif
-
-# ---
-# Global Variables
-# ---
-PROJECT_PATH := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
-GIT_REMOTE=$(shell basename $(shell git remote get-url origin))
-PROJECT_NAME=$(shell echo $(GIT_REMOTE:.git=))
-
-DOCKER_IMAGE_NAME = hsteinshiromoto/${PROJECT_NAME}
-
-BUILD_DATE = $(shell date +%Y%m%d-%H:%M:%S)
 
 # ---
 # Commands
@@ -34,17 +31,17 @@ test:
 
 ## Bump major version number
 bump_major:
-	$(eval CURRENT_VERSION=$(shell git tag -l --sort=-creatordate | head -n 1 | cut -d "v" -f2-))
+	@echo "Bumping major version from ${CURRENT_VERSION}"
 	bumpversion --current-version ${CURRENT_VERSION} major setup.py ${PROJECT_NAME}/__init__.py
 	
 ## Bump minor version number
 bump_minor:
-	$(eval CURRENT_VERSION=$(shell git tag -l --sort=-creatordate | head -n 1 | cut -d "v" -f2-))
+	@echo "Bumping minor version from ${CURRENT_VERSION}"
 	bumpversion --current-version ${CURRENT_VERSION} minor setup.py ${PROJECT_NAME}/__init__.py
 
 ## Bump patch version number
 bump_patch:
-	$(eval CURRENT_VERSION=$(shell git tag -l --sort=-creatordate | head -n 1 | cut -d "v" -f2-))
+	@echo "Bumping patch version from ${CURRENT_VERSION}"
 	bumpversion --current-version ${CURRENT_VERSION} patch setup.py ${PROJECT_NAME}/__init__.py
 
 ## Build Python package
