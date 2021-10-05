@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# This file automatically updates the versions of files setup.py and __init__.py
+# based on the latest git tag and the release branch name
+
+# Copy this file to .git/hooks/
+
 BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD)
 BRANCH_TYPE=$(echo ${BRANCH_NAME}| cut -d/ -f1)
 NEXT_VERSION=$(echo ${BRANCH_NAME} | cut -d "v" -f2- | cut -d "v" -f2-)
