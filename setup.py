@@ -25,7 +25,7 @@ setup(
     ],
     packages=["datatoolkit"],
     include_package_data=True,
-    install_requires=["pandas", "seaborn", "typeguard", "statsmodels", "bokeh", "scipy", "numpy"],
+    install_requires=["pandas", "seaborn", "typeguard", "statsmodels", "bokeh", "scipy", "numpy", "networkx"],
     entry_points={
         "console_scripts": [
             "datatoolkit=datatoolkit.__main__:main",
