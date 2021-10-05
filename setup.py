@@ -14,7 +14,7 @@ setup(
     description="A collection of tools for visualization and data processing for exploratory data analysis.",
     long_description=README,
     long_description_content_type="text/markdown",
-    url="https://github.com/hsteinshiromoto/cartorio",
+    url="https://github.com/hsteinshiromoto/datatoolkit",
     author="Humberto STEIN SHIROMOTO",
     author_email="h.stein.shiromoto@gmail.com",
     license="MIT",
