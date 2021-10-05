@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # This file automatically updates the versions of files setup.py and __init__.py
 # based on the latest git tag and the release branch name
