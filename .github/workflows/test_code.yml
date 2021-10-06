@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
 
     container:
-      image: ghcr.io/${{ github.repository }}/datatoolkit
+      image: ghcr.io/${{ github.repository }}/datatoolkit:0.0.2
       # options: --user vscode
       credentials:
         username: ${{ github.repository_owner }}
