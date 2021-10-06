@@ -418,6 +418,7 @@ def graphplot(G: nx.classes.digraph.DiGraph, M: np.ndarray
         >>> nodes = range(M.shape[0])
         >>> G = make_graph(nodes, M)
         >>> graphplot(G, M)
+
     References:
         [1] https://networkx.org/documentation/stable/auto_examples/drawing/plot_directed.html
     """
