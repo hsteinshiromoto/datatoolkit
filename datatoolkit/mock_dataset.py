@@ -27,24 +27,6 @@ def mock_dataset(specs: dict = None, meta_data: bool = False):
                     ,"datetime": [100, 1, 0] \
                     }
         >>> df, meta_data = mock_dataset(specs, True)
-        >>> df.shape[0] == 100
-        True
-        >>> df.shape[1] == 6
-        True
-        >>> df.isnull().sum()["float_0"] / df.shape[0] == 0.05
-        True
-        >>> df.isnull().sum()["integer_0"] / df.shape[0] == 0.02
-        True
-        >>> df.isnull().sum()["categorical_0"] / df.shape[0] == 0.1
-        True
-        >>> df.isnull().sum()["boolean_0"] / df.shape[0] == 0
-        True
-        >>> df.isnull().sum()["string_0"] / df.shape[0] == 0
-        True
-        >>> df.isnull().sum()["datetime_0"] / df.shape[0] == 0
-        True
-        >>> len(set(["float_0", "integer_0", "categorical_0", "boolean_0", "string_0", "datetime_0"]).symmetric_difference(set(list(meta_data['column_name'].values)))) == 0
-        True
     """
     # 1. Build specs, in case needed
     if not specs:
