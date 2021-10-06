@@ -1,14 +1,14 @@
 import sys
-from datatoolkit.mock_dataset import mock_dataset
 from pathlib import Path
 
 import pandas as pd
 import pytest
 
-PROJECT_ROOT = Path(__file__).parent.resolve()
+PROJECT_ROOT = Path(__file__).parents[1].resolve()
 
 sys.path.append(str(PROJECT_ROOT))
 
+from datatoolkit.mock_dataset import mock_dataset
 
 @pytest.fixture(scope="module")
 def get_data() -> pd.DataFrame:
