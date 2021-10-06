@@ -16,7 +16,7 @@ from matplotlib.collections import PatchCollection
 from mpl_toolkits.axes_grid1 import axes_size, make_axes_locatable
 from mpl_toolkits.axes_grid1.inset_locator import inset_axes
 from typeguard import typechecked
-
+import networkx as nx
 
 def heatmap_4d(volume: pd.DataFrame, probabilities: pd.DataFrame
                 ,xlabel: str="xlabel", ylabel: str="ylabel", figsize: tuple=(20, 30)):
@@ -418,6 +418,7 @@ def graphplot(G: nx.classes.digraph.DiGraph, M: np.ndarray
         >>> nodes = range(M.shape[0])
         >>> G = make_graph(nodes, M)
         >>> graphplot(G, M)
+
     References:
         [1] https://networkx.org/documentation/stable/auto_examples/drawing/plot_directed.html
     """

@@ -18,10 +18,10 @@ PROJECT_ROOT = Path(subprocess.Popen(['git', 'rev-parse', '--show-toplevel'],
 sys.path.append(PROJECT_ROOT)
 
 # from tests.mock_dataset import mock_dataset
-from src.make_logger import log_fun
+# from src.make_logger import log_fun
 
 
-@log_fun
+# @log_fun
 @typechecked
 def bin_and_agg(feature: str, data: pd.DataFrame, secondary_feature: str=None
                 ,bins_boundaries: Union[np.array, str, bool]=None):
@@ -104,7 +104,7 @@ def bin_and_agg(feature: str, data: pd.DataFrame, secondary_feature: str=None
     return output
 
 
-@log_fun
+# @log_fun
 @typechecked
 def make_pivot(feature: str, index: str, column: str, data: pd.DataFrame
                 ,groupby_args: list=None):
@@ -148,7 +148,7 @@ def make_pivot(feature: str, index: str, column: str, data: pd.DataFrame
     return pivot_count, pivot_mean
 
 
-@log_fun
+# @log_fun
 @typechecked
 def get_high_frequency_categories(array: Iterable, top_pct_obs: float=0.8
                                 ,top_pct_cat: float=0.2):

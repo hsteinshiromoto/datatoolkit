@@ -1,4 +1,4 @@
-name: Test Python Code
+name: Pytest
 
 on:
   push:
@@ -14,16 +14,20 @@ on:
   pull_request:
 
 jobs:
-  test:
-    name: Test Code
+  test_mock_dataset:
+    name: Test mock_dataset.py
     runs-on: ubuntu-latest
+
+    container:
+      image: ghcr.io/${{ github.repository }}/datatoolkit:0.0.2
+      # options: --user vscode
+      credentials:
+        username: ${{ github.repository_owner }}
+        password: ${{ secrets.GITHUB_TOKEN }}
 
     steps:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Install pytest
-        run: pip install pytest
-
       - name: Run tests
-        run: pytest
+        run: pytest tests/test_mock_dataset.py
