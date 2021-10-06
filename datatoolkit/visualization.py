@@ -1,23 +1,20 @@
-import pandas as pd
-import numpy as np
-
-import matplotlib
-from matplotlib.collections import PatchCollection
-import matplotlib.patches as mpatches
-import matplotlib.pyplot as plt
-import seaborn as sns
+from copy import copy
+from itertools import zip_longest
 
 import bokeh
-from bokeh.plotting import figure, output_notebook, show
+import matplotlib
+import matplotlib.patches as mpatches
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+import seaborn as sns
 from bokeh.layouts import gridplot, row
-from bokeh.models import HoverTool, CustomJS, Label
+from bokeh.models import CustomJS, HoverTool, Label
 from bokeh.models.widgets import CheckboxGroup
-
+from bokeh.plotting import figure, output_notebook, show
+from matplotlib.collections import PatchCollection
+from mpl_toolkits.axes_grid1 import axes_size, make_axes_locatable
 from mpl_toolkits.axes_grid1.inset_locator import inset_axes
-from mpl_toolkits.axes_grid1 import make_axes_locatable, axes_size
-
-from itertools import zip_longest 
-from copy import copy
 from typeguard import typechecked
 
 
@@ -394,3 +391,67 @@ def hist_box(feature: str, data: pd.DataFrame, figsize: tuple=(20, 10)):
     box.tick_params(axis='both', which='both',length=0)
 
     return hist, box
+
+
+def graphplot(G: nx.classes.digraph.DiGraph, M: np.ndarray
+            ,min_weight_threshold: float=0.0, bins: int=4
+            ,graph_layout: str="spring_layout"
+            ,figsize: tuple=(20, 10)
+            ,cmap=plt.cm.coolwarm
+            ,edge_kwargs=None, node_label_kwargs=None, node_kwargs=None
+            ):
+    """Plot a graph with weights on edges
+    Args:
+        G (nx.classes.digraph.DiGraph): Weighted graph
+        M (np.ndarray): Weight matrix
+        min_weight_threshold (float, optional): Minimal weight to be plotted. Defaults to 0.0.
+        bins (int, optional): Number of bins to divide the weights. Defaults to 4.
+        graph_layout (str, optional): Defaults to "spring_layout".
+        figsize (tuple, optional): Defaults to (20, 10).
+        cmap ([type], optional): Matplotlib colormap. Defaults to plt.cm.coolwarm.
+        edge_kwargs ([type], optional): Kwargs to edge plot. Defaults to None.
+    Returns:
+        ax: Plotted graph
+    Example:
+        >>> n_nodes = 4
+        >>> M = np.random.rand(n_nodes, n_nodes)
+        >>> nodes = range(M.shape[0])
+        >>> G = make_graph(nodes, M)
+        >>> graphplot(G, M)
+    References:
+        [1] https://networkx.org/documentation/stable/auto_examples/drawing/plot_directed.html
+    """
+    node_kwargs = node_kwargs or {"node_color": "k", "node_size": 500}
+
+    edge_kwargs = edge_kwargs or {"edge_color" :nx.get_edge_attributes(G, 'weight').values()
+                    ,"edge_cmap": cmap
+                    ,"width": 4
+                    ,"connectionstyle":'arc3, rad=0.2'
+                    }
+
+    node_label_kwargs = node_label_kwargs or {"font_color": "w", "font_size": 16
+                                    ,"font_weight": "bold"
+                                    }
+
+    pos = getattr(nx, graph_layout)(G)
+
+    fig, ax = plt.subplots(figsize=figsize)
+    nx.draw_networkx_nodes(G, pos, ax=ax, **node_kwargs)
+    nx.draw_networkx_labels(G, pos, labels=nx.get_node_attributes(G, 'label')
+                            ,ax=ax, **node_label_kwargs)
+    edges = nx.draw_networkx_edges(G, pos, ax=ax, **edge_kwargs)
+
+    # Configure colorbar
+    _, bin_edges = np.histogram(
+                    np.ma.masked_array(M, mask=M==min_weight_threshold).compressed()
+                    ,bins=bins)
+
+    pc = mpl.collections.PatchCollection(edges, cmap=cmap)
+    cmap_array = list(bin_edges)
+    pc.set_array(cmap_array)
+    cbar = plt.colorbar(pc);
+    cbar.set_label('weights', rotation=270, fontsize=16, labelpad=20)
+
+    # ax = plt.gca()
+    ax.set_axis_off()
+    return ax

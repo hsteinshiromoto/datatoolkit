@@ -1,11 +1,13 @@
 import subprocess
 import sys
-from collections.abc import Iterable
 from collections import Counter
+from collections.abc import Iterable
 from pathlib import Path
 from typing import Union
 
-import dask.dataframe as dd
+import matplotlib as mpl
+import matplotlib.pyplot as plt
+import networkx as nx
 import numpy as np
 import pandas as pd
 from typeguard import typechecked
@@ -198,3 +200,30 @@ def get_high_frequency_categories(array: Iterable, top_pct_obs: float=0.8
     grouped.loc[idx+1, "n_observations_proportions"] = grouped.loc[idx:, "n_observations_proportions"].sum()
 
     return grouped.loc[:idx+1, "category"].values, grouped.loc[:idx+1, :]
+
+
+def make_graph(nodes: Iterable, M: np.ndarray, G: nx.classes.digraph.DiGraph=nx.DiGraph()):
+    """Build graph based on list of nodes and a weight matrix
+    Args:
+        nodes (list): Graph nodes
+        M (np.ndarray): Weight matrix
+        G (nx.classes.digraph.DiGraph, optional): Graph type. Defaults to nx.DiGraph().
+    Returns:
+        [type]: Graph object
+    Example:
+        >>> n_nodes = 4
+        >>> M = np.random.rand(n_nodes, n_nodes)
+        >>> nodes = range(M.shape[0])
+        >>> G = make_graph(nodes, M)
+    """
+
+    for node in nodes:
+        G.add_node(node, label=f"{node}")
+        
+    for i, origin_node in enumerate(nodes):
+        for j, destination_node in enumerate(nodes):
+            if M[i, j] != 0:
+                G.add_edge(origin_node, destination_node, weight=M[i, j]
+                            ,label=f"{M[i, j]:0.02f}")
+
+    return G
