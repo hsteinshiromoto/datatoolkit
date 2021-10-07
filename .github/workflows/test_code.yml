@@ -32,8 +32,9 @@ jobs:
       - name: Install poetry
         run: |
           curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
-          PATH="${PATH}:$HOME/.poetry/bin"
-          PATH="${PATH}:$HOME/.local/bin"
+          echo "${PATH}:$HOME/.poetry/bin" | Out-File -Append -FilePath $env:GITHUB_PATH -Encoding utf8
+          echo "${PATH}:$HOME/.local/bin" | Out-File -Append -FilePath $env:GITHUB_PATH -Encoding utf8
+          echo ${PATH}
 
       - name: Install dependencies
         run: poetry install
