@@ -53,7 +53,7 @@ jobs:
     runs-on: ubuntu-latest
 
     container:
-      image: ghcr.io/${{ github.repository }}/$IMAGE_NAME:pytest
+      image: ghcr.io/${{ github.repository }}/datatoolkit:pytest
       # options: --user vscode
       credentials:
         username: ${{ github.repository_owner }}
