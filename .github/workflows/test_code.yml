@@ -65,3 +65,22 @@ jobs:
 
       - name: Run tests
         run: pytest tests/test_mock_dataset.py
+
+  test_utils:
+    name: Test utils.py
+    needs: [test_docker_image]
+    runs-on: ubuntu-latest
+
+    container:
+      image: ghcr.io/${{ github.repository }}/datatoolkit:pytest
+      # options: --user vscode
+      credentials:
+        username: ${{ github.repository_owner }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Run tests
+        run: echo "Success"
