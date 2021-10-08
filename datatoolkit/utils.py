@@ -45,21 +45,25 @@ class quantized:
     def make_bins(self):
         return np.histogram_bin_edges(self.data[self.feature].values, bins=self.bins)
 
-    def make_groupby_args(self, bins):
-        if isinstance(bins, np.ndarray):
-            return pd.cut(self.data[self.feature].values, bins=bins)
-
-        elif self.bins in self.bin_time_freq:
-            return pd.Grouper(key=self.feature, freq=bins)
-
-    def fit(self):
+    def group_data(self, bins):
         if self.bins is None:
             self.bins = self.make_bins()
+
+        if isinstance(bins, np.ndarray):
+            groupby_args = pd.cut(self.data[self.feature].values, bins=bins)
+
+        elif self.bins in self.bin_time_freq:
+            groupby_args = pd.Grouper(key=self.feature, freq=bins)
+
+        self.grouped = self.data.groupby(groupby_args)[self.secondary_feature]
+
+    def fit(self):
+        
 
         self.groupby_args = self.make_groupby_args(self.bins)
 
     def transform(self):
-        grouped = self.data.groupby(self.groupby_args)[self.secondary_feature]
+        
 
         summary_dict = {"count": grouped.count
             ,"sum": grouped.sum
