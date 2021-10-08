@@ -5,7 +5,6 @@ description="A collection of tools for visualization and data processing for exp
 readme = "README.md"
 authors = ["Humberto STEIN SHIROMOTO <h.stein.shiromoto@gmail.com>"]
 license = "MIT"
-packages = [{include = "datatoolkit"}]
 
 [tool.poetry.dependencies]
 python = ">=3.9,<3.10"
