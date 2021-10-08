@@ -1,9 +1,11 @@
 [tool.poetry]
 name = "datatoolkit"
 version = "0.0.2"
-description = ""
+description="A collection of tools for visualization and data processing for exploratory data analysis"
+readme = "README.md"
 authors = ["Humberto STEIN SHIROMOTO <h.stein.shiromoto@gmail.com>"]
 license = "MIT"
+packages = [{include = "datatoolkit"}]
 
 [tool.poetry.dependencies]
 python = ">=3.9,<3.10"
