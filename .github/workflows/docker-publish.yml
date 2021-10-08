@@ -18,16 +18,16 @@ env:
   IMAGE_NAME: datatoolkit
 
 jobs:
-  test_build:
-    name: Test image build
-    runs-on: ubuntu-latest
-    if: ${{ github.ref != 'refs/heads/main' }}
+  # test_build:
+  #   name: Test image build
+  #   runs-on: ubuntu-latest
+  #   if: ${{ github.ref != 'refs/heads/main' }}
 
-    steps:
-      - uses: actions/checkout@v2
+  #   steps:
+  #     - uses: actions/checkout@v2
 
-      - name: Build image
-        run: make image
+  #     - name: Build image
+  #       run: make image
 
   build_and_push:
     name: Build image and push
