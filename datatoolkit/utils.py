@@ -42,12 +42,13 @@ class Group(ABC):
 
 
     @abstractmethod
-    def group_data(self):
+    def binarize(self):
         pass
 
 
-    def summary(self):
-        grouped = self.group_data()        
+    def summarize(self):
+        groupby_args = self.group_data()
+        grouped = self.data.groupby(groupby_args)[self.secondary_feature]
 
         summary_dict = {"count": grouped.count
             ,"sum": grouped.sum
@@ -82,7 +83,7 @@ class Group(ABC):
         return f"{self.__class__.__name__}(data={self.data}, feature={self.feature})"
 
     def __call__(self):
-        return self.summary()
+        return self.binarize()
 
 
 class Quantize(Group):
@@ -97,16 +98,14 @@ class Quantize(Group):
         >>> data = np.random.rand(10)
         >>> quantized_data = quantize(data)
     """
-    def group_data(self):
-        groupby_args = pd.cut(self.data[self.feature].values, bins=self.bins)
-            
-        return self.data.groupby(groupby_args)[self.secondary_feature]
+    def binarize(self):
+        return pd.cut(self.data[self.feature].values, bins=self.bins)
 
 
 class QuantizeDatetime(Group):
     bin_time_freq = ["D", "W", "M", "Q", "Y"]
 
-    def group_data(self):
+    def binarize(self):
         groupby_args = pd.Grouper(key=self.feature, freq=self.bins)
 
         return self.data.groupby(groupby_args)[self.secondary_feature]
