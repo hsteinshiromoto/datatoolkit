@@ -3,8 +3,8 @@ SHELL:=/bin/bash
 # ---
 # Variables
 # ---
-include .env
-export $(shell sed 's/=.*//' .env)
+# include .env
+# export $(shell sed 's/=.*//' .env)
 
 PROJECT_PATH := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 GIT_REMOTE=$(shell basename $(shell git remote get-url origin))
@@ -49,7 +49,7 @@ bump_patch:
 
 ## Build Python package
 build:
-	python setup.py sdist bdist_wheel
+	poetry build
 
 ## Check package build
 check:
@@ -57,7 +57,7 @@ check:
 
 ## Publish to PyPI
 publish: 
-	poetry publish --build --username __token__ --password $PYPI_API_TOKEN
+	poetry publish --username __token__ --password $PYPI_API_TOKEN
 
 ## Build Docker image
 image:
