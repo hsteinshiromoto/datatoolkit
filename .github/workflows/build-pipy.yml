@@ -28,12 +28,26 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # ---
+      # check-out repo and set-up python
+      # ---
       - name: Checkout
         uses: actions/checkout@v2
 
+      - name: Set up python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+
+      # ---
+      # install & configure poetry
+      # ---
       - name: Install Poetry
         uses: snok/install-poetry@v1
 
+      # ---
+      # build and upload artifacts
+      # ---
       - name: Build Package
         run: make build
 
