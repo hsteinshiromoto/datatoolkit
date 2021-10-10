@@ -3,6 +3,9 @@ SHELL:=/bin/bash
 # ---
 # Variables
 # ---
+include .env
+export $(shell sed 's/=.*//' .env)
+
 PROJECT_PATH := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 GIT_REMOTE=$(shell basename $(shell git remote get-url origin))
 PROJECT_NAME=$(shell echo $(GIT_REMOTE:.git=))
@@ -52,13 +55,9 @@ build:
 check:
 	twine check dist/*
 
-## Publish to Test PyPI
-publish_test: build check
-	twine upload --repository-url https://test.pypi.org/legacy/ dist/*
-
 ## Publish to PyPI
-publish: build check
-	twine upload dist/*
+publish: 
+	poetry publish --build --username __token__ --password $PYPI_API_TOKEN
 
 ## Build Docker image
 image:
