@@ -20,6 +20,85 @@ sys.path.append(PROJECT_ROOT)
 # from tests.mock_dataset import mock_dataset
 # from src.make_logger import log_fun
 
+class quantized:
+    """Quantize the data
+    Args:
+        feature (str.): Feature to be quantized
+        data (pd.DataFrame): Data to be quantized
+        n_bins (int, optional): Number of bins. Defaults to 10.
+    Returns:
+        np.ndarray: Quantized data
+    Example:
+        >>> data = np.random.rand(10)
+        >>> quantized_data = quantize(data)
+    """
+    bin_time_freq = ["D", "W", "M", "Q", "Y"]
+
+    @typechecked
+    def __init__(self, feature: str, data: pd.DataFrame, secondary_feature: str=None
+                ,bins: Union[np.array, str, bool]="auto"):
+        self.feature = feature
+        self.data = data
+        self.bins = bins
+        self.secondary_feature = secondary_feature or feature
+
+    def make_bins(self):
+        return np.histogram_bin_edges(self.data[self.feature].values, bins=self.bins)
+
+    def group_data(self, bins):
+        if self.bins is None:
+            self.bins = self.make_bins()
+
+        if isinstance(bins, np.ndarray):
+            groupby_args = pd.cut(self.data[self.feature].values, bins=bins)
+
+        elif self.bins in self.bin_time_freq:
+            groupby_args = pd.Grouper(key=self.feature, freq=bins)
+
+        self.grouped = self.data.groupby(groupby_args)[self.secondary_feature]
+
+    def fit(self):
+        
+
+        self.groupby_args = self.make_groupby_args(self.bins)
+
+    def transform(self):
+        
+
+        summary_dict = {"count": grouped.count
+            ,"sum": grouped.sum
+            ,"min": grouped.min
+            ,"mean": grouped.mean
+            ,"25%": grouped.quantile
+            ,"50%": grouped.median
+            ,"75%": grouped.quantile
+            ,"max": grouped.max
+            }
+
+        output = summary_dict["count"]().to_frame(name=f"count_{self.secondary_feature}")
+        output[f"cum_count_{self.secondary_feature}"] = output[f"count_{self.secondary_feature}"].cumsum()
+        output[f"proportions_{self.secondary_feature}"] = output[f"count_{self.secondary_feature}"]/output[f"count_{self.secondary_feature}"].sum()
+        output[f"cum_proportions_{self.secondary_feature}"] = output[f"proportions_{self.secondary_feature}"].cumsum()
+
+        if np.issubdtype(data[self.secondary_feature].dtype, np.number):
+            output[f"min_{self.secondary_feature}"] = summary_dict["min"]()
+            output[f"mean_{self.secondary_feature}"] = summary_dict["mean"]()
+            output[f"25%_{self.secondary_feature}"] = summary_dict["25%"](0.25)
+            output[f"50%_{self.secondary_feature}"] = summary_dict["50%"]()
+            output[f"75%_{self.secondary_feature}"] = summary_dict["25%"](0.75)
+            output[f"max_{self.secondary_feature}"] = summary_dict["max"]()
+
+    return output
+
+
+    def __repr__(self):
+        return f"{self.__class__.__name__}(data={self.data}, n_bins={self.n_bins})"
+
+    def __str__(self):
+        return f"{self.__class__.__name__}(data={self.data}, n_bins={self.n_bins})"
+
+    def __call__(self):
+        return self.quantized_data
 
 # @log_fun
 @typechecked
