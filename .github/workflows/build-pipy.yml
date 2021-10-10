@@ -31,6 +31,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
+      - name: Install Poetry
+        uses: snok/install-poetry@v1
+
       - name: Build Package
         run: make build
 
