@@ -1,7 +1,7 @@
 import subprocess
 import sys
 from abc import ABC, abstractmethod
-from collections import Counter
+from collections import Sequence
 from collections.abc import Iterable
 from pathlib import Path
 from typing import Union
@@ -29,7 +29,7 @@ class Group(ABC):
     """
     @typechecked
     def __init__(self, feature: str, data: pd.DataFrame, secondary_feature: str=None
-                ,bins: Union[np.array, str, bool]="auto"):
+                ,bins: Union[Sequence, str, int]="auto"):
         self.feature = feature
         self.data = data
         self.bins = bins
@@ -37,9 +37,8 @@ class Group(ABC):
 
 
     def make_bins(self):
-        self.bins = self.bins or \
-                    np.histogram_bin_edges(self.data[self.feature].values
-                                        ,bins=self.bins)
+        return np.histogram_bin_edges(self.data[self.feature].values
+                                    ,bins=self.bins)
 
 
     @abstractmethod
@@ -80,8 +79,10 @@ class Group(ABC):
     def __repr__(self):
         return f"{self.__class__.__name__}(data={self.data}, feature={self.feature})"
 
+
     def __str__(self):
         return f"{self.__class__.__name__}(data={self.data}, feature={self.feature})"
+
 
     def __call__(self):
         return self.binarize()
@@ -98,11 +99,14 @@ class Quantize(Group):
         np.ndarray: Quantized data
 
     Example:
-        >>> data = pd.DataFrame(np.random.rand(10))
-        >>> quantized_data = Quantize(data)
+        >>> data = pd.DataFrame(np.random.rand(10), columns=["A"])
+        >>> quantized_data = Quantize(data=data, feature="A")
         >>> quantized_data()
     """
     def binarize(self):
+        if isinstance(self.bins, (str, int, Sequence):
+            self.bins = self.make_bins()
+
         return pd.cut(self.data[self.feature].values, bins=self.bins)
 
 
