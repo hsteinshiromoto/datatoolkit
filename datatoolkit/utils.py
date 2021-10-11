@@ -22,14 +22,17 @@ sys.path.append(PROJECT_ROOT)
 # from src.make_logger import log_fun
 
 class Group(ABC):
-    """Group class
-    Args:
-        name (str): Group name
-        members (list): Group members
-    """
     @typechecked
     def __init__(self, feature: str, data: pd.DataFrame, secondary_feature: str=None
                 ,bins: Union[Sequence, str, int]="auto"):
+        """Aggregates data frame and provides summary
+
+        Args:
+            feature (str): Feature to be agregated
+            data (pd.DataFrame): Data frame containing feature
+            secondary_feature (str, optional): Secondary feature to be agregated. Defaults to None.
+            bins (Union[Sequence, str, int], optional): Bins used to quantize the data. Defaults to "auto".
+        """
         self.feature = feature
         self.data = data
         self.bins = bins
@@ -47,6 +50,11 @@ class Group(ABC):
 
 
     def summarize(self):
+        """Calculates summary statistics in each bin
+
+        Returns:
+            (pd.DataFrame): Statistics summary
+        """
         groupby_args = self.binarize()
         grouped = self.data.groupby(groupby_args)[self.secondary_feature]
 
@@ -102,7 +110,7 @@ class Quantize(Group):
         >>> data = pd.DataFrame(np.random.rand(10), columns=["A"])
         >>> quantized_data = Quantize(data=data, feature="A")
         >>> _ = quantized_data()
-        >>> quantized_data.summarize()
+        >>> _ =quantized_data.summarize()
     """
     def binarize(self):
         if isinstance(self.bins, (str, int, Sequence)):
