@@ -112,7 +112,11 @@ class Quantize(Group):
         self.groupby_args = pd.cut(self.data[self.feature].values
                                 ,bins=self.bins)
 
-        return self.groupby_args
+        output = pd.DataFrame(self.groupby_args, columns=["intervals"])
+        output["quantized"] = output["intervals"].apply(lambda x: x.mid)
+        output[self.feature] = self.data[self.feature].values
+
+        return output
 
 
 class QuantizeDatetime(Group):
