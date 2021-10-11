@@ -5,6 +5,7 @@ from collections import Sequence
 from collections.abc import Iterable
 from pathlib import Path
 from typing import Union
+from datetime import datetime, timedelta
 
 import matplotlib as mpl
 import matplotlib.pyplot as plt
@@ -91,8 +92,8 @@ class Group(ABC):
         return f"{self.__class__.__name__}(data={self.data}, feature={self.feature})"
 
 
-    def __call__(self):
-        return self.binarize()
+    def __call__(self, fun: str=None):
+        return self.binarize(fun)
 
 
 class Quantize(Group):
@@ -118,9 +119,9 @@ class QuantizeDatetime(Group):
     """Quantize datetime data frame
 
     Example:
-        >>> data = pd.DataFrame(np.random.rand(10), columns=["A"])
-        >>> quantized_data = Quantize(data=data, feature="A")
-        >>> _ = quantized_data()
+        >>> data = pd.DataFrame(np.arange(datetime(1985,7,1), datetime(2015,7,1), timedelta(days=1)).astype(datetime), columns=["A"])
+        >>> quantized_data = QuantizeDatetime(data=data, feature="A", bins="M")
+        >>> _ = quantized_data("count")
         >>> _ = quantized_data.summarize()
     """
     bin_time_freq = ["D", "W", "M", "Q", "Y"]
@@ -132,7 +133,7 @@ class QuantizeDatetime(Group):
 
         self.groupby_args = pd.Grouper(key=self.feature, freq=self.bins)
 
-        return getattr(self.data.groupby(self.groupby_args)[self.secondary_feature], fun)
+        return getattr(self.data.groupby(self.groupby_args)[self.secondary_feature], fun)()
 
 
 # @log_fun
