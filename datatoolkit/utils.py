@@ -47,7 +47,7 @@ class Group(ABC):
 
 
     def summarize(self):
-        groupby_args = self.group_data()
+        groupby_args = self.binarize()
         grouped = self.data.groupby(groupby_args)[self.secondary_feature]
 
         summary_dict = {"count": grouped.count
@@ -101,10 +101,11 @@ class Quantize(Group):
     Example:
         >>> data = pd.DataFrame(np.random.rand(10), columns=["A"])
         >>> quantized_data = Quantize(data=data, feature="A")
-        >>> quantized_data()
+        >>> _ = quantized_data()
+        >>> quantized_data.summarize()
     """
     def binarize(self):
-        if isinstance(self.bins, (str, int, Sequence):
+        if isinstance(self.bins, (str, int, Sequence)):
             self.bins = self.make_bins()
 
         return pd.cut(self.data[self.feature].values, bins=self.bins)
