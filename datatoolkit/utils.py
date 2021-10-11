@@ -110,7 +110,7 @@ class Quantize(Group):
         >>> data = pd.DataFrame(np.random.rand(10), columns=["A"])
         >>> quantized_data = Quantize(data=data, feature="A")
         >>> _ = quantized_data()
-        >>> _ =quantized_data.summarize()
+        >>> _ = quantized_data.summarize()
     """
     def binarize(self):
         if isinstance(self.bins, (str, int, Sequence)):
