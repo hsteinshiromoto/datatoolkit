@@ -45,7 +45,7 @@ class Group(ABC):
 
 
     @abstractmethod
-    def binarize(self):
+    def binarize(self, fun: str=None):
         pass
 
 
@@ -96,14 +96,7 @@ class Group(ABC):
 
 
 class Quantize(Group):
-    """Quantize the data
-    Args:
-        feature (str.): Feature to be quantized
-        data (pd.DataFrame): Data to be quantized
-        n_bins (int, optional): Number of bins. Defaults to 10.
-        
-    Returns:
-        np.ndarray: Quantized data
+    """Quantize data frame
 
     Example:
         >>> data = pd.DataFrame(np.random.rand(10), columns=["A"])
@@ -111,7 +104,7 @@ class Quantize(Group):
         >>> _ = quantized_data()
         >>> _ = quantized_data.summarize()
     """
-    def binarize(self):
+    def binarize(self, fun: str=None):
         if isinstance(self.bins, (str, int, Sequence)):
             self.bins = self.make_bins()
 
@@ -122,16 +115,25 @@ class Quantize(Group):
 
 
 class QuantizeDatetime(Group):
+    """Quantize datetime data frame
+
+    Example:
+        >>> data = pd.DataFrame(np.random.rand(10), columns=["A"])
+        >>> quantized_data = Quantize(data=data, feature="A")
+        >>> _ = quantized_data()
+        >>> _ = quantized_data.summarize()
+    """
     bin_time_freq = ["D", "W", "M", "Q", "Y"]
 
-    def binarize(self):
+    def binarize(self, fun: str=None):
         if self.bins not in self.bin_time_freq:
             msg = f"{self.bins} is not a valid bin time frequency."
             raise ValueError(msg)
 
         self.groupby_args = pd.Grouper(key=self.feature, freq=self.bins)
 
-        return self.data.groupby(self.groupby_args)[self.secondary_feature]
+        return getattr(self.data.groupby(self.groupby_args)[self.secondary_feature], fun)
+
 
 # @log_fun
 @typechecked
