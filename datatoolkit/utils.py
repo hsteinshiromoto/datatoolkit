@@ -1,7 +1,8 @@
 import subprocess
 import sys
+from abc import ABC, abstractmethod
 from collections import Counter
-from collections.abc import Iterable, ABC, abstractmethod
+from collections.abc import Iterable
 from pathlib import Path
 from typing import Union
 
@@ -92,11 +93,14 @@ class Quantize(Group):
         feature (str.): Feature to be quantized
         data (pd.DataFrame): Data to be quantized
         n_bins (int, optional): Number of bins. Defaults to 10.
+        
     Returns:
         np.ndarray: Quantized data
+
     Example:
-        >>> data = np.random.rand(10)
-        >>> quantized_data = quantize(data)
+        >>> data = pd.DataFrame(np.random.rand(10))
+        >>> quantized_data = Quantize(data)
+        >>> quantized_data()
     """
     def binarize(self):
         return pd.cut(self.data[self.feature].values, bins=self.bins)
