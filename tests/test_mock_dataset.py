@@ -8,7 +8,7 @@ PROJECT_ROOT = Path(__file__).parents[1].resolve()
 
 sys.path.append(str(PROJECT_ROOT))
 
-from datatoolkit.mock_dataset import mock_dataset
+from datatoolkit import mock_dataset
 
 @pytest.fixture(scope="module")
 def get_data() -> pd.DataFrame:
