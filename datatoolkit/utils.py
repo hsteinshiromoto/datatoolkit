@@ -1,9 +1,11 @@
 import subprocess
 import sys
-from collections import Counter
+from abc import ABC, abstractmethod
+from collections import Sequence
 from collections.abc import Iterable
 from pathlib import Path
 from typing import Union
+from datetime import datetime, timedelta
 
 import matplotlib as mpl
 import matplotlib.pyplot as plt
@@ -20,50 +22,41 @@ sys.path.append(PROJECT_ROOT)
 # from tests.mock_dataset import mock_dataset
 # from src.make_logger import log_fun
 
-class quantized:
-    """Quantize the data
-    Args:
-        feature (str.): Feature to be quantized
-        data (pd.DataFrame): Data to be quantized
-        n_bins (int, optional): Number of bins. Defaults to 10.
-    Returns:
-        np.ndarray: Quantized data
-    Example:
-        >>> data = np.random.rand(10)
-        >>> quantized_data = quantize(data)
-    """
-    bin_time_freq = ["D", "W", "M", "Q", "Y"]
-
+class Group(ABC):
     @typechecked
     def __init__(self, feature: str, data: pd.DataFrame, secondary_feature: str=None
-                ,bins: Union[np.array, str, bool]="auto"):
+                ,bins: Union[Sequence, str, int]="auto"):
+        """Aggregates data frame and provides summary
+
+        Args:
+            feature (str): Feature to be agregated
+            data (pd.DataFrame): Data frame containing feature
+            secondary_feature (str, optional): Secondary feature to be agregated. Defaults to None.
+            bins (Union[Sequence, str, int], optional): Bins used to quantize the data. Defaults to "auto".
+        """
         self.feature = feature
         self.data = data
         self.bins = bins
         self.secondary_feature = secondary_feature or feature
 
+
     def make_bins(self):
-        return np.histogram_bin_edges(self.data[self.feature].values, bins=self.bins)
+        return np.histogram_bin_edges(self.data[self.feature].values
+                                    ,bins=self.bins)
 
-    def group_data(self, bins):
-        if self.bins is None:
-            self.bins = self.make_bins()
 
-        if isinstance(bins, np.ndarray):
-            groupby_args = pd.cut(self.data[self.feature].values, bins=bins)
+    @abstractmethod
+    def binarize(self, fun: str=None):
+        pass
 
-        elif self.bins in self.bin_time_freq:
-            groupby_args = pd.Grouper(key=self.feature, freq=bins)
 
-        self.grouped = self.data.groupby(groupby_args)[self.secondary_feature]
+    def summarize(self):
+        """Calculates summary statistics in each bin
 
-    def fit(self):
-        
-
-        self.groupby_args = self.make_groupby_args(self.bins)
-
-    def transform(self):
-        
+        Returns:
+            (pd.DataFrame): Statistics summary
+        """
+        grouped = self.data.groupby(self.groupby_args)[self.secondary_feature]
 
         summary_dict = {"count": grouped.count
             ,"sum": grouped.sum
@@ -80,7 +73,7 @@ class quantized:
         output[f"proportions_{self.secondary_feature}"] = output[f"count_{self.secondary_feature}"]/output[f"count_{self.secondary_feature}"].sum()
         output[f"cum_proportions_{self.secondary_feature}"] = output[f"proportions_{self.secondary_feature}"].cumsum()
 
-        if np.issubdtype(data[self.secondary_feature].dtype, np.number):
+        if np.issubdtype(self.data[self.secondary_feature].dtype, np.number):
             output[f"min_{self.secondary_feature}"] = summary_dict["min"]()
             output[f"mean_{self.secondary_feature}"] = summary_dict["mean"]()
             output[f"25%_{self.secondary_feature}"] = summary_dict["25%"](0.25)
@@ -88,99 +81,59 @@ class quantized:
             output[f"75%_{self.secondary_feature}"] = summary_dict["25%"](0.75)
             output[f"max_{self.secondary_feature}"] = summary_dict["max"]()
 
-    return output
-
+        return output
+        
 
     def __repr__(self):
-        return f"{self.__class__.__name__}(data={self.data}, n_bins={self.n_bins})"
+        return f"{self.__class__.__name__}(data={self.data}, feature={self.feature})"
+
 
     def __str__(self):
-        return f"{self.__class__.__name__}(data={self.data}, n_bins={self.n_bins})"
+        return f"{self.__class__.__name__}(data={self.data}, feature={self.feature})"
 
-    def __call__(self):
-        return self.quantized_data
 
-# @log_fun
-@typechecked
-def bin_and_agg(feature: str, data: pd.DataFrame, secondary_feature: str=None
-                ,bins_boundaries: Union[np.array, str, bool]=None):
-    # sourcery skip: remove-pass-elif
-    """Aggregate feature according to bins. Use to Freedman-Diaconis Estimator 
-    calculate bins [1].
+    def __call__(self, fun: str=None):
+        return self.binarize(fun)
 
-    Args:
-        feature (str): Feature binarized and aggregated, if a secondary_feature is not passed
-        data (pd.DataFrame): Dataframe containing both features
-        secondary_feature (str): Feature that is aggregated
-        bins_boundaries (np.array or str or bool, optional): Array containing the bins. Defaults to True.
 
-    Returns:
-        pd.DataFrame: binarized and aggregated data
+class Quantize(Group):
+    """Quantize data frame
 
-    References:
-        [1] https://stats.stackexchange.com/questions/798/
-            calculating-optimal-number-of-bins-in-a-histogram
-
-    Example: #!TODO: tests
+    Example:
+        >>> data = pd.DataFrame(np.random.rand(10), columns=["A"])
+        >>> quantized_data = Quantize(data=data, feature="A")
+        >>> _ = quantized_data()
+        >>> _ = quantized_data.summarize()
     """
-    bin_edges_arg = ["auto", "fd", "doane", "scott", "stone", "rice"
-                    , "sturges", "sqrt"]
+    def binarize(self, fun: str=None):
+        if isinstance(self.bins, (str, int, Sequence)):
+            self.bins = self.make_bins()
+
+        self.groupby_args = pd.cut(self.data[self.feature].values
+                                ,bins=self.bins)
+
+        return self.groupby_args
+
+
+class QuantizeDatetime(Group):
+    """Quantize datetime data frame
+
+    Example:
+        >>> data = pd.DataFrame(np.arange(datetime(1985,7,1), datetime(2015,7,1), timedelta(days=1)).astype(datetime), columns=["A"])
+        >>> quantized_data = QuantizeDatetime(data=data, feature="A", bins="M")
+        >>> _ = quantized_data("count")
+        >>> _ = quantized_data.summarize()
+    """
     bin_time_freq = ["D", "W", "M", "Q", "Y"]
 
-    secondary_feature = secondary_feature or feature
+    def binarize(self, fun: str=None):
+        if self.bins not in self.bin_time_freq:
+            msg = f"{self.bins} is not a valid bin time frequency."
+            raise ValueError(msg)
 
-    if (bins_boundaries == True) and (data[feature].dtype == np.number):
-        bins_boundaries = np.histogram_bin_edges(data[feature].values, 
-                                                bins="auto")
+        self.groupby_args = pd.Grouper(key=self.feature, freq=self.bins)
 
-    elif bins_boundaries in bin_edges_arg:
-        bins_boundaries = np.histogram_bin_edges(data[feature].values, 
-                                                bins=bins_boundaries)
-
-    elif (not bins_boundaries) or (bins_boundaries in bin_time_freq) or \
-        isinstance(bins_boundaries, np.ndarray):
-        pass
-
-    else:
-        msg = f"Expected bins to be either {bin_edges_arg}, {bin_time_freq},\
-                or bool. Got {bins_boundaries}."
-        raise ValueError(msg)
-
-    if isinstance(bins_boundaries, np.ndarray):
-        groupby_args = pd.cut(data[feature], bins=bins_boundaries)
-
-    elif bins_boundaries in bin_time_freq:
-        groupby_args = pd.Grouper(key=feature, freq=bins_boundaries)
-
-    else:
-        groupby_args = feature
-
-    grouped = data.groupby(groupby_args)[secondary_feature]
-
-    return_dict = {"count": grouped.count
-            ,"sum": grouped.sum
-            ,"min": grouped.min
-            ,"mean": grouped.mean
-            ,"25%": grouped.quantile
-            ,"50%": grouped.median
-            ,"75%": grouped.quantile
-            ,"max": grouped.max
-            }
-
-    output = return_dict["count"]().to_frame(name=f"count_{secondary_feature}")
-    output[f"cum_count_{secondary_feature}"] = output[f"count_{secondary_feature}"].cumsum()
-    output[f"proportions_{secondary_feature}"] = output[f"count_{secondary_feature}"]/output[f"count_{secondary_feature}"].sum()
-    output[f"cum_proportions_{secondary_feature}"] = output[f"proportions_{secondary_feature}"].cumsum()
-
-    if np.issubdtype(data[secondary_feature].dtype, np.number):
-        output[f"min_{secondary_feature}"] = return_dict["min"]()
-        output[f"mean_{secondary_feature}"] = return_dict["mean"]()
-        output[f"25%_{secondary_feature}"] = return_dict["25%"](0.25)
-        output[f"50%_{secondary_feature}"] = return_dict["50%"]()
-        output[f"75%_{secondary_feature}"] = return_dict["25%"](0.75)
-        output[f"max_{secondary_feature}"] = return_dict["max"]()
-
-    return output
+        return getattr(self.data.groupby(self.groupby_args)[self.secondary_feature], fun)()
 
 
 # @log_fun
