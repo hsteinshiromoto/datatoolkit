@@ -55,8 +55,7 @@ class Group(ABC):
         Returns:
             (pd.DataFrame): Statistics summary
         """
-        groupby_args = self.binarize()
-        grouped = self.data.groupby(groupby_args)[self.secondary_feature]
+        grouped = self.data.groupby(self.groupby_args)[self.secondary_feature]
 
         summary_dict = {"count": grouped.count
             ,"sum": grouped.sum
@@ -116,16 +115,23 @@ class Quantize(Group):
         if isinstance(self.bins, (str, int, Sequence)):
             self.bins = self.make_bins()
 
-        return pd.cut(self.data[self.feature].values, bins=self.bins)
+        self.groupby_args = pd.cut(self.data[self.feature].values
+                                ,bins=self.bins)
+
+        return self.groupby_args
 
 
 class QuantizeDatetime(Group):
     bin_time_freq = ["D", "W", "M", "Q", "Y"]
 
     def binarize(self):
-        groupby_args = pd.Grouper(key=self.feature, freq=self.bins)
+        if self.bins not in self.bin_time_freq:
+            msg = f"{self.bins} is not a valid bin time frequency."
+            raise ValueError(msg)
 
-        return self.data.groupby(groupby_args)[self.secondary_feature]
+        self.groupby_args = pd.Grouper(key=self.feature, freq=self.bins)
+
+        return self.data.groupby(self.groupby_args)[self.secondary_feature]
 
 # @log_fun
 @typechecked
