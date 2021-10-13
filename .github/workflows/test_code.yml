@@ -1,4 +1,4 @@
-name: Test Python Code
+name: Tests
 
 on:
   push:
@@ -13,17 +13,74 @@ on:
   # Run tests for any PRs.
   pull_request:
 
+env:
+  # TODO: Change variable to your image's name.
+  IMAGE_NAME: datatoolkit
+  VERSION: pytest
+
 jobs:
-  test:
-    name: Test Code
+  test_docker_image:
+    name: Build docker image
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Install pytest
-        run: pip install pytest
+      - name: Build Package
+        run: DOCKER_TAG=$VERSION make image
+
+      - name: Log into registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+      - name: Push image to Github Registry
+        run: |
+          IMAGE_ID=ghcr.io/${{ github.repository }}/$IMAGE_NAME
+
+          # Change all uppercase to lowercase
+          IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
+
+          echo IMAGE_ID=$IMAGE_ID
+          echo VERSION=$VERSION
+          echo IMAGE_NAME=$IMAGE_NAME
+
+          docker tag hsteinshiromoto/$IMAGE_NAME:$VERSION $IMAGE_ID:$VERSION
+          docker push $IMAGE_ID:$VERSION
+
+  test_mock_dataset:
+    name: Test mock_dataset.py
+    needs: [test_docker_image]
+    runs-on: ubuntu-latest
+
+    container:
+      image: ghcr.io/${{ github.repository }}/datatoolkit:pytest
+      # options: --user vscode
+      credentials:
+        username: ${{ github.repository_owner }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
 
       - name: Run tests
-        run: pytest
+        run: pytest tests/test_mock_dataset.py
+
+  test_utils:
+    name: Test utils.py
+    needs: [test_docker_image]
+    runs-on: ubuntu-latest
+
+    container:
+      image: ghcr.io/${{ github.repository }}/datatoolkit:pytest
+      # options: --user vscode
+      credentials:
+        username: ${{ github.repository_owner }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Run tests
+        run: echo "Success"

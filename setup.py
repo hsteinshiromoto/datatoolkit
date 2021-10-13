@@ -10,11 +10,11 @@ README = (HERE / "README.md").read_text()
 # This call to setup() does all the work
 setup(
     name="datatoolkit",
-    version="0.0.2",
-    description="A Dataset Utilities Library for Pandas",
+    version="0.0.3",
+    description="A collection of tools for visualization and data processing for exploratory data analysis.",
     long_description=README,
     long_description_content_type="text/markdown",
-    url="https://github.com/hsteinshiromoto/cartorio",
+    url="https://github.com/hsteinshiromoto/datatoolkit",
     author="Humberto STEIN SHIROMOTO",
     author_email="h.stein.shiromoto@gmail.com",
     license="MIT",
@@ -25,7 +25,7 @@ setup(
     ],
     packages=["datatoolkit"],
     include_package_data=True,
-    install_requires=["pandas", "seaborn", "typeguard", "statsmodels", "bokeh", "scipy", "numpy"],
+    install_requires=["pandas", "seaborn", "typeguard", "statsmodels", "bokeh", "scipy", "numpy", "networkx"],
     entry_points={
         "console_scripts": [
             "datatoolkit=datatoolkit.__main__:main",

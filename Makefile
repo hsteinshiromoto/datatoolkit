@@ -1,27 +1,27 @@
 SHELL:=/bin/bash
-# ---
-# Arguments
-# ---
 
-# Files to be copied in build phase of the container
+# ---
+# Variables
+# ---
+# include .env
+# export $(shell sed 's/=.*//' .env)
+
+PROJECT_PATH := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
+GIT_REMOTE=$(shell basename $(shell git remote get-url origin))
+PROJECT_NAME=$(shell echo $(GIT_REMOTE:.git=))
+CURRENT_VERSION=$(shell git tag -l --sort=-creatordate | head -n 1 | cut -d "v" -f2-)
+
+DOCKER_IMAGE_NAME=hsteinshiromoto/${PROJECT_NAME}
+
+BUILD_DATE = $(shell date +%Y%m%d-%H:%M:%S)
+
 ifndef DOCKER_TAG
-DOCKER_TAG=$(shell git tag -l --sort=-creatordate | head -n 1 | cut -d "v" -f2-)
+DOCKER_TAG=${CURRENT_VERSION}
 endif
 
 ifndef DOCKER_PARENT_IMAGE
 DOCKER_PARENT_IMAGE="python:3.9-slim"
 endif
-
-# ---
-# Global Variables
-# ---
-PROJECT_PATH := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
-GIT_REMOTE=$(shell basename $(shell git remote get-url origin))
-PROJECT_NAME=$(shell echo $(GIT_REMOTE:.git=))
-
-DOCKER_IMAGE_NAME = hsteinshiromoto/${PROJECT_NAME}
-
-BUILD_DATE = $(shell date +%Y%m%d-%H:%M:%S)
 
 # ---
 # Commands
@@ -31,33 +31,33 @@ test:
 	$(eval DOCKER_IMAGE_TAG=${DOCKER_IMAGE_NAME}:${DOCKER_TAG})
 
 	@echo "${DOCKER_IMAGE_TAG}"
+
+## Bump major version number
+bump_major:
+	@echo "Bumping major version from ${CURRENT_VERSION}"
+	bumpversion --current-version ${CURRENT_VERSION} major setup.py ${PROJECT_NAME}/__init__.py
 	
 ## Bump minor version number
 bump_minor:
-	$(eval DOCKER_TAG=$(shell git describe --tags `git rev-list --tags --max-count=1` | awk -F. '{OFS="."; $NF+=1; print $0}' | head -n 1 | cut -d "v" -f2-))
-	
-	# bumpversion --current-version ${CURRENT_VERSION} minor setup.py reader/__init__.py
+	@echo "Bumping minor version from ${CURRENT_VERSION}"
+	bumpversion --current-version ${CURRENT_VERSION} minor setup.py ${PROJECT_NAME}/__init__.py
 
 ## Bump patch version number
 bump_patch:
-	$(eval CURRENT_VERSION=$(shell git tag -l --sort=-creatordate | head -n 1 | cut -d "v" -f2-))
+	@echo "Bumping patch version from ${CURRENT_VERSION}"
 	bumpversion --current-version ${CURRENT_VERSION} patch setup.py ${PROJECT_NAME}/__init__.py
 
 ## Build Python package
 build:
-	python setup.py sdist bdist_wheel
+	poetry build
 
 ## Check package build
 check:
 	twine check dist/*
 
-## Publish to Test PyPI
-publish_test: build check
-	twine upload --repository-url https://test.pypi.org/legacy/ dist/*
-
 ## Publish to PyPI
-publish: build check
-	twine upload dist/*
+publish: 
+	poetry publish --username __token__ --password $PYPI_API_TOKEN
 
 ## Build Docker image
 image:
@@ -65,9 +65,13 @@ image:
 
 	@echo "Building docker image ${DOCKER_IMAGE_TAG}"
 	docker build --build-arg BUILD_DATE=${BUILD_DATE} \
-				 --build-arg PROJECT_NAME=${PROJECT_NAME} \
-				 -t ${DOCKER_IMAGE_TAG} .
+				--build-arg PROJECT_NAME=${PROJECT_NAME} \
+				-t ${DOCKER_IMAGE_TAG} .
 	@echo "Done"
+
+## Git hooks
+hooks:
+	cp bin/post-checkout .git/hooks/post-checkout
 
 #################################################################################
 # Self Documenting Commands                                                     #
