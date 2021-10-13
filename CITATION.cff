@@ -5,6 +5,6 @@ authors:
     given-names: Humberto
     orcid: https://orcid.org/0000-0002-0883-0231
 title: "A collection of tools for visualization and data processing for exploratory data analysis"
-version: 0.0.2
+version: 0.0.4
 doi: 10.5281/zenodo.5563181
 date-released: 2021-10-13
