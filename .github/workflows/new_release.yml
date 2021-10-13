@@ -33,6 +33,6 @@ jobs:
           tag_name: ${{ github.ref }}
           release_name: Release ${{ github.ref }}
           body: |
-            **Full Changelog**: https://github.com/hsteinshiromoto/cv/compare/${{ steps.previous_tag.outputs.tag }}...${{ steps.current_tag.outputs.tag }}
+            **Full Changelog**: https://github.com/hsteinshiromoto/datatoolkit/compare/${{ steps.previous_tag.outputs.tag }}...${{ steps.current_tag.outputs.tag }}
           draft: false
           prerelease: false
