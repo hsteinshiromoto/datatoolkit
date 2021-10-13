@@ -4,7 +4,8 @@
 # based on the latest git tag and the release branch name
 
 # Copy this file to .git/hooks/
-
+PROJECT_ROOT=$(dirname $(readlink -nf post-checkout))
+PROJECT_NAME=$(basename $(git remote get-url origin) | sed 's/.git//g')
 BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD)
 BRANCH_TYPE=$(echo ${BRANCH_NAME}| cut -d/ -f1)
 NEXT_VERSION=$(echo ${BRANCH_NAME} | cut -d "v" -f2- | cut -d "v" -f2-)
@@ -16,11 +17,12 @@ if [ "$BRANCH_TYPE" == "release" ]; then
 	echo "Running post-checkout git hook on branch $BRANCH_NAME"
 
 	echo "Updating version $PREVIOUS_VERSION to $NEXT_VERSION"
-	sed -i -e "s/$PREVIOUS_VERSION/$NEXT_VERSION/g" /workspaces/datatoolkit/setup.py
-	sed -i -e "s/$PREVIOUS_VERSION/$NEXT_VERSION/g" /workspaces/datatoolkit/datatoolkit/__init__.py
-	sed -i -e "s/$PREVIOUS_VERSION/$NEXT_VERSION/g" /workspaces/datatoolkit/pyproject.toml
-	sed -i -e "s/$PREVIOUS_VERSION/$NEXT_VERSION/g" /workspaces/datatoolkit/.github/workflows/test_code.yml
+	sed -i -e "s/$PREVIOUS_VERSION/$NEXT_VERSION/g" ${PROJECT_ROOT}/setup.py
+	sed -i -e "s/$PREVIOUS_VERSION/$NEXT_VERSION/g" ${PROJECT_ROOT}/${PROJECT_NAME}/__init__.py
+	sed -i -e "s/$PREVIOUS_VERSION/$NEXT_VERSION/g" ${PROJECT_ROOT}/pyproject.toml
+	sed -i -e "s/$PREVIOUS_VERSION/$NEXT_VERSION/g" ${PROJECT_ROOT}/CITATION.cff
+	sed -i -e "s/$PREVIOUS_VERSION/$NEXT_VERSION/g" ${PROJECT_ROOT}/.github/workflows/test_code.yml
 
 	echo "Updating release date $PREVIOUS_RELEASE_DATE to $CURRENT_RELEASE_DATE"
-	sed -i -e "s/$PREVIOUS_RELEASE_DATE/$CURRENT_RELEASE_DATE/g" /workspaces/datatoolkit/CITATION.cff
+	sed -i -e "s/$PREVIOUS_RELEASE_DATE/$CURRENT_RELEASE_DATE/g" ${PROJECT_ROOT}/CITATION.cff
 fi
