@@ -69,6 +69,10 @@ image:
 				-t ${DOCKER_IMAGE_TAG} .
 	@echo "Done"
 
+## Git hooks
+hooks:
+	cp bin/post-checkout .git/hooks/post-checkout
+
 #################################################################################
 # Self Documenting Commands                                                     #
 #################################################################################
