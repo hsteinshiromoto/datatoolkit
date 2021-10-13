@@ -18,8 +18,8 @@ if [ "$BRANCH_TYPE" == "release" ]; then
 	echo "Updating version $PREVIOUS_VERSION to $NEXT_VERSION"
 	sed -i -e "s/$PREVIOUS_VERSION/$NEXT_VERSION/g" /workspaces/datatoolkit/setup.py
 	sed -i -e "s/$PREVIOUS_VERSION/$NEXT_VERSION/g" /workspaces/datatoolkit/datatoolkit/__init__.py
-	sed -i -e "s/$PREVIOUS_VERSION/$NEXT_VERSION/g" /workspaces/datatoolkit/datatoolkit/pyproject.toml
-	sed -i -e "s/$PREVIOUS_VERSION/$NEXT_VERSION/g" /workspaces/datatoolkit/.github/test_code.yml
+	sed -i -e "s/$PREVIOUS_VERSION/$NEXT_VERSION/g" /workspaces/datatoolkit/pyproject.toml
+	sed -i -e "s/$PREVIOUS_VERSION/$NEXT_VERSION/g" /workspaces/datatoolkit/.github/workflows/test_code.yml
 
 	echo "Updating release date $PREVIOUS_RELEASE_DATE to $CURRENT_RELEASE_DATE"
 	sed -i -e "s/$PREVIOUS_RELEASE_DATE/$CURRENT_RELEASE_DATE/g" /workspaces/datatoolkit/CITATION.cff
