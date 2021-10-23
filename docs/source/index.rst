@@ -10,7 +10,12 @@ Welcome to datatoolkit's documentation!
    :maxdepth: 2
    :caption: Contents:
 
+   api
 
+Installation
+===========
+
+``pip install datatoolkit``
 
 Indices and tables
 ==================
