@@ -10,7 +10,10 @@ Welcome to datatoolkit's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-   api
+   mock_dataset
+   hypothesis
+   utils
+   visualization
 
 Installation
 ===========
