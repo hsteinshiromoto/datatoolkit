@@ -22,6 +22,7 @@ if [ "$BRANCH_TYPE" == "release" ]; then
 	sed -i -e "s/$PREVIOUS_VERSION/$NEXT_VERSION/g" ${PROJECT_ROOT}/pyproject.toml
 	sed -i -e "s/$PREVIOUS_VERSION/$NEXT_VERSION/g" ${PROJECT_ROOT}/CITATION.cff
 	sed -i -e "s/$PREVIOUS_VERSION/$NEXT_VERSION/g" ${PROJECT_ROOT}/.github/workflows/test_code.yml
+	sed -i -e "s/$PREVIOUS_VERSION/$NEXT_VERSION/g" ${PROJECT_ROOT}/docs/source/conf.py
 
 	echo "Updating release date $PREVIOUS_RELEASE_DATE to $CURRENT_RELEASE_DATE"
 	sed -i -e "s/$PREVIOUS_RELEASE_DATE/$CURRENT_RELEASE_DATE/g" ${PROJECT_ROOT}/CITATION.cff
