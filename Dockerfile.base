@@ -10,9 +10,6 @@ ARG BUILD_DATE
 # Silence debconf
 ARG DEBIAN_FRONTEND=noninteractive
 
-# Add vscode user to the container
-ARG PROJECT_NAME
-
 # ---
 # Enviroment variables
 # ---
