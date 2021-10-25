@@ -76,7 +76,7 @@ jobs:
     runs-on: ubuntu-latest
 
     container:
-      image: ghcr.io/${{ github.repository }}/$IMAGE_NAME:latest
+      image: ghcr.io/${{ github.repository }}/datatoolkit:${{ needs.build_docker_image.outputs.docker_version }}
       # options: --user vscode
       credentials:
         username: ${{ github.repository_owner }}
