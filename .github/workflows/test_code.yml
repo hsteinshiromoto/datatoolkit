@@ -19,7 +19,7 @@ env:
   VERSION: pytest
 
 jobs:
-  test_docker_image:
+  build_docker_image:
     name: Build docker image
     runs-on: ubuntu-latest
 
@@ -27,25 +27,44 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Build Package
-        run: DOCKER_TAG=$VERSION make image
+      - name: Get docker version
+        run: | 
+          echo "::set-output name=version::$(git ls-files -s Dockerfile | awk '{print $2}' | cut -c1-16)"
+        id: docker_version
 
       - name: Log into registry
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
+      - name: Check if image exists
+        id: image_exists
+        run: |
+          response=$(docker manifest inspect ghcr.io/${{ github.repository }}/$IMAGE_NAME:${{ steps.docker_version.outputs.version }} > /dev/null ; echo $?)
+          echo ::set-output name=image_exists::$(echo ${response})
+
+      - name: Build docker image if it is not on registry
+        if: ${{ steps.image_exists.outputs.image_exists == 1 }}
+        run: make image
+
       - name: Push image to Github Registry
+        if: ${{ steps.image_exists.outputs.image_exists == 1 }}
         run: |
           IMAGE_ID=ghcr.io/${{ github.repository }}/$IMAGE_NAME
 
           # Change all uppercase to lowercase
           IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
 
+          # Strip git ref prefix from version
+          VERSION=$(git ls-files -s Dockerfile | awk '{print $2}' | cut -c1-16)
+
           echo IMAGE_ID=$IMAGE_ID
           echo VERSION=$VERSION
           echo IMAGE_NAME=$IMAGE_NAME
 
-          docker tag hsteinshiromoto/$IMAGE_NAME:$VERSION $IMAGE_ID:$VERSION
+          docker tag ${{ github.actor }}/$IMAGE_NAME:$VERSION $IMAGE_ID:$VERSION
           docker push $IMAGE_ID:$VERSION
+
+          docker tag $IMAGE_ID:$VERSION $IMAGE_ID:latest
+          docker push $IMAGE_ID:latest
 
   test_mock_dataset:
     name: Test mock_dataset.py
