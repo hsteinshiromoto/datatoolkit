@@ -24,6 +24,8 @@ jobs:
   build_docker_image:
     name: Build docker image
     runs-on: ubuntu-latest
+    outputs:
+      docker_version: ${{ steps.docker_version.outputs.version }}
 
     steps:
       - name: Checkout
