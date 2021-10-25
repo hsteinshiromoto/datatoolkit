@@ -60,6 +60,7 @@ base_image:
 
 	@echo "Building docker image ${DOCKER_IMAGE_TAG}"
 	docker build --build-arg BUILD_DATE=${BUILD_DATE} \
+				-f Dockerfile.base \
 				-t ${DOCKER_IMAGE_TAG} .
 	@echo "Done"
 
