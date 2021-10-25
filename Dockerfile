@@ -1,7 +1,7 @@
 # ---
 # Build arguments
 # ---
-ARG DOCKER_PARENT_IMAGE="python:3.9-slim"
+ARG DOCKER_PARENT_IMAGE
 FROM $DOCKER_PARENT_IMAGE
 
 # NB: Arguments should come after FROM otherwise they're deleted
@@ -21,26 +21,9 @@ ARG USER_GID=$USER_UID
 ENV LANG=C.UTF-8 \
     LC_ALL=C.UTF-8
 ENV TZ Australia/Sydney
-ENV JUPYTER_ENABLE_LAB=yes
-ENV SHELL /bin/bash
+ENV SHELL=/bin/bash
 ENV PROJECT_NAME=$PROJECT_NAME
-ENV HOME /home/$PROJECT_NAME
-
-# Set container time zone
-RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
-
-LABEL org.label-schema.build-date=$BUILD_DATE \
-        maintainer="Humberto STEIN SHIROMOTO <h.stein.shiromoto@gmail.com>"
-
-# ---
-# Set up the necessary Debian packages
-# ---
-COPY debian-requirements.txt /usr/local/debian-requirements.txt
-
-RUN apt-get update && \
-	DEBIAN_PACKAGES=$(egrep -v "^\s*(#|$)" /usr/local/debian-requirements.txt) && \
-    apt-get install -y $DEBIAN_PACKAGES && \
-    apt-get clean
+ENV HOME=/home/$PROJECT_NAME
 
 # ---
 # Setup vscode as nonroot user
