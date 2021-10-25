@@ -5,8 +5,6 @@ on:
     # Publish `master` as Docker `latest` image.
     branches:       # See https://stackoverflow.com/questions/57699839/github-actions-how-to-target-all-branches-except-master for choices
       - 'feature/*'
-      - 'bugfix/*'
-      - 'hotfix/*'
       - 'release/*'
 
     # Publish `v1.2.3` tags as releases.
@@ -25,23 +23,19 @@ jobs:
     name: Build Python package
     runs-on: ubuntu-latest
 
+    container:
+      image: ghcr.io/${{ github.repository }}/datatoolkit:latest
+      # options: --user vscode
+      credentials:
+        username: ${{ github.repository_owner }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+
     steps:
       # ---
       # check-out repo and set-up python
       # ---
       - name: Checkout
         uses: actions/checkout@v2
-
-      - name: Set up python
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.9
-
-      # ---
-      # install & configure poetry
-      # ---
-      - name: Install Poetry
-        uses: snok/install-poetry@v1
 
       # ---
       # build and upload artifacts
