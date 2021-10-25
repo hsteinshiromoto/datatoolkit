@@ -67,7 +67,7 @@ base_image:
 ## Build Docker app image
 app_image:
 	$(eval DOCKER_IMAGE_TAG=${DOCKER_IMAGE_NAME}:${APP_IMAGE_TAG})
-	$(eval DOCKER_PARENT_IMAGE=${DOCKER_IMAGE_NAME}:${BASE_IMAGE_TAG})
+	$(eval DOCKER_PARENT_IMAGE=${DOCKER_IMAGE_NAME}.base:${BASE_IMAGE_TAG})
 
 	@echo "Building docker image ${DOCKER_IMAGE_TAG}"
 	docker build --build-arg BUILD_DATE=${BUILD_DATE} \
