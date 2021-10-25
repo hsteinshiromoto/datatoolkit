@@ -85,7 +85,7 @@ jobs:
     runs-on: ubuntu-latest
 
     container:
-      image: ghcr.io/${{ github.repository }}/${{ env.IMAGE_NAME }}:${{ needs.build_docker_image.outputs.version }}
+      image: ghcr.io/${{ github.repository }}/$IMAGE_NAME:${{ needs.build_docker_image.outputs.version }}
       # options: --user vscode
       credentials:
         username: ${{ github.repository_owner }}
