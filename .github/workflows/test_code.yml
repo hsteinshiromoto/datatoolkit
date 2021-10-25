@@ -68,13 +68,24 @@ jobs:
           docker tag $IMAGE_ID:$VERSION $IMAGE_ID:latest
           docker push $IMAGE_ID:latest
 
+  test_workflow:
+    name: Test mock_dataset.py
+    needs: [build_docker_image]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Test
+        run: |
+          echo "Image name: ${{ env.IMAGE_NAME }}"
+          echo "Version: :${{ needs.build_docker_image.outputs.version }}"
+
   test_mock_dataset:
     name: Test mock_dataset.py
     needs: [build_docker_image]
     runs-on: ubuntu-latest
 
     container:
-      image: ghcr.io/${{ github.repository }}/datatoolkit:pytest
+      image: ghcr.io/${{ github.repository }}/${{ env.IMAGE_NAME }}:${{ needs.build_docker_image.outputs.version }}
       # options: --user vscode
       credentials:
         username: ${{ github.repository_owner }}
