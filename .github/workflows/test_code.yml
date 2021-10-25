@@ -77,7 +77,7 @@ jobs:
       - name: Test
         run: |
           echo "Image name: $IMAGE_NAME"
-          echo "Version: :${{ needs.build_docker_image.outputs.version }}"
+          echo "Version: ${{ needs.build_docker_image.outputs.version }}"
 
   test_mock_dataset:
     name: Test mock_dataset.py
