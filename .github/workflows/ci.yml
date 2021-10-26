@@ -1,9 +1,8 @@
-name: Tests
+name: Build and Test Code
 
 on:
   push:
-    # Publish `master` as Docker `latest` image.
-    branches:       # See https://stackoverflow.com/questions/57699839/github-actions-how-to-target-all-branches-except-master for choices
+    branches:
       - 'feature/*'
       - 'bugfix/*'
       - 'hotfix/*'
