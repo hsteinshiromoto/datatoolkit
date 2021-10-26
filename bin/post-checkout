@@ -17,7 +17,7 @@ if [ "$BRANCH_TYPE" == "release" ]; then
 	echo "Running post-checkout git hook on branch $BRANCH_NAME"
 
 	echo "Updating version $PREVIOUS_VERSION to $NEXT_VERSION"
-	sed -i -e "s/$PREVIOUS_VERSION/$NEXT_VERSION/g" ${PROJECT_ROOT}/setup.py
+	sed -i "s/version=.*/version=\'${NEXT_VERSION}\'/" ${PROJECT_ROOT}/setup.py
 	sed -i -e "s/$PREVIOUS_VERSION/$NEXT_VERSION/g" ${PROJECT_ROOT}/${PROJECT_NAME}/__init__.py
 	sed -i -e "s/$PREVIOUS_VERSION/$NEXT_VERSION/g" ${PROJECT_ROOT}/pyproject.toml
 	sed -i -e "s/$PREVIOUS_VERSION/$NEXT_VERSION/g" ${PROJECT_ROOT}/CITATION.cff
