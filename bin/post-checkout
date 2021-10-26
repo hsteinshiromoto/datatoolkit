@@ -18,7 +18,7 @@ if [ "$BRANCH_TYPE" == "release" ]; then
 
 	echo "Updating version $PREVIOUS_VERSION to $NEXT_VERSION"
 	sed -i "s/version=.*/version=\'${NEXT_VERSION}\'/" ${PROJECT_ROOT}/setup.py
-	sed -i -e "s/$PREVIOUS_VERSION/$NEXT_VERSION/g" ${PROJECT_ROOT}/${PROJECT_NAME}/__init__.py
+	sed -i "s/__version__=.*/__version__=\'${NEXT_VERSION}\'/" ${PROJECT_ROOT}/${PROJECT_NAME}/__init__.py
 	sed -i -e "s/$PREVIOUS_VERSION/$NEXT_VERSION/g" ${PROJECT_ROOT}/pyproject.toml
 	sed -i -e "s/$PREVIOUS_VERSION/$NEXT_VERSION/g" ${PROJECT_ROOT}/CITATION.cff
 	sed -i -e "s/$PREVIOUS_VERSION/$NEXT_VERSION/g" ${PROJECT_ROOT}/.github/workflows/test_code.yml
