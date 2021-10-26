@@ -1,5 +1,6 @@
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5563180.svg)](https://doi.org/10.5281/zenodo.5563180)
 [![Documentation Status](https://readthedocs.org/projects/datatoolkit/badge/?version=latest)](https://datatoolkit.readthedocs.io/?badge=latest)
+[![Build_and_test_code](https://github.com/hsteinshiromoto/datatoolkit/actions/workflows/ci.yml/badge.svg)](https://github.com/hsteinshiromoto/datatoolkit/actions/workflows/ci.yml)
 
 # 1. Datatoolkit
 
