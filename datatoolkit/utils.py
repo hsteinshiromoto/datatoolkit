@@ -186,8 +186,62 @@ def make_pivot(feature: str, index: str, column: str, data: pd.DataFrame
 
 # @log_fun
 @typechecked
-def get_high_frequency_categories(array: Iterable, top_pct_obs: float=0.8
-                                ,top_pct_cat: float=0.2):
+class MostFrequent:
+    @typechecked
+    def __init__(self):
+        pass
+
+
+    def fit(data: np.array):
+        unique, counts = np.unique(data, return_counts=True)
+        grouped = pd.DataFrame.from_dict({"category": unique
+                                        ,"n_observations": counts
+                                        })
+        grouped.sort_values(by="n_observations", ascending=False, inplace=True)
+        grouped["n_observations_proportions"] = grouped["n_observations"] / grouped["n_observations"].sum()
+        grouped["cum_n_observations_proportions"] = grouped["n_observations_proportions"].cumsum()
+        grouped["cum_n_categories_proportions"] = np.linspace(1.0/float(grouped.shape[0]), 1, grouped.shape[0])
+        
+        return grouped.reset_index(drop=True)
+
+
+    def transform(grouped: pd.DataFrame, top_pct_obs: float, top_pct_cat: float):
+
+        if (top_pct_obs > 0) & (top_pct_cat > 0):
+            subset = grouped["cum_n_observations_proportions"] + grouped["cum_n_categories_proportions"]
+            threshold = top_pct_obs + top_pct_cat
+
+            # Get row containing values closed to a value [1]
+            idx = subset.sub(threshold).abs().idxmin()
+
+        elif (top_pct_obs > 0):
+            idx = grouped["cum_n_observations_proportions"].sub(top_pct_obs).abs().idxmin()
+
+        elif (top_pct_cat > 0):
+            idx = grouped["cum_n_categories_proportions"].sub(top_pct_cat).abs().idxmin()
+
+        grouped.loc[idx+1, "category"] = "other categories"
+        grouped.loc[idx+1, "cum_n_observations_proportions"] = 1
+
+        grouped.loc[idx+1, "n_observations"] = grouped.loc[idx:, "n_observations"].sum()
+        grouped.loc[idx+1, "n_observations_proportions"] = grouped.loc[idx:, "n_observations_proportions"].sum()
+
+        return grouped.loc[:idx+1, "category"].values, grouped.loc[:idx+1, :]
+
+
+    def __call__(self, data: Iterable, top_pct_obs: float=0.8 ,top_pct_cat: float=0.2):
+        """Find most frequent categories
+
+        Args:
+            array (Iterable): Array of categorical values
+            top_pct_obs (float, optional): Percentage of observations to use. Defaults to 0.8.
+            top_pct_cat (float, optional): Percentage of categories to use. Defaults to 0.2.
+        """
+        grouped = self.fit(data)
+        return self.transform(grouped, top_pct_obs, top_pct_cat)
+
+
+def get_high_frequency_categories():
     """Truncates data according to the proportion of a categorical column
 
     Args:
