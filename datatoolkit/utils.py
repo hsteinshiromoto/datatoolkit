@@ -186,56 +186,95 @@ def make_pivot(feature: str, index: str, column: str, data: pd.DataFrame
 
 # @log_fun
 @typechecked
-def get_high_frequency_categories(array: Iterable, top_pct_obs: float=0.8
-                                ,top_pct_cat: float=0.2):
+class MostFrequent:
     """Truncates data according to the proportion of a categorical column
 
     Args:
-        array (Iterable): 1d array containing categories
-        top_pct_obs (float): Top percent observations. Defaults to 0.8
-        top_pct_cat (float): Top percent categories. Defaults to 0.2
+        array (Iterable): Array of categorical values
+        top_pct_obs (float, optional): Percentage of observations to use. Defaults to 0.8.
+        top_pct_cat (float, optional): Percentage of categories to use. Defaults to 0.2.
 
     Returns:
-        (Iterable, pd.DataFrame): 1d array with most frequent categories and 
-                                    summary statistics
+            (Iterable, pd.DataFrame): 1d array with most frequent categories and 
+                                        summary statistics
 
     References:
         [1] https://hsteinshiromoto.github.io/posts/2020/06/25/find_row_closest_value_to_input
 
     Example:
-        >>> s = (np.random.pareto(3, 1000) + 1) * 2
-        >>> output, stats = get_high_frequency_categories(s)
+        >>> a, m = 3., 1. # shape and mode
+        >>> s = (np.random.pareto(a, 1000) + m).astype(int)
+        >>> mf = MostFrequent(s)
+        >>> output, stats = mf()
     """
-    unique, counts = np.unique(array, return_counts=True)
-    grouped = pd.DataFrame.from_dict({"category": unique
-                                    ,"n_observations": counts
-                                    })
-    grouped.sort_values(by="n_observations", ascending=False, inplace=True)
-    grouped["n_observations_proportions"] = grouped["n_observations"] / grouped["n_observations"].sum()
-    grouped["cum_n_observations_proportions"] = grouped["n_observations_proportions"].cumsum()
-    grouped["cum_n_categories_proportions"] = np.linspace(1.0/float(grouped.shape[0]), 1, grouped.shape[0])
-    grouped.reset_index(inplace=True, drop=True)
+    @typechecked
+    def __init__(self, data: Iterable, top_pct_obs: float=0.8 
+                , top_pct_cat: float=0.2):
+        self.data = data
+        self.top_pct_obs = top_pct_obs
+        self.top_pct_cat = top_pct_cat
 
-    if (top_pct_obs > 0) & (top_pct_cat > 0):
-        subset = grouped["cum_n_observations_proportions"] + grouped["cum_n_categories_proportions"]
-        threshold = top_pct_obs + top_pct_cat
 
-        # Get row containing values closed to a value [1]
-        idx = subset.sub(threshold).abs().idxmin()
+    def fit(self):
+        """
+        Make statistical summary of the data
 
-    elif (top_pct_obs > 0):
-        idx = grouped["cum_n_observations_proportions"].sub(top_pct_obs).abs().idxmin()
+        Returns:
+            (None)
+        """
+        unique, counts = np.unique(self.data, return_counts=True)
+        self.grouped = pd.DataFrame.from_dict({"category": unique
+                                        ,"n_observations": counts
+                                        })
+        self.grouped.sort_values(by="n_observations", ascending=False, inplace=True)
+        self.grouped["n_observations_proportions"] = self.grouped["n_observations"] / self.grouped["n_observations"].sum()
+        self.grouped["cum_n_observations_proportions"] = self.grouped["n_observations_proportions"].cumsum()
+        self.grouped["cum_n_categories_proportions"] = np.linspace(1.0/float(self.grouped.shape[0]), 1, self.grouped.shape[0])
+        self.grouped.reset_index(drop=True, inplace=True)
 
-    elif (top_pct_cat > 0):
-        idx = grouped["cum_n_categories_proportions"].sub(top_pct_cat).abs().idxmin()
 
-    grouped.loc[idx+1, "category"] = "other categories"
-    grouped.loc[idx+1, "cum_n_observations_proportions"] = 1
+    def transform(self):
+        """
+        Locate the category that is closest to the top_pct_cat or observation that
+        is close to top_pct_obs proportion
 
-    grouped.loc[idx+1, "n_observations"] = grouped.loc[idx:, "n_observations"].sum()
-    grouped.loc[idx+1, "n_observations_proportions"] = grouped.loc[idx:, "n_observations_proportions"].sum()
+        Raises:
+            ValueError: Raise if floats are not positive
 
-    return grouped.loc[:idx+1, "category"].values, grouped.loc[:idx+1, :]
+        Returns:
+            (pd.DataFrame): Categories and summary data set
+        """
+
+        if (self.top_pct_obs > 0) & (self.top_pct_cat > 0):
+            subset = self.grouped["cum_n_observations_proportions"] + self.grouped["cum_n_categories_proportions"]
+            threshold = self.top_pct_obs + self.top_pct_cat
+
+            # Get row containing values closed to a value [1]
+            idx = subset.sub(threshold).abs().idxmin()
+
+        elif (self.top_pct_obs > 0):
+            idx = self.grouped["cum_n_observations_proportions"].sub(self.top_pct_obs).abs().idxmin()
+
+        elif (self.top_pct_cat > 0):
+            idx = self.grouped["cum_n_categories_proportions"].sub(self.top_pct_cat).abs().idxmin()
+
+        else:
+            msg = f"Expected top_pct_obs or top_pct_cat to be positive. "\
+                f"Got top_pct_obs={self.top_pct_obs} and top_pct_cat={self.top_pct_cat}"
+            raise ValueError(msg)
+
+        self.grouped.loc[idx+1, "category"] = "other categories"
+        self.grouped.loc[idx+1, "cum_n_observations_proportions"] = 1
+
+        self.grouped.loc[idx+1, "n_observations"] = self.grouped.loc[idx:, "n_observations"].sum()
+        self.grouped.loc[idx+1, "n_observations_proportions"] = self.grouped.loc[idx:, "n_observations_proportions"].sum()
+
+        return self.grouped.loc[:idx+1, "category"].values, self.grouped.loc[:idx+1, :]
+
+
+    def __call__(self):
+        self.fit()
+        return self.transform()
 
 
 def make_graph(nodes: Iterable, M: np.ndarray, G: nx.classes.digraph.DiGraph=nx.DiGraph()):
