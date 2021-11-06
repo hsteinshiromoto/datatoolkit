@@ -202,11 +202,13 @@ class MostFrequent:
         [1] https://hsteinshiromoto.github.io/posts/2020/06/25/find_row_closest_value_to_input
 
     Example:
-        >>> s = (np.random.pareto(3, 100) + 1)
+        >>> a, m = 3., 1. # shape and mode
+        >>> s = (np.random.pareto(a, 1000) + m).astype(int)
         >>> mf = MostFrequent(s)
         >>> output, stats = mf()
     """
-    def __init__(self, data: pd.DataFrame, top_pct_obs: float=0.8 
+    @typechecked
+    def __init__(self, data: Iterable, top_pct_obs: float=0.8 
                 , top_pct_cat: float=0.2):
         self.data = data
         self.top_pct_obs = top_pct_obs
@@ -256,58 +258,7 @@ class MostFrequent:
 
     def __call__(self):
         self.fit()
-        return self.transform(self.top_pct_obs, self.top_pct_cat)
-
-
-def get_high_frequency_categories():
-    """Truncates data according to the proportion of a categorical column
-
-    Args:
-        array (Iterable): 1d array containing categories
-        top_pct_obs (float): Top percent observations. Defaults to 0.8
-        top_pct_cat (float): Top percent categories. Defaults to 0.2
-
-    Returns:
-        (Iterable, pd.DataFrame): 1d array with most frequent categories and 
-                                    summary statistics
-
-    References:
-        [1] https://hsteinshiromoto.github.io/posts/2020/06/25/find_row_closest_value_to_input
-
-    Example:
-        >>> s = (np.random.pareto(3, 1000) + 1) * 2
-        >>> output, stats = get_high_frequency_categories(s)
-    """
-    unique, counts = np.unique(array, return_counts=True)
-    grouped = pd.DataFrame.from_dict({"category": unique
-                                    ,"n_observations": counts
-                                    })
-    grouped.sort_values(by="n_observations", ascending=False, inplace=True)
-    grouped["n_observations_proportions"] = grouped["n_observations"] / grouped["n_observations"].sum()
-    grouped["cum_n_observations_proportions"] = grouped["n_observations_proportions"].cumsum()
-    grouped["cum_n_categories_proportions"] = np.linspace(1.0/float(grouped.shape[0]), 1, grouped.shape[0])
-    grouped.reset_index(inplace=True, drop=True)
-
-    if (top_pct_obs > 0) & (top_pct_cat > 0):
-        subset = grouped["cum_n_observations_proportions"] + grouped["cum_n_categories_proportions"]
-        threshold = top_pct_obs + top_pct_cat
-
-        # Get row containing values closed to a value [1]
-        idx = subset.sub(threshold).abs().idxmin()
-
-    elif (top_pct_obs > 0):
-        idx = grouped["cum_n_observations_proportions"].sub(top_pct_obs).abs().idxmin()
-
-    elif (top_pct_cat > 0):
-        idx = grouped["cum_n_categories_proportions"].sub(top_pct_cat).abs().idxmin()
-
-    grouped.loc[idx+1, "category"] = "other categories"
-    grouped.loc[idx+1, "cum_n_observations_proportions"] = 1
-
-    grouped.loc[idx+1, "n_observations"] = grouped.loc[idx:, "n_observations"].sum()
-    grouped.loc[idx+1, "n_observations_proportions"] = grouped.loc[idx:, "n_observations_proportions"].sum()
-
-    return grouped.loc[:idx+1, "category"].values, grouped.loc[:idx+1, :]
+        return self.transform()
 
 
 def make_graph(nodes: Iterable, M: np.ndarray, G: nx.classes.digraph.DiGraph=nx.DiGraph()):
@@ -335,6 +286,3 @@ def make_graph(nodes: Iterable, M: np.ndarray, G: nx.classes.digraph.DiGraph=nx.
                             ,label=f"{M[i, j]:0.02f}")
 
     return G
-
-s = (np.random.pareto(3, 1000) + 1) * 2
-output, stats = MostFrequent(s)
