@@ -216,6 +216,12 @@ class MostFrequent:
 
 
     def fit(self):
+        """
+        Make statistical summary of the data
+
+        Returns:
+            (None)
+        """
         unique, counts = np.unique(self.data, return_counts=True)
         self.grouped = pd.DataFrame.from_dict({"category": unique
                                         ,"n_observations": counts
@@ -228,6 +234,16 @@ class MostFrequent:
 
 
     def transform(self):
+        """
+        Locate the category that is closest to the top_pct_cat or observation that
+        is close to top_pct_obs proportion
+
+        Raises:
+            ValueError: Raise if floats are not positive
+
+        Returns:
+            (pd.DataFrame): Categories and summary data set
+        """
 
         if (self.top_pct_obs > 0) & (self.top_pct_cat > 0):
             subset = self.grouped["cum_n_observations_proportions"] + self.grouped["cum_n_categories_proportions"]
@@ -243,7 +259,7 @@ class MostFrequent:
             idx = self.grouped["cum_n_categories_proportions"].sub(self.top_pct_cat).abs().idxmin()
 
         else:
-            msg = f"Expected top_pct_obs or top_pct_cat to be positive scalar. "\
+            msg = f"Expected top_pct_obs or top_pct_cat to be positive. "\
                 f"Got top_pct_obs={self.top_pct_obs} and top_pct_cat={self.top_pct_cat}"
             raise ValueError(msg)
 
