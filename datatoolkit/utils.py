@@ -5,10 +5,7 @@ from collections import Sequence
 from collections.abc import Iterable
 from pathlib import Path
 from typing import Union
-from datetime import datetime, timedelta
 
-import matplotlib as mpl
-import matplotlib.pyplot as plt
 import networkx as nx
 import numpy as np
 import pandas as pd
@@ -283,8 +280,10 @@ def make_graph(nodes: Iterable, M: np.ndarray, G: nx.classes.digraph.DiGraph=nx.
         nodes (list): Graph nodes
         M (np.ndarray): Weight matrix
         G (nx.classes.digraph.DiGraph, optional): Graph type. Defaults to nx.DiGraph().
+
     Returns:
         [type]: Graph object
+        
     Example:
         >>> n_nodes = 4
         >>> M = np.random.rand(n_nodes, n_nodes)
