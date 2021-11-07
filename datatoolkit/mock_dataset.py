@@ -33,7 +33,20 @@ class MockData:
     Example:
         >>> md = MockData()
         >>> df = md()
-        >>> meta_data = md.make_meta_data()
+        >>> md.make_meta_data()
+           column_name    python_dtype
+        0      float_0           float
+        1      float_1           float
+        2        int_0             int
+        3        int_1             int
+        4        cat_0        category
+        5        cat_1        category
+        6       bool_0            bool
+        7       bool_1            bool
+        8        str_0             str
+        9        str_1             str
+        10        dt_0  datetime64[ns]
+        11        dt_1  datetime64[ns]
     """
 
     @typechecked
