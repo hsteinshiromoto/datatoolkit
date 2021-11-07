@@ -30,7 +30,7 @@ def test_nulls_proportion(get_data):
     data = get_data
     assert data.isnull().sum()["float_0"] / data.shape[0] == 0.05
     assert data.isnull().sum()["int_0"] / data.shape[0] == 0.02
-    assert data.isnull().sum()["categorical_0"] / data.shape[0] == 0.1
+    assert data.isnull().sum()["cat_0"] / data.shape[0] == 0.1
     assert data.isnull().sum()["bool_0"] / data.shape[0] == 0
     assert data.isnull().sum()["str_0"] / data.shape[0] == 0
-    assert data.isnull().sum()["datetime_0"] / data.shape[0] == 0
+    assert data.isnull().sum()["dt_0"] / data.shape[0] == 0
