@@ -26,14 +26,18 @@ class DataTypes(Enum):
 
 
 class MockData(DataTypes):
-    def __init__(self, specs_dict: dict=None):
-        self.specs_dict = specs_dict
+    def __init__(self, specs_dict: dict=None, n_rows: int=100
+                , n_cols: int=np.random.randint(1, 4)
+                , n_nas: float=np.random.rand()):
+        self.specs_dict = specs_dict or self.make_specs(n_rows, n_cols, n_nas)
 
 
-    def make_specs(self, n_rows: int=100, n_cols: int=np.random.randint(1, 4)
-                ,n_nas: float=np.random.rand()):
-        self.specs_dict = {col: [n_rows, n_cols, n_nas] for col in 
-                    [DataTypes.float, DataTypes.int, DataTypes.cat, DataTypes.bool, DataTypes.str, DataTypes.dt]}
+    @staticmethod
+    def make_specs(n_rows: int, n_cols: int, n_nas: float):
+        return {col: [n_rows, n_cols, n_nas] for col in 
+                    [DataTypes.float, DataTypes.int ,DataTypes.cat
+                    ,DataTypes.boo, DataTypes.str, DataTypes.dt]
+                }
 
 
     def build_column(self, dtype: DataTypes, col_spec: list):
