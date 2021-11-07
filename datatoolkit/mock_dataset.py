@@ -106,10 +106,10 @@ class MockData:
     def add_nans(self):
         for col_type, col_spec in self.specs_dict.items():
             for col in [col for col in self.data.columns.values if col_type in col]:
-                mask = data[col].sample(frac=col_spec[2]).index
+                mask = self.data[col].sample(frac=col_spec[2]).index
                 self.data.loc[mask, col] = np.nan
 
-        return data
+        return self.data
 
 
     def make_meta_data(self):
