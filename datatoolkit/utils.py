@@ -1,3 +1,5 @@
+import functools
+import operator
 import subprocess
 import sys
 from abc import ABC, abstractmethod
@@ -199,10 +201,15 @@ class MostFrequent:
         [1] https://hsteinshiromoto.github.io/posts/2020/06/25/find_row_closest_value_to_input
 
     Example:
-        >>> a, m = 3., 1. # shape and mode
-        >>> s = (np.random.pareto(a, 1000) + m).astype(int)
-        >>> mf = MostFrequent(s)
+        >>> x = [[i]*j for j,i in zip([50, 25, 12, 6, 3, 2, 2], range(1, 7))]
+        >>> x = functools.reduce(operator.iconcat, x, []) # Flat the list
+        >>> mf = MostFrequent(x)
         >>> output, stats = mf()
+        >>> print(stats[["category", "n_observations_proportions", "cum_n_observations_proportions"]])
+                   category  n_observations_proportions  cum_n_observations_proportions
+        0                 1                    0.510204                        0.510204
+        1                 2                    0.255102                        0.765306
+        2  other categories                    0.489796                        1.000000
     """
     @typechecked
     def __init__(self, data: Iterable, top_pct_obs: float=0.8 
