@@ -29,17 +29,16 @@ class MockData:
     """
     Create mock pandas dataframe
 
-
     # TODO: Test metadata
     Example:
         >>> md = MockData()
-        >>> df = md()
+        >>> md()
     """
 
     @typechecked
     def __init__(self, specs_dict: dict=None, n_rows: int=100
-                , n_cols: int=np.random.randint(1, 4)
-                , n_nas: float=np.random.rand()):
+                , n_cols: int=2
+                , n_nas: float=0.05):
         """
         Args:
             specs_dict (dict, optional): Specification for data frame construction. Defaults to None.
