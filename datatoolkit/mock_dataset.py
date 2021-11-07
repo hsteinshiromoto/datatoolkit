@@ -36,7 +36,7 @@ class MockData(DataTypes):
                     [DataTypes.float, DataTypes.int, DataTypes.cat, DataTypes.bool, DataTypes.str, DataTypes.dt]}
 
 
-    def build_column(self, dtype: DataTypes):
+    def build_column(self, dtype: DataTypes, col_spec: list):
         if dtype is DataTypes.float:
             return np.random.rand(col_spec[0], 1).flatten()
 
@@ -63,7 +63,7 @@ class MockData(DataTypes):
         values = {}
         for col_type, col_spec in self.specs_dict.items():
             for count in range(col_spec[1]):
-                    values[f"{col_type.name}_{count}"] = self.build_column(col_type)
+                    values[f"{col_type.name}_{count}"] = self.build_column(col_type, col_spec)
 
         self.data = pd.DataFrame.from_dict(values)
 
