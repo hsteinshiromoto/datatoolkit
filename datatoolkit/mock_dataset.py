@@ -88,7 +88,7 @@ class MockData:
                     pd.date_range(datetime.today(), periods=col_spec[0]))
 
 
-    def make_dataframe(self, nans: bool=False):
+    def make_dataframe(self):
 
         values = {}
         for col_type, col_spec in self.specs_dict.items():
@@ -97,15 +97,12 @@ class MockData:
 
         self.data = pd.DataFrame.from_dict(values)
 
-        if nans:
-            return self.add_nans()
-
-        return self.data
+        return self.add_nans()
 
 
     def add_nans(self):
         for col_type, col_spec in self.specs_dict.items():
-            for col in [col for col in self.data.columns.values if col_type in col]:
+            for col in [col for col in self.data.columns.values if col_type.name in col]:
                 mask = self.data[col].sample(frac=col_spec[2]).index
                 self.data.loc[mask, col] = np.nan
 
