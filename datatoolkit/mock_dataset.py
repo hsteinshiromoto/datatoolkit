@@ -36,38 +36,34 @@ class MockData(DataTypes):
                     [DataTypes.float, DataTypes.int, DataTypes.cat, DataTypes.bool, DataTypes.str, DataTypes.dt]}
 
 
+    def build_column(self, dtype: DataTypes):
+        if dtype is DataTypes.float:
+            return np.random.rand(col_spec[0], 1).flatten()
+
+        elif dtype is DataTypes.int:
+            return np.random.randint(np.random.randint(1e6), size=col_spec[0]).flatten()
+
+        elif dtype is DataTypes.cat:
+            return ["".join(category.flatten()) for category in np.random.choice(["A", "B", "C", "D"], size=(col_spec[0], 3))]
+
+        elif dtype is DataTypes.bool:
+            return [bool(item) for item in np.random.randint(2, size=col_spec[0])]
+
+        elif dtype is DataTypes.str:
+            return ["".join(category.flatten()) for category in np.random.choice(
+                        ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "X", "Y", "W", "Z"], size=(col_spec[0], col_spec[0]))]
+        
+        elif dtype is DataTypes.dt:
+            return list(
+                    pd.date_range(datetime.today(), periods=col_spec[0]))
+
+
     def make_dataframe(self):
 
         values = {}
         for col_type, col_spec in self.specs_dict.items():
-            if col_type is DataTypes.float:
-                for count in range(col_spec[1]):
-                    values[f"{col_type.name}_{count}"] = np.random.rand(
-                        col_spec[0], 1).flatten()
-
-            elif col_type is DataTypes.int:
-                for count in range(col_spec[1]):
-                    values[f"{col_type.name}_{count}"] = np.random.randint(
-                        np.random.randint(1e6), size=col_spec[0]).flatten()
-
-            elif col_type is DataTypes.cat:
-                for count in range(col_spec[1]):
-                    values[f"{col_type.name}_{count}"] = ["".join(category.flatten(
-                    )) for category in np.random.choice(["A", "B", "C", "D"], size=(col_spec[0], 3))]
-
-            elif col_type is DataTypes.bool:
-                for count in range(col_spec[1]):
-                    values[f"{col_type.name}_{count}"] = [
-                        bool(item) for item in np.random.randint(2, size=col_spec[0])]
-
-            elif col_type is DataTypes.str:
-                for count in range(col_spec[1]):
-                    values[f"{col_type.name}_{count}"] = ["".join(category.flatten()) for category in np.random.choice(
-                        ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "X", "Y", "W", "Z"], size=(col_spec[0], col_spec[0]))]
-
-            elif col_type is DataTypes.dt:
-                values[f"{col_type.name}_{count}"] = list(
-                    pd.date_range(datetime.today(), periods=col_spec[0]))
+            for count in range(col_spec[1]):
+                    values[f"{col_type.name}_{count}"] = self.build_column(col_type)
 
         self.data = pd.DataFrame.from_dict(values)
 
