@@ -1,8 +1,116 @@
 from datetime import datetime
+from itertools import product
 
 import numpy as np
 import pandas as pd
 from typeguard import typechecked
+from enum import Enum, auto
+
+
+class DataTypes(Enum):
+    """Supermarket
+
+    Args:
+        Enum ([type]): [description]
+
+    Returns:
+        [type]: [description]
+    """
+
+    float = auto()
+    int = auto()
+    cat = auto()
+    bool = auto()
+    str = auto()
+    dt = auto()
+
+
+class MockData(DataTypes):
+    def __init__(self, specs_dict: dict=None):
+        self.specs_dict = specs_dict
+
+
+    def make_specs(self, n_rows: int=100, n_cols: int=np.random.randint(1, 4)
+                ,n_nas: float=np.random.rand()):
+        self.specs_dict = {col: [n_rows, n_cols, n_nas] for col in 
+                    [DataTypes.float, DataTypes.int, DataTypes.cat, DataTypes.bool, DataTypes.str, DataTypes.dt]}
+
+
+    def make_dataframe(self):
+
+        values = {}
+        for col_type, col_spec in self.specs_dict.items():
+            if col_type is DataTypes.float:
+                for count in range(col_spec[1]):
+                    values[f"{col_type.name}_{count}"] = np.random.rand(
+                        col_spec[0], 1).flatten()
+
+            elif col_type is DataTypes.int:
+                for count in range(col_spec[1]):
+                    values[f"{col_type.name}_{count}"] = np.random.randint(
+                        np.random.randint(1e6), size=col_spec[0]).flatten()
+
+            elif col_type is DataTypes.cat:
+                for count in range(col_spec[1]):
+                    values[f"{col_type.name}_{count}"] = ["".join(category.flatten(
+                    )) for category in np.random.choice(["A", "B", "C", "D"], size=(col_spec[0], 3))]
+
+            elif col_type is DataTypes.bool:
+                for count in range(col_spec[1]):
+                    values[f"{col_type.name}_{count}"] = [
+                        bool(item) for item in np.random.randint(2, size=col_spec[0])]
+
+            elif col_type is DataTypes.str:
+                for count in range(col_spec[1]):
+                    values[f"{col_type.name}_{count}"] = ["".join(category.flatten()) for category in np.random.choice(
+                        ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "X", "Y", "W", "Z"], size=(col_spec[0], col_spec[0]))]
+
+            elif col_type is DataTypes.dt:
+                values[f"{col_type.name}_{count}"] = list(
+                    pd.date_range(datetime.today(), periods=col_spec[0]))
+
+        self.data = pd.DataFrame.from_dict(values)
+
+        self.add_nas()
+
+        return self.data
+
+
+    def add_nas(self):
+        for col_type, col_spec in self.specs.items():
+            for col in [col for col in self.data.columns.values if col_type in col]:
+                mask = self.data[col].sample(frac=col_spec[2]).index
+                self.data.loc[mask, col] = np.nan
+
+
+    def make_meta_data(self):
+
+        meta_data_dtype_map = {"float": "float", "int": "int", "cat": "category",
+                        "str": "str", "dt": "datetime64[ns]", "bool": "bool"}
+
+        meta_data_dict = {"column_name": [], "python_dtype": []}
+        for col in self.data.columns.values:
+            meta_data_dict["column_name"].append(col)
+            meta_data_dict["python_dtype"].append(
+                meta_data_dtype_map[col.split("_")[0]])
+
+        self.meta_data = pd.DataFrame.from_dict(meta_data_dict)
+
+
+    def get_meta_data(self):
+        self.make_meta_data()
+
+        return self.meta_data
+
+
+    def __call__(self, return_meta_data: bool=False):
+        if self.specs_dict is None:
+            self.make_specs()
+
+        if return_meta_data:
+            return self.make_dataframe(), self.get_meta_data()
+        return self.make_dataframe()
+
 
 
 @typechecked
