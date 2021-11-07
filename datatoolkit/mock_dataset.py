@@ -29,12 +29,6 @@ class MockData:
     """
     Create mock pandas dataframe
 
-    Args:
-        specs (dict, optional): Specifications of the data frame. Defaults to None.
-        meta_data (bool, optional): Return meta data as pandas dataframe
-
-    Returns:
-        pd.DataFrame: mock pandas dataframe
 
     # TODO: Test metadata
     Example:
@@ -46,11 +40,27 @@ class MockData:
     def __init__(self, specs_dict: dict=None, n_rows: int=100
                 , n_cols: int=np.random.randint(1, 4)
                 , n_nas: float=np.random.rand()):
+        """
+        Args:
+            specs_dict (dict, optional): Specification for data frame construction. Defaults to None.
+            n_rows (int, optional): Number of rows in the data frame. Defaults to 100.
+            n_cols (int, optional): Number of columns of each type. Defaults to 2.
+            n_nas (float, optional): Proportion of missing values in each column. Defaults to 0.05.
+        """
         self.specs_dict = specs_dict or self._make_specs(n_rows, n_cols, n_nas)
 
 
     @staticmethod
     def _make_specs(n_rows: int, n_cols: int, n_nas: float):
+        """
+        Generate specification for data frame construction
+
+        Args:
+            See __init__
+
+        Returns:
+            dict: Specification for data frame construction
+        """
         return {col: [n_rows, n_cols, n_nas] for col in 
                     [DataTypes.float, DataTypes.int ,DataTypes.cat
                     ,DataTypes.bool, DataTypes.str, DataTypes.dt]
