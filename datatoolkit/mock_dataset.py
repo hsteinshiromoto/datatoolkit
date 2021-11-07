@@ -32,7 +32,8 @@ class MockData:
     # TODO: Test metadata
     Example:
         >>> md = MockData()
-        >>> md()
+        >>> df = md()
+        >>> meta_data = md.make_meta_data()
     """
 
     @typechecked
