@@ -50,7 +50,7 @@ class MockData:
 
 
     @staticmethod
-    def _make_specs(n_rows: int, n_cols: int, n_nas: float):
+    def _make_specs(n_rows: int, n_cols: int, n_nas: float) -> dict:
         """
         Generate specification for data frame construction
 
