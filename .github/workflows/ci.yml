@@ -1,0 +1,154 @@
+name: Build_and_test_code
+
+on:
+  push:
+    branches:
+      - 'feature/*'
+      - 'bugfix/*'
+      - 'hotfix/*'
+      - 'release/*'
+
+    # Publish `v1.2.3` tags as releases.
+    tags:
+      - v*
+
+  # Run tests for any PRs.
+  pull_request:
+
+env:
+  # TODO: Change variable to your image's name.
+  IMAGE_NAME: datatoolkit
+
+jobs:
+  build_docker_image:
+    name: Build docker image
+    runs-on: ubuntu-latest
+    outputs:
+      docker_version: ${{ steps.docker_version.outputs.version }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Get docker version
+        id: docker_version
+        run: | 
+          echo "::set-output name=version::$(git ls-files -s Dockerfile | awk '{print $2}' | cut -c1-16)"
+
+      - name: Log into registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+      - name: Check if image exists
+        id: image_exists
+        run: |
+          response=$(docker manifest inspect ghcr.io/${{ github.repository }}/$IMAGE_NAME:${{ steps.docker_version.outputs.version }} > /dev/null ; echo $?)
+          echo ::set-output name=image_exists::$(echo ${response})
+
+      - name: Build docker image if it is not on registry
+        if: ${{ steps.image_exists.outputs.image_exists == 1 }}
+        run: make image
+
+      - name: Push image to Github Registry
+        if: ${{ steps.image_exists.outputs.image_exists == 1 }}
+        run: |
+          IMAGE_ID=ghcr.io/${{ github.repository }}/$IMAGE_NAME
+
+          # Change all uppercase to lowercase
+          IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
+
+          # Strip git ref prefix from version
+          VERSION=$(git ls-files -s Dockerfile | awk '{print $2}' | cut -c1-16)
+
+          echo IMAGE_ID=$IMAGE_ID
+          echo VERSION=$VERSION
+          echo IMAGE_NAME=$IMAGE_NAME
+
+          docker tag ${{ github.actor }}/$IMAGE_NAME:$VERSION $IMAGE_ID:$VERSION
+          docker push $IMAGE_ID:$VERSION
+
+          docker tag $IMAGE_ID:$VERSION $IMAGE_ID:latest
+          docker push $IMAGE_ID:latest
+
+  test_mock_dataset:
+    name: Test mock_dataset.py
+    needs: [build_docker_image]
+    runs-on: ubuntu-latest
+
+    container:
+      image: ghcr.io/${{ github.repository }}/datatoolkit:${{ needs.build_docker_image.outputs.docker_version }}
+      # options: --user vscode
+      credentials:
+        username: ${{ github.repository_owner }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Run tests
+        run: pytest tests/test_mock_dataset.py
+
+  test_utils:
+    name: Test utils.py
+    needs: [build_docker_image]
+    runs-on: ubuntu-latest
+
+    container:
+      image: ghcr.io/${{ github.repository }}/datatoolkit:${{ needs.build_docker_image.outputs.docker_version }}
+      # options: --user vscode
+      credentials:
+        username: ${{ github.repository_owner }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Run tests
+        run: echo "Success"
+
+  build_publish_pypi:
+    name: Build and publish Python package
+    runs-on: ubuntu-latest
+    needs: [test_mock_dataset, test_utils]
+
+    container:
+      image: ghcr.io/${{ github.repository }}/datatoolkit:latest
+      # options: --user vscode
+      credentials:
+        username: ${{ github.repository_owner }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+
+    steps:
+      # ---
+      # check-out repo and set-up python
+      # ---
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      # ---
+      # build and upload artifacts
+      # ---
+      - name: Build Package
+        run: make build
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: pypi_artifacts
+          path: |
+            build/
+            dist/
+            $PACKAGE_NAME.egg-info/
+
+      - name: Publish package
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          user: __token__
+          password: ${{ secrets.PYPI_API_TOKEN }}
+          # repository_url: https://test.pypi.org/legacy/
+          packages_dir: dist/
+          verify_metadata: false
+          verbose: true
+          skip_existing: true
