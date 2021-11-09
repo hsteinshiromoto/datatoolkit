@@ -1,4 +1,4 @@
-__version__="0.0.7"
+__version__='0.1.0'
 
 from datatoolkit.utils import Quantize, QuantizeDatetime, MostFrequent
 from datatoolkit.mock_dataset import DataTypes, MockData
