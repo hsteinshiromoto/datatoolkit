@@ -308,3 +308,23 @@ def make_graph(nodes: Iterable, M: np.ndarray, G: nx.classes.digraph.DiGraph=nx.
                             ,label=f"{M[i, j]:0.02f}")
 
     return G
+
+
+def make_distribution(distribution_name: str, params: dict):
+    """Returns SciPy statistical distribution object
+
+    Args:
+        distribution_name (str): Name of the distribution.
+        params (dict): Distribution parameters.
+
+    Returns:
+        _type_: _description_
+
+    Example:
+        >>> params = {"loc": 1, "scale": 0.05}
+        >>> half_norm = make_distribution("halfnorm", params)
+        >>> half_norm.stats(moments='mvsk')
+        (array(1.03989423), array(0.00090845), array(0.99527175), array(0.8691773))
+    """
+    dist = getattr(ss, distribution_name)
+    return dist(**params)
