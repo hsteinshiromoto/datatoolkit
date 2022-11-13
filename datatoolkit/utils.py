@@ -11,20 +11,31 @@ from typing import Union
 import networkx as nx
 import numpy as np
 import pandas as pd
+import scipy.stats as ss
 from typeguard import typechecked
 
-PROJECT_ROOT = Path(subprocess.Popen(['git', 'rev-parse', '--show-toplevel'], 
-                                stdout=subprocess.PIPE).communicate()[0].rstrip().decode('utf-8'))
+PROJECT_ROOT = Path(
+    subprocess.Popen(["git", "rev-parse", "--show-toplevel"], stdout=subprocess.PIPE)
+    .communicate()[0]
+    .rstrip()
+    .decode("utf-8")
+)
 
 sys.path.append(PROJECT_ROOT)
 
 # from tests.mock_dataset import mock_dataset
 # from src.make_logger import log_fun
 
+
 class Group(ABC):
     @typechecked
-    def __init__(self, feature: str, data: pd.DataFrame, secondary_feature: str=None
-                ,bins: Union[Sequence, str, int]="auto"):
+    def __init__(
+        self,
+        feature: str,
+        data: pd.DataFrame,
+        secondary_feature: str = None,
+        bins: Union[Sequence, str, int] = "auto",
+    ):
         """Aggregates data frame and provides summary
 
         Args:
@@ -38,16 +49,12 @@ class Group(ABC):
         self.bins = bins
         self.secondary_feature = secondary_feature or feature
 
-
     def make_bins(self):
-        return np.histogram_bin_edges(self.data[self.feature].values
-                                    ,bins=self.bins)
-
+        return np.histogram_bin_edges(self.data[self.feature].values, bins=self.bins)
 
     @abstractmethod
-    def binarize(self, fun: str=None):
+    def binarize(self, fun: str = None):
         pass
-
 
     def summarize(self):
         """Calculates summary statistics in each bin
@@ -57,20 +64,30 @@ class Group(ABC):
         """
         grouped = self.data.groupby(self.groupby_args)[self.secondary_feature]
 
-        summary_dict = {"count": grouped.count
-            ,"sum": grouped.sum
-            ,"min": grouped.min
-            ,"mean": grouped.mean
-            ,"25%": grouped.quantile
-            ,"50%": grouped.median
-            ,"75%": grouped.quantile
-            ,"max": grouped.max
-            }
+        summary_dict = {
+            "count": grouped.count,
+            "sum": grouped.sum,
+            "min": grouped.min,
+            "mean": grouped.mean,
+            "25%": grouped.quantile,
+            "50%": grouped.median,
+            "75%": grouped.quantile,
+            "max": grouped.max,
+        }
 
-        output = summary_dict["count"]().to_frame(name=f"count_{self.secondary_feature}")
-        output[f"cum_count_{self.secondary_feature}"] = output[f"count_{self.secondary_feature}"].cumsum()
-        output[f"proportions_{self.secondary_feature}"] = output[f"count_{self.secondary_feature}"]/output[f"count_{self.secondary_feature}"].sum()
-        output[f"cum_proportions_{self.secondary_feature}"] = output[f"proportions_{self.secondary_feature}"].cumsum()
+        output = summary_dict["count"]().to_frame(
+            name=f"count_{self.secondary_feature}"
+        )
+        output[f"cum_count_{self.secondary_feature}"] = output[
+            f"count_{self.secondary_feature}"
+        ].cumsum()
+        output[f"proportions_{self.secondary_feature}"] = (
+            output[f"count_{self.secondary_feature}"]
+            / output[f"count_{self.secondary_feature}"].sum()
+        )
+        output[f"cum_proportions_{self.secondary_feature}"] = output[
+            f"proportions_{self.secondary_feature}"
+        ].cumsum()
 
         if np.issubdtype(self.data[self.secondary_feature].dtype, np.number):
             output[f"min_{self.secondary_feature}"] = summary_dict["min"]()
@@ -81,17 +98,14 @@ class Group(ABC):
             output[f"max_{self.secondary_feature}"] = summary_dict["max"]()
 
         return output
-        
 
     def __repr__(self):
         return f"{self.__class__.__name__}(data={self.data}, feature={self.feature})"
 
-
     def __str__(self):
         return f"{self.__class__.__name__}(data={self.data}, feature={self.feature})"
 
-
-    def __call__(self, fun: str=None):
+    def __call__(self, fun: str = None):
         return self.binarize(fun)
 
 
@@ -104,12 +118,12 @@ class Quantize(Group):
         >>> _ = quantized_data()
         >>> _ = quantized_data.summarize()
     """
-    def binarize(self, fun: str=None):
+
+    def binarize(self, fun: str = None):
         if isinstance(self.bins, (str, int, Sequence)):
             self.bins = self.make_bins()
 
-        self.groupby_args = pd.cut(self.data[self.feature].values
-                                ,bins=self.bins)
+        self.groupby_args = pd.cut(self.data[self.feature].values, bins=self.bins)
 
         output = pd.DataFrame(self.groupby_args, columns=["intervals"])
         output["quantized"] = output["intervals"].apply(lambda x: x.mid)
@@ -127,22 +141,26 @@ class QuantizeDatetime(Group):
         >>> _ = quantized_data("count")
         >>> _ = quantized_data.summarize()
     """
+
     bin_time_freq = ["D", "W", "M", "Q", "Y"]
 
-    def binarize(self, fun: str=None):
+    def binarize(self, fun: str = None):
         if self.bins not in self.bin_time_freq:
             msg = f"{self.bins} is not a valid bin time frequency."
             raise ValueError(msg)
 
         self.groupby_args = pd.Grouper(key=self.feature, freq=self.bins)
 
-        return getattr(self.data.groupby(self.groupby_args)[self.secondary_feature], fun)()
+        return getattr(
+            self.data.groupby(self.groupby_args)[self.secondary_feature], fun
+        )()
 
 
 # @log_fun
 @typechecked
-def make_pivot(feature: str, index: str, column: str, data: pd.DataFrame
-                ,groupby_args: list=None):
+def make_pivot(
+    feature: str, index: str, column: str, data: pd.DataFrame, groupby_args: list = None
+):
     """Create two types of pivot matrices: count and mean
 
     Args:
@@ -156,10 +174,11 @@ def make_pivot(feature: str, index: str, column: str, data: pd.DataFrame
         (pd.DataFrame): Pivot tables
     """
 
-
     groupby_args = groupby_args or [index, column]
 
-    grouped = data.groupby(groupby_args)[feature].count().to_frame(name=f"count_{feature}")
+    grouped = (
+        data.groupby(groupby_args)[feature].count().to_frame(name=f"count_{feature}")
+    )
 
     try:
         grouped[f"mean_{feature}"] = data.groupby(groupby_args)[feature].mean()
@@ -167,15 +186,19 @@ def make_pivot(feature: str, index: str, column: str, data: pd.DataFrame
     except ValueError:
         if np.issubdtype(data[feature].dtype, np.number):
             msg = f"Expected feature {feature} to of data type numerical. Got {data[feature].dtype}."
-            raise(msg)
+            raise (msg)
 
         raise
 
     grouped.reset_index(inplace=True)
     grouped.sort_values(by=[index, column], inplace=True, ascending=False)
 
-    pivot_count = pd.pivot(grouped, index=index, columns=column, values=f"count_{feature}")
-    pivot_mean = pd.pivot(grouped, index=index, columns=column, values=f"mean_{feature}")
+    pivot_count = pd.pivot(
+        grouped, index=index, columns=column, values=f"count_{feature}"
+    )
+    pivot_mean = pd.pivot(
+        grouped, index=index, columns=column, values=f"mean_{feature}"
+    )
 
     pivot_count.sort_index(inplace=True, ascending=False)
     pivot_mean.sort_index(inplace=True, ascending=False)
@@ -194,7 +217,7 @@ class MostFrequent:
         top_pct_cat (float, optional): Percentage of categories to use. Defaults to 0.2.
 
     Returns:
-            (Iterable, pd.DataFrame): 1d array with most frequent categories and 
+            (Iterable, pd.DataFrame): 1d array with most frequent categories and
                                         summary statistics
 
     References:
@@ -211,13 +234,14 @@ class MostFrequent:
         1                 2                    0.255102                        0.765306
         2  other categories                    0.489796                        1.000000
     """
+
     @typechecked
-    def __init__(self, data: Iterable, top_pct_obs: float=0.8 
-                , top_pct_cat: float=0.2):
+    def __init__(
+        self, data: Iterable, top_pct_obs: float = 0.8, top_pct_cat: float = 0.2
+    ):
         self.data = data
         self.top_pct_obs = top_pct_obs
         self.top_pct_cat = top_pct_cat
-
 
     def fit(self):
         """
@@ -227,15 +251,20 @@ class MostFrequent:
             (None)
         """
         unique, counts = np.unique(self.data, return_counts=True)
-        self.grouped = pd.DataFrame.from_dict({"category": unique
-                                        ,"n_observations": counts
-                                        })
+        self.grouped = pd.DataFrame.from_dict(
+            {"category": unique, "n_observations": counts}
+        )
         self.grouped.sort_values(by="n_observations", ascending=False, inplace=True)
-        self.grouped["n_observations_proportions"] = self.grouped["n_observations"] / self.grouped["n_observations"].sum()
-        self.grouped["cum_n_observations_proportions"] = self.grouped["n_observations_proportions"].cumsum()
-        self.grouped["cum_n_categories_proportions"] = np.linspace(1.0/float(self.grouped.shape[0]), 1, self.grouped.shape[0])
+        self.grouped["n_observations_proportions"] = (
+            self.grouped["n_observations"] / self.grouped["n_observations"].sum()
+        )
+        self.grouped["cum_n_observations_proportions"] = self.grouped[
+            "n_observations_proportions"
+        ].cumsum()
+        self.grouped["cum_n_categories_proportions"] = np.linspace(
+            1.0 / float(self.grouped.shape[0]), 1, self.grouped.shape[0]
+        )
         self.grouped.reset_index(drop=True, inplace=True)
-
 
     def transform(self):
         """
@@ -250,38 +279,61 @@ class MostFrequent:
         """
 
         if (self.top_pct_obs > 0) & (self.top_pct_cat > 0):
-            subset = self.grouped["cum_n_observations_proportions"] + self.grouped["cum_n_categories_proportions"]
+            subset = (
+                self.grouped["cum_n_observations_proportions"]
+                + self.grouped["cum_n_categories_proportions"]
+            )
             threshold = self.top_pct_obs + self.top_pct_cat
 
             # Get row containing values closed to a value [1]
             idx = subset.sub(threshold).abs().idxmin()
 
-        elif (self.top_pct_obs > 0):
-            idx = self.grouped["cum_n_observations_proportions"].sub(self.top_pct_obs).abs().idxmin()
+        elif self.top_pct_obs > 0:
+            idx = (
+                self.grouped["cum_n_observations_proportions"]
+                .sub(self.top_pct_obs)
+                .abs()
+                .idxmin()
+            )
 
-        elif (self.top_pct_cat > 0):
-            idx = self.grouped["cum_n_categories_proportions"].sub(self.top_pct_cat).abs().idxmin()
+        elif self.top_pct_cat > 0:
+            idx = (
+                self.grouped["cum_n_categories_proportions"]
+                .sub(self.top_pct_cat)
+                .abs()
+                .idxmin()
+            )
 
         else:
-            msg = f"Expected top_pct_obs or top_pct_cat to be positive. "\
+            msg = (
+                f"Expected top_pct_obs or top_pct_cat to be positive. "
                 f"Got top_pct_obs={self.top_pct_obs} and top_pct_cat={self.top_pct_cat}"
+            )
             raise ValueError(msg)
 
-        self.grouped.loc[idx+1, "category"] = "other categories"
-        self.grouped.loc[idx+1, "cum_n_observations_proportions"] = 1
+        self.grouped.loc[idx + 1, "category"] = "other categories"
+        self.grouped.loc[idx + 1, "cum_n_observations_proportions"] = 1
 
-        self.grouped.loc[idx+1, "n_observations"] = self.grouped.loc[idx:, "n_observations"].sum()
-        self.grouped.loc[idx+1, "n_observations_proportions"] = self.grouped.loc[idx:, "n_observations_proportions"].sum()
+        self.grouped.loc[idx + 1, "n_observations"] = self.grouped.loc[
+            idx:, "n_observations"
+        ].sum()
+        self.grouped.loc[idx + 1, "n_observations_proportions"] = self.grouped.loc[
+            idx:, "n_observations_proportions"
+        ].sum()
 
-        return self.grouped.loc[:idx+1, "category"].values, self.grouped.loc[:idx+1, :]
-
+        return (
+            self.grouped.loc[: idx + 1, "category"].values,
+            self.grouped.loc[: idx + 1, :],
+        )
 
     def __call__(self):
         self.fit()
         return self.transform()
 
 
-def make_graph(nodes: Iterable, M: np.ndarray, G: nx.classes.digraph.DiGraph=nx.DiGraph()):
+def make_graph(
+    nodes: Iterable, M: np.ndarray, G: nx.classes.digraph.DiGraph = nx.DiGraph()
+):
     """Build graph based on list of nodes and a weight matrix
     Args:
         nodes (list): Graph nodes
@@ -290,7 +342,7 @@ def make_graph(nodes: Iterable, M: np.ndarray, G: nx.classes.digraph.DiGraph=nx.
 
     Returns:
         [type]: Graph object
-        
+
     Example:
         >>> n_nodes = 4
         >>> M = np.random.rand(n_nodes, n_nodes)
@@ -300,12 +352,16 @@ def make_graph(nodes: Iterable, M: np.ndarray, G: nx.classes.digraph.DiGraph=nx.
 
     for node in nodes:
         G.add_node(node, label=f"{node}")
-        
+
     for i, origin_node in enumerate(nodes):
         for j, destination_node in enumerate(nodes):
             if M[i, j] != 0:
-                G.add_edge(origin_node, destination_node, weight=M[i, j]
-                            ,label=f"{M[i, j]:0.02f}")
+                G.add_edge(
+                    origin_node,
+                    destination_node,
+                    weight=M[i, j],
+                    label=f"{M[i, j]:0.02f}",
+                )
 
     return G
 
