@@ -11,7 +11,8 @@ from abc import ABC, abstractmethod
 
 class CostFunction(ABC):
     """Abstract class for cost functions"""
-    def __init__(self, metrics: Iterable[str], M: 'np.ndarray[float]') -> None:
+
+    def __init__(self, metrics: Iterable[str], M: "np.ndarray[float]") -> None:
         """_summary_
 
         Args:
@@ -27,9 +28,11 @@ class CostFunction(ABC):
         self.metrics = metrics
         self.M = M or np.identity(len(metrics))  # type: ignore
         self._check_positive_definite(self.M)
-    
+
     @abstractmethod
-    def objective(self, y_true: 'np.ndarray[float]', y_pred: 'np.ndarray[float]') -> float:
+    def objective(
+        self, y_true: "np.ndarray[float]", y_pred: "np.ndarray[float]"
+    ) -> float:
         """
 
         Args:
@@ -37,15 +40,15 @@ class CostFunction(ABC):
             y_pred (np.ndarray[float]): Array-like of predicted labels of length N.
         """
         pass
-    
+
     @staticmethod
-    def _to_array(y: Iterable[float]) -> 'np.ndarray[float]':
+    def _to_array(y: Iterable[float]) -> "np.ndarray[float]":
         return np.fromiter(y, float)
-    
+
     @staticmethod
-    def _check_positive_definite(M: 'np.ndarray[float]') -> None:
+    def _check_positive_definite(M: "np.ndarray[float]") -> None:
         if not np.all(np.linalg.eigvals(M) > 0):
-            raise ValueError(f'Matrix {M} is not positive definite')
+            raise ValueError(f"Matrix {M} is not positive definite")
 
     def make_scorer(self) -> Callable:
         return sm.make_scorer(self.objective, greater_is_better=False)
@@ -53,13 +56,19 @@ class CostFunction(ABC):
     def __call__(self, y_true: Iterable[float], y_pred: Iterable[float]) -> float:
         y_pred_array = self._to_array(y_pred)
         y_true_array = self._to_array(y_true)
-            
+
         return self.objective(y_true_array, y_pred_array)
-    
-    
+
+
 class ClassificationCostFunction(CostFunction):
-    def __init__(self, metrics: Iterable[str], M: 'np.ndarray[float]' = None, metric_class_opt_val_map: dict[str, tuple[str, float]]=None, proba_threshold: float = 0.5):
-        """Defines cost functional for optimization of multiple metrics. 
+    def __init__(
+        self,
+        metrics: Iterable[str],
+        M: "np.ndarray[float]" = None,
+        metric_class_opt_val_map: dict[str, tuple[str, float]] = None,
+        proba_threshold: float = 0.5,
+    ):
+        """Defines cost functional for optimization of multiple metrics.
         Since this is defined as a loss function, cross validation returns the negative of the score [1].
 
         Args:
@@ -67,10 +76,10 @@ class ClassificationCostFunction(CostFunction):
             M (np.ndarray[float]): Positive definite matrix of size len(metrics).
             metric_class_map (dict[str, str], optional): Dictionary mapping metric to class or probability of the form {'metric': 'class' or 'proba'}. Defaults to {}.
             proba_threshold (float, optional): Probability threshold used to convert probabilities into classes. Defaults to 0.5.
-            
+
         References:
             [1] https://github.com/scikit-learn/scikit-learn/issues/2439
-            
+
         Example:
             >>> y_true = [0, 0, 0, 1, 1]
             >>> y_pred = [0.46, 0.6, 0.29, 0.25, 0.012]
@@ -101,21 +110,36 @@ class ClassificationCostFunction(CostFunction):
             "recall_score": ("class", 1),
             "roc_auc_score": ("proba", 1),
         }
-        
-    def _to_class(self, array: 'np.ndarray[float]', metric: str) -> 'np.ndarray[float]':
+
+    def _to_class(self, array: "np.ndarray[float]", metric: str) -> "np.ndarray[float]":
         # sourcery skip: inline-immediately-returned-variable
-        output = np.where(array > self.proba_threshold, 1, 0) if self.metric_class_opt_val_map[metric][0] == "class" else array
-        
+        output = (
+            np.where(array > self.proba_threshold, 1, 0)
+            if self.metric_class_opt_val_map[metric][0] == "class"
+            else array
+        )
+
         return output
-    
-    
-    def objective(self, y_true: 'np.ndarray[float]', y_pred: 'np.ndarray[float]') -> float:
-        
+
+    def objective(
+        self, y_true: "np.ndarray[float]", y_pred: "np.ndarray[float]"
+    ) -> float:
+
         self._check_positive_definite(self.M)
 
-        opt_values = np.array([self.metric_class_opt_val_map[metric][1] for metric in self.metrics])
+        opt_values = np.array(
+            [self.metric_class_opt_val_map[metric][1] for metric in self.metrics]
+        )
 
-        metric_values = np.array([getattr(sm, metric)(y_true, self._to_class(y_pred, metric)) for metric in self.metrics])
+        metric_values = np.array(
+            [
+                getattr(sm, metric)(y_true, self._to_class(y_pred, metric))
+                for metric in self.metrics
+            ]
+        )
 
-        return np.sqrt(np.dot(np.dot(metric_values - opt_values, self.M), metric_values - opt_values))
-            
+        return np.sqrt(
+            np.dot(
+                np.dot(metric_values - opt_values, self.M), metric_values - opt_values
+            )
+        )
