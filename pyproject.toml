@@ -27,6 +27,7 @@ rope = "^0.20.1"
 twine = "^3.4.2"
 Sphinx = "^4.2.0"
 sphinx-rtd-theme = "^1.0.0"
+black = "^22.10.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
