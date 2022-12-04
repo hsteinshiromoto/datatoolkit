@@ -13,7 +13,7 @@ class CostFunction(ABC):
     """Abstract class for cost functions"""
 
     def __init__(self, metrics: Iterable[str], M: "np.ndarray[float]") -> None:
-        """_summary_
+        """Cost function constructor.
 
         Args:
             metrics (Iterable[str]): Iterable of strings of the form (metric_name).
@@ -33,7 +33,7 @@ class CostFunction(ABC):
     def objective(
         self, y_true: "np.ndarray[float]", y_pred: "np.ndarray[float]"
     ) -> float:
-        """
+        """Objective function.
 
         Args:
             y_true (np.ndarray[float]): Array-like of true labels of length N.
@@ -112,6 +112,15 @@ class ClassificationCostFunction(CostFunction):
         }
 
     def _to_class(self, array: "np.ndarray[float]", metric: str) -> "np.ndarray[float]":
+        """Convert probability to class.
+
+        Args:
+            array (np.ndarray[float]): Array of probabilities of size (n_samples, 1).
+            metric (str): Metric that requires class.
+
+        Returns:
+            np.ndarray[float]: Converted array of size (n_samples, 1).
+        """
         # sourcery skip: inline-immediately-returned-variable
         output = (
             np.where(array > self.proba_threshold, 1, 0)
