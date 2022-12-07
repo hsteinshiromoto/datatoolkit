@@ -177,8 +177,8 @@ class BayesianSearchCV(BaseEstimator, ClassifierMixin):
 
     def __init__(
         self,
-        estimator,
-        parameter_space: dict,
+        estimator: BaseEstimator,
+        parameter_space: dict[str, hp],
         n_iter: int = 10,
         scoring=Union[Iterable[str], Callable, None],
         cv=StratifiedShuffleSplit,
@@ -188,6 +188,20 @@ class BayesianSearchCV(BaseEstimator, ClassifierMixin):
         error_score="raise",
         return_train_score=False,
     ):
+        """Instantiate BayesianSearchCV.
+
+        Args:
+            estimator (BaseEstimator): Sci-kit learn estimator.
+            parameter_space (dict): Dictionary of parameters to search over.
+            n_iter (int, optional): Number of iterations. Defaults to 10.
+            scoring (Iterable[str]|Callable|None, optional): Scoring options to measure the performance of the fit estimator. Defaults to Union[Iterable[str], Callable, None].
+            cv (StratifiedShuffleSplit, optional): Cross-validation generator. Defaults to StratifiedShuffleSplit.
+            refit (str, optional): Performance metric used to select best estimator. Defaults to "loss".
+            verbose (int, optional): Verbose level. Defaults to 0.
+            random_state (_type_, optional): Random state. Defaults to None.
+            error_score (str, optional): Error score. Defaults to "raise".
+            return_train_score (bool, optional): Return train score. Defaults to False.
+        """
         self.estimator = estimator
         self.parameter_space = parameter_space
         self.cv = cv
