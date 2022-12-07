@@ -3,10 +3,10 @@ name: Build_and_test_code
 on:
   push:
     branches:
-      - 'feature/*'
-      - 'bugfix/*'
-      - 'hotfix/*'
-      - 'release/*'
+      - "feature/*"
+      - "bugfix/*"
+      - "hotfix/*"
+      - "release/*"
 
     # Publish `v1.2.3` tags as releases.
     tags:
@@ -32,12 +32,13 @@ jobs:
 
       - name: Get docker version
         id: docker_version
-        run: | 
+        run: |
           echo "::set-output name=version::$(git ls-files -s Dockerfile | awk '{print $2}' | cut -c1-16)"
 
       - name: Log into registry
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
+      #! TODO: Change how output of steps are defined, in accordance to https://github.blog/changelog/2022-10-11-github-actions-deprecating-save-state-and-set-output-commands/
       - name: Check if image exists
         id: image_exists
         run: |
