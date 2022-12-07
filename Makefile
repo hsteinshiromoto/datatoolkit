@@ -1,4 +1,6 @@
 SHELL:=/bin/bash
+.DEFAULT_GOAL := help
+.PHONY: help Makefile
 
 # ---
 # Variables
@@ -17,6 +19,17 @@ BUILD_DATE = $(shell date +%Y%m%d-%H:%M:%S)
 
 BASE_IMAGE_TAG=$(shell git ls-files -s Dockerfile.base | awk '{print $$2}' | cut -c1-16)
 APP_IMAGE_TAG=$(shell git ls-files -s Dockerfile | awk '{print $$2}' | cut -c1-16)
+
+# ---
+# Sphix documentation settings
+# ---
+
+SPHINXOPTS    =
+SPHINXBUILD   = sphinx-build
+SPHINXPROJ    = datatoolkit
+SOURCEDIR     = docs/src
+BUILDDIR      = docs
+
 
 # ---
 # Commands
@@ -68,11 +81,15 @@ image: base_image app_image
 hooks:
 	cp bin/post-checkout .git/hooks/post-checkout
 
+## Sphinx documentation
+%: Makefile
+	@$(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
+	cp -r docs/html/* docs/ && rm -R docs/html
 #################################################################################
 # Self Documenting Commands                                                     #
 #################################################################################
 
-.DEFAULT_GOAL := help
+
 
 # Inspired by <http://marmelab.com/blog/2016/02/29/auto-documented-makefile.html>
 # sed script explained:
@@ -89,7 +106,7 @@ hooks:
 # 	* print line
 # Separate expressions are necessary because labels cannot be delimited by
 # semicolon; see <http://stackoverflow.com/a/11799865/1968>
-.PHONY: help build
+
 help:
 	@echo "$$(tput bold)Available rules:$$(tput sgr0)"
 	@echo
