@@ -213,8 +213,13 @@ class BayesianSearchCV(BaseEstimator, ClassifierMixin):
         self.return_train_score = return_train_score
         self.verbose = verbose
 
-    def fit(self, X, y):
-        # Instantiate estimator with optimized parameters
+    def fit(self, X: Iterable[float], y: Iterable[float]):
+        """Fits estimator.
+
+        Args:
+            X (Iterable[float]): Matrix of shape (n_samples, n_features).
+            y (Iterable[float]): Array-like of shape (n_samples,).
+        """
         self.n_splits = self.cv.get_n_splits(X, y)
 
         self.cv_results_ = {
