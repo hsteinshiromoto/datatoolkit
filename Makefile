@@ -1,4 +1,6 @@
 SHELL:=/bin/bash
+.DEFAULT_GOAL := help
+.PHONY: help docs
 
 # ---
 # Variables
@@ -19,6 +21,17 @@ BASE_IMAGE_TAG=$(shell git ls-files -s Dockerfile.base | awk '{print $$2}' | cut
 APP_IMAGE_TAG=$(shell git ls-files -s Dockerfile | awk '{print $$2}' | cut -c1-16)
 
 # ---
+# Sphix documentation settings
+# ---
+
+SPHINXOPTS    =
+SPHINXBUILD   = sphinx-build
+SPHINXPROJ    = datatoolkit
+SOURCEDIR     = docs/src
+BUILDDIR      = docs
+
+
+# ---
 # Commands
 # ---
 ## Test
@@ -26,21 +39,6 @@ test:
 	$(eval DOCKER_IMAGE_TAG=${DOCKER_IMAGE_NAME}:${DOCKER_TAG})
 
 	@echo "${DOCKER_IMAGE_TAG}"
-
-## Bump major version number
-bump_major:
-	@echo "Bumping major version from ${CURRENT_VERSION}"
-	bumpversion --current-version ${CURRENT_VERSION} major setup.py ${PROJECT_NAME}/__init__.py
-	
-## Bump minor version number
-bump_minor:
-	@echo "Bumping minor version from ${CURRENT_VERSION}"
-	bumpversion --current-version ${CURRENT_VERSION} minor setup.py ${PROJECT_NAME}/__init__.py
-
-## Bump patch version number
-bump_patch:
-	@echo "Bumping patch version from ${CURRENT_VERSION}"
-	bumpversion --current-version ${CURRENT_VERSION} patch setup.py ${PROJECT_NAME}/__init__.py
 
 ## Build Python package
 build:
@@ -83,11 +81,16 @@ image: base_image app_image
 hooks:
 	cp bin/post-checkout .git/hooks/post-checkout
 
+## Sphinx documentation
+docs:
+	@$(SPHINXBUILD) -M html "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
+	cp -r docs/html/* docs/ && rm -R docs/html
+	poetry export -f requirements.txt --output requirements.txt --without-hashes --with dev
 #################################################################################
 # Self Documenting Commands                                                     #
 #################################################################################
 
-.DEFAULT_GOAL := help
+
 
 # Inspired by <http://marmelab.com/blog/2016/02/29/auto-documented-makefile.html>
 # sed script explained:
@@ -104,7 +107,7 @@ hooks:
 # 	* print line
 # Separate expressions are necessary because labels cannot be delimited by
 # semicolon; see <http://stackoverflow.com/a/11799865/1968>
-.PHONY: help build
+
 help:
 	@echo "$$(tput bold)Available rules:$$(tput sgr0)"
 	@echo
