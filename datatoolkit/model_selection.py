@@ -221,6 +221,8 @@ class BayesianSearchCV(BaseEstimator, ClassifierMixin):
             X (Iterable[float]): Matrix of shape (n_samples, n_features).
             y (Iterable[float]): Array-like of shape (n_samples,).
         """
+        check_X_y(X, y)
+
         self.n_splits = self.cv.get_n_splits(X, y)
 
         self.cv_results_ = {
