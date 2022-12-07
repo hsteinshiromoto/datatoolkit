@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hypothesis &mdash; DataToolkit 0.2.0 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Mock Dataset" href="mock_dataset.html" />
+    <link rel="prev" title="Welcome to DataToolkit’s documentation!" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> DataToolkit
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Modules:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Hypothesis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mock_dataset.html">Mock Dataset</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model_selection.html">Model Selection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utils.html">Utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="visualize.html">Visualize</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">DataToolkit</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Hypothesis</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/hypothesis.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-datatoolkit.hypothesis">
+<span id="hypothesis"></span><h1>Hypothesis<a class="headerlink" href="#module-datatoolkit.hypothesis" title="Permalink to this headline"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="datatoolkit.hypothesis.HypothesisTest">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">datatoolkit.hypothesis.</span></span><span class="sig-name descname"><span class="pre">HypothesisTest</span></span><a class="headerlink" href="#datatoolkit.hypothesis.HypothesisTest" title="Permalink to this definition"></a></dt>
+<dd><p>Abstract base class for hypothesis tests.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="datatoolkit.hypothesis.HypothesisTest.run">
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#datatoolkit.hypothesis.HypothesisTest.run" title="Permalink to this definition"></a></dt>
+<dd><p>Run test</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> (<em>str</em>) – Name of test to be run</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>(None)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="datatoolkit.hypothesis.SingleSampleTest">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">datatoolkit.hypothesis.</span></span><span class="sig-name descname"><span class="pre">SingleSampleTest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.array</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#datatoolkit.hypothesis.SingleSampleTest" title="Permalink to this definition"></a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="datatoolkit.hypothesis.SingleSampleTest.stationarity">
+<span class="sig-name descname"><span class="pre">stationarity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#datatoolkit.hypothesis.SingleSampleTest.stationarity" title="Permalink to this definition"></a></dt>
+<dd><p>[summary]</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>[description]</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>[type]</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">365</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">pi</span><span class="o">*</span><span class="n">x</span><span class="o">/</span><span class="mi">60</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">test</span> <span class="o">=</span> <span class="n">SingleSampleTest</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">test</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s2">&quot;stationarity&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">test</span><span class="o">.</span><span class="n">name</span>
+<span class="go">&#39;stationarity&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">test</span><span class="o">.</span><span class="n">stat</span>
+<span class="go">-7612364038365.818</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">test</span><span class="o">.</span><span class="n">pval</span>
+<span class="go">0.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">test</span><span class="o">.</span><span class="n">accept_h0</span>
+<span class="go">False</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="datatoolkit.hypothesis.TwoSampleTest">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">datatoolkit.hypothesis.</span></span><span class="sig-name descname"><span class="pre">TwoSampleTest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">control</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">treatment</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.array</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#datatoolkit.hypothesis.TwoSampleTest" title="Permalink to this definition"></a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="datatoolkit.hypothesis.TwoSampleTest.ind_t">
+<span class="sig-name descname"><span class="pre">ind_t</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#datatoolkit.hypothesis.TwoSampleTest.ind_t" title="Permalink to this definition"></a></dt>
+<dd><p>Calculate the T-test for the means of two independent samples of scores.
+The null-hypothesis (H0) is: mean(control) &lt;= mean(treatment)
+The alternative hypothesis (H1) is: mean(control) &gt; mean(treatment)
+This test provides the probability to see the sample’s test statistic or
+something that is even less in line with the null hypothesis (H0)
+under the H0: P(T&lt;=0|H0), where T is the Welch’s_t-test statistic [4, 2].</p>
+<dl>
+<dt>Necessary Assumptions [1]:</dt><dd><ul>
+<li><ol class="arabic simple">
+<li><p>The means of the two populations being compared should follow</p></li>
+</ol>
+<blockquote>
+<div><p>normal distributions. Under weak assumptions, this follows in large
+samples from the central limit theorem, even when the distribution
+of observations in each group is non-normal.[18]</p>
+</div></blockquote>
+</li>
+<li><ol class="arabic simple" start="2">
+<li><p>If using Student’s original definition of the t-test, the two</p></li>
+</ol>
+<blockquote>
+<div><p>populations being compared should have the same variance
+(testable using F-test, Levene’s test, Bartlett’s test, or the
+Brown–Forsythe test; or assessable graphically using a Q–Q plot).
+If the sample sizes in the two groups being compared are equal,
+Student’s original t-test is highly robust to the presence of unequal
+variances. Welch’s t-test is insensitive to equality of the
+variances regardless of whether the sample sizes are similar.</p>
+</div></blockquote>
+</li>
+<li><ol class="arabic simple" start="3">
+<li><p>The data used to carry out the test should either be sampled</p></li>
+</ol>
+<blockquote>
+<div><p>independently from the two populations being compared or be fully
+paired. This is in general not testable from the data, but if the
+data are known to be dependent (e.g. paired by test design), a
+dependent test has to be applied. For partially paired data, the
+classical independent t-tests may give invalid results as the test
+statistic might not follow a t distribution, while the dependent
+t-test is sub-optimal as it discards the unpaired data</p>
+</div></blockquote>
+</li>
+</ul>
+<p>Most two-sample t-tests are robust to all but large deviations from the assumptions</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>control</strong> (<em>Iterable</em>) – Iterable containing average to be tested</p></li>
+<li><p><strong>treatment</strong> (<em>Iterable</em>) – Iterable containing average to be tested</p></li>
+<li><p><strong>pval_threshold</strong> (<em>float</em><em>, </em><em>optional</em>) – p-value threshold. Defaults to 0.05.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Test statistic and p-value</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>(float, float)</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># seed the random number generator</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">control</span> <span class="o">=</span> <span class="mi">5</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span> <span class="o">+</span> <span class="mi">50</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">treatment</span> <span class="o">=</span> <span class="mi">5</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span> <span class="o">+</span> <span class="mi">51</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">test</span> <span class="o">=</span> <span class="n">TwoSampleTest</span><span class="p">(</span><span class="n">control</span><span class="p">,</span> <span class="n">treatment</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">test</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s2">&quot;ind_t&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">test</span><span class="o">.</span><span class="n">name</span>
+<span class="go">&#39;ind_t&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">test</span><span class="o">.</span><span class="n">stat</span>
+<span class="go">-2.2620139704259556</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">test</span><span class="o">.</span><span class="n">pval</span>
+<span class="go">0.024782819014639627</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">test</span><span class="o">.</span><span class="n">accept_h0</span>
+<span class="go">False</span>
+</pre></div>
+</div>
+<p class="rubric">References</p>
+<p>[1] <a class="reference external" href="https://en.wikipedia.org/wiki/Student%27s_t-test">https://en.wikipedia.org/wiki/Student%27s_t-test</a>
+[2] <a class="reference external" href="https://stats.stackexchange.com/questions/491294/can-you-multiply-p-values-if-you-perform-the-same-test-multiple-times">https://stats.stackexchange.com/questions/491294/can-you-multiply-p-values-if-you-perform-the-same-test-multiple-times</a>
+[3] <a class="reference external" href="https://stackoverflow.com/questions/15984221/how-to-perform-two-sample-one-tailed-t-test-with-numpy-scipy">https://stackoverflow.com/questions/15984221/how-to-perform-two-sample-one-tailed-t-test-with-numpy-scipy</a>
+[4] <a class="reference external" href="https://en.wikipedia.org/wiki/Welch%27s_t-test">https://en.wikipedia.org/wiki/Welch%27s_t-test</a>
+[5] <a class="reference external" href="https://machinelearningmastery.com/how-to-code-the-students-t-test-from-scratch-in-python/">https://machinelearningmastery.com/how-to-code-the-students-t-test-from-scratch-in-python/</a></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="datatoolkit.hypothesis.TwoSampleTest.ind_z">
+<span class="sig-name descname"><span class="pre">ind_z</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#datatoolkit.hypothesis.TwoSampleTest.ind_z" title="Permalink to this definition"></a></dt>
+<dd><p>Do a independent z-test to verify if the difference of a mean between treatment and control
+is statistically significant. The need for independent test is because the variance of control
+and treatment are not necessarily equal.</p>
+<dl>
+<dt>Necessary Assumptions [3]:</dt><dd><ul class="simple">
+<li><p>Nuisance parameters should be known, or estimated with high accuracy</p></li>
+</ul>
+<p>(an example of a nuisance parameter would be the standard deviation in a one-sample location test).
+Z-tests focus on a single parameter, and treat all other unknown parameters as being fixed at their
+true values. In practice, due to Slutsky’s theorem, “plugging in” consistent estimates of
+nuisance parameters can be justified. However if the sample size is not large enough for these
+estimates to be reasonably accurate, the Z-test may not perform well.</p>
+<ul class="simple">
+<li><p>The test statistic should follow a normal distribution. Generally, one appeals to the central limit</p></li>
+</ul>
+<p>theorem to justify assuming that a test statistic varies normally. There is a great deal of
+statistical research on the question of when a test statistic varies approximately normally.
+If the variation of the test statistic is strongly non-normal, a Z-test should not be used.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>control</strong> (<em>Iterable</em>) – Iterable containing average to be tested</p></li>
+<li><p><strong>treatment</strong> (<em>Iterable</em>) – Iterable containing average to be tested</p></li>
+<li><p><strong>pval_threshold</strong> (<em>float</em><em>, </em><em>optional</em>) – p-value threshold. Defaults to 0.05.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Test statistic and p-value</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>(float, float)</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># seed the random number generator</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">control</span> <span class="o">=</span> <span class="mi">5</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span> <span class="o">+</span> <span class="mi">50</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">treatment</span> <span class="o">=</span> <span class="mi">5</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span> <span class="o">+</span> <span class="mi">51</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">test</span> <span class="o">=</span> <span class="n">TwoSampleTest</span><span class="p">(</span><span class="n">control</span><span class="p">,</span> <span class="n">treatment</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">test</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s2">&quot;ind_z&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">test</span><span class="o">.</span><span class="n">name</span>
+<span class="go">&#39;ind_z&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">test</span><span class="o">.</span><span class="n">stat</span>
+<span class="go">-2.2620139704259556</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">test</span><span class="o">.</span><span class="n">pval</span>
+<span class="go">0.02369654016419</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">test</span><span class="o">.</span><span class="n">accept_h0</span>
+<span class="go">False</span>
+</pre></div>
+</div>
+<p class="rubric">References</p>
+<p>[1] <a class="reference external" href="https://stats.stackexchange.com/questions/124096/two-samples-z-test-in-python">https://stats.stackexchange.com/questions/124096/two-samples-z-test-in-python</a>
+[2] <a class="reference external" href="https://stackoverflow.com/questions/65235896/statsmodel-z-test-not-working-as-intended-statsmodels-stats-weightstats-compare">https://stackoverflow.com/questions/65235896/statsmodel-z-test-not-working-as-intended-statsmodels-stats-weightstats-compare</a>
+[3] <a class="reference external" href="https://en.wikipedia.org/wiki/Z-test">https://en.wikipedia.org/wiki/Z-test</a>
+[4] <a class="reference external" href="https://stats.stackexchange.com/questions/491294/can-you-multiply-p-values-if-you-perform-the-same-test-multiple-times">https://stats.stackexchange.com/questions/491294/can-you-multiply-p-values-if-you-perform-the-same-test-multiple-times</a></p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Welcome to DataToolkit’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="mock_dataset.html" class="btn btn-neutral float-right" title="Mock Dataset" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, Humberto STEIN SHIROMOTO.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
