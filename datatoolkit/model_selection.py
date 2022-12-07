@@ -161,22 +161,15 @@ class ClassificationCostFunction(CostFunction):
 
 
 class BayesianSearchCV(BaseEstimator, ClassifierMixin):
-    """_summary_
+    """Bayesian Search Cross Validation.
 
     Args:
-        BaseEstimator (_type_): _description_
-        ClassifierMixin (_type_): _description_
+        (BaseEstimator): Sci-kit learn base estimator.
+        (ClassifierMixin): Sci-kit learn classifier mixin.
 
     Raises:
-        TypeError: _description_
-        NotFittedError: _description_
-        NotFittedError: _description_
-
-    Returns:
-        _type_: _description_
-
-    Yields:
-        _type_: _description_
+        TypeError: When scoring argument is of wrong type.
+        NotFittedError: When estimator is not fitted.
 
     References:
         [1] https://stackoverflow.com/questions/52408949/cross-validation-and-parameters-tuning-with-xgboost-and-hyperopt
