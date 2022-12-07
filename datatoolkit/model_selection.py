@@ -161,6 +161,27 @@ class ClassificationCostFunction(CostFunction):
 
 
 class BayesianSearchCV(BaseEstimator, ClassifierMixin):
+    """_summary_
+
+    Args:
+        BaseEstimator (_type_): _description_
+        ClassifierMixin (_type_): _description_
+
+    Raises:
+        TypeError: _description_
+        NotFittedError: _description_
+        NotFittedError: _description_
+
+    Returns:
+        _type_: _description_
+
+    Yields:
+        _type_: _description_
+
+    References:
+        [1] https://stackoverflow.com/questions/52408949/cross-validation-and-parameters-tuning-with-xgboost-and-hyperopt
+    """
+
     def __init__(
         self,
         estimator,
