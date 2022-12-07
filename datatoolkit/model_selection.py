@@ -152,3 +152,146 @@ class ClassificationCostFunction(CostFunction):
                 np.dot(metric_values - opt_values, self.M), metric_values - opt_values
             )
         )
+
+class BayesianSearchCV(BaseEstimator, ClassifierMixin):
+    def __init__(self, estimator, parameter_space: dict, n_iter: int=10, scoring=Union[Iterable[str], Callable, None], cv=StratifiedShuffleSplit, refit=True, verbose=0, random_state=None, error_score='raise', return_train_score=False):
+        self.estimator = estimator
+        self.parameter_space = parameter_space
+        self.cv = cv
+        self.n_iter = n_iter
+        self.random_state = random_state
+        self.refit = refit
+        self.scoring = scoring
+        
+    def fit(self, X, y):
+        # Instantiate estimator with optimized parameters
+        self.n_splits = self.cv.get_n_splits(X, y)
+        
+        self.cv_results_ = {"parameters": [],
+                            "loss": [],
+                            }
+
+        for (dataset_type_name, score_name, index) in self.get_dataset_type_score_name_index(range(self.n_splits)):
+            self.cv_results_[f"{dataset_type_name}_{score_name}_split{index}"] = []
+        
+        _ = self.optimize(X, y)
+        self.post_process_cv_results()
+        
+        self.best_index_ = np.argmin(self.cv_results_["loss"])
+        self.best_params_ = self.cv_results_["parameters"][self.best_index_]
+        
+        if self.refit:
+            best = self.estimator.set_params(**self.best_params_)
+            best.fit(X, y)
+            self.best_estimator_ = best
+            
+        return self
+    
+    @staticmethod
+    def scorer_optimal_value(score_name: str) -> float:
+        if score_name in {"accuracy_score", "balanced_accuracy_score", "top_k_accuracy_score", "average_precision_score", "neg_brier_score_score", "f1_score", "f1_micro_score", "f1_macro_score", "f1_weighted_score", "f1_samples_score", "precision_score", "recall_score", "jaccard_score", "roc_auc_score", "roc_auc_ovr_score", "roc_auc_ovo_score", "roc_auc_ovr_weighted_score", "roc_auc_ovo_weighted_score"}:
+            return 1
+        if score_name in {"neg_log_loss_score"}:
+            return 0
+        
+    @staticmethod
+    def scorer_class_map(y_pred: 'np.ndarray[float]', score_name: str, threshold: float=0.5) -> 'np.ndarray[float]':
+        if score_name in {"accuracy_score", "balanced_accuracy_score", "top_k_accuracy_score", "average_precision_score", "neg_brier_score_score", "f1_score", "f1_micro_score", "f1_macro_score", "f1_weighted_score", "f1_samples_score", "neg_log_loss_score", "precision_score", "recall_score", "jaccard_score"}:
+            return np.where(y_pred > threshold, 1, 0)
+        if score_name in {"roc_auc_score", "roc_auc_ovr_score", "roc_auc_ovo_score", "roc_auc_ovr_weighted_score", "roc_auc_ovo_weighted_score"}:
+            return y_pred
+        
+    def _raise_type_error(self):
+        msg = f"scoring must be an iterable or a callable, got {type(self.scoring)}."
+        raise TypeError(msg)
+        
+    def get_dataset_type_score_name_index(self, split_iterator: Union[Iterable[int], None] = None) -> Generator[tuple[str, str, int]]:
+        split_iterator = split_iterator or [1]
+        
+        if isinstance(self.scoring, Iterable):
+            iterable = product({"train", "val"}, self.scoring, split_iterator)
+            
+        elif isinstance(self.scoring, Callable):
+            iterable = product({"train", "val"}, ["score"], split_iterator)
+            
+        else:
+            self._raise_type_error()
+            
+        yield from iterable
+    
+    def objective(self, y_true: Iterable[float], y_pred: Iterable[float], score_name: str) -> float:
+        
+        scorer = getattr(sm, score_name)
+        _y_pred = self.scorer_class_map(y_pred, score_name)
+        
+        return abs(scorer(y_true, _y_pred) - self.scorer_optimal_value(score_name))
+    
+    
+    def post_process_cv_results(self):
+                
+        for dataset_type_name, score_name, _ in self.get_dataset_type_score_name_index():
+            scores_iterable = [self.cv_results_[f"{dataset_type_name}_{score_name}_split{index}"] for index in range(self.n_splits)]
+            self.cv_results_[f"average_{dataset_type_name}_{score_name}"] = np.mean(scores_iterable, axis=0)
+            self.cv_results_[f"std_{dataset_type_name}_{score_name}"] = np.std(scores_iterable, axis=0)
+
+        ranks = list(range(len(self.cv_results_["loss"])))
+        for r,i in enumerate(sorted(ranks,key=lambda i: self.cv_results_["loss"][i]),1):
+            ranks[i]=r
+
+        self.cv_results_["rank_score"] = ranks
+
+    
+    def cross_validate(self, parameter_space, X, y):
+        # sourcery skip: remove-dict-keys
+        
+        original_parameters = self.estimator.get_params(deep=True)
+        
+        # Preserve the order in the following dict merge so that the values of `original_parameters` are replaced by the values of `parameter_space` when there is a key conflict.
+        self.estimator.set_params(**{**original_parameters, **parameter_space})
+        
+        self.cv_results_['parameters'].append(parameter_space)
+        
+        loss = 0
+        for index, (train_index, test_index) in enumerate(self.cv.split(X, y)):
+            X_train, y_train = X[train_index], y[train_index]
+            X_val, y_val = X[test_index], y[test_index]
+            y_true = {"train": y_train, "val": y_val}
+            self.estimator.fit(X_train, y_train)
+            y_pred = {"train": self.estimator.predict_proba(X_train)[:, 1]
+                    , "val": self.estimator.predict_proba(X_val)[:, 1]
+                    }
+            
+            for dataset_type_name in y_true.keys():
+                if isinstance(self.scoring, Iterable):
+                    for score_name in self.scoring:
+                        score = self.objective(y_true[dataset_type_name], y_pred[dataset_type_name], score_name)
+                        self.cv_results_[f"{dataset_type_name}_{score_name}_split{index}"].append(score)
+                        loss += score
+                    
+                elif isinstance(self.scoring, Callable):
+                    for score_name in ["score"]:
+                        score = self.scoring(y_true[dataset_type_name], y_pred[dataset_type_name])
+                        self.cv_results_[f"{dataset_type_name}_{score_name}_split{index}"].append(score)
+                        loss += score
+                else:
+                    self._raise_type_error()
+                    
+        self.cv_results_["loss"].append(loss)
+        
+        return {'loss': loss, 'status': STATUS_OK}
+    
+    def optimize(self, X, y):
+        trials = Trials()
+        return fmin(fn=partial(self.cross_validate, X=X, y=y),
+                    space=self.parameter_space,
+                    algo=tpe.suggest,
+                    max_evals=self.n_iter,
+                    trials=trials,
+                    rstate=np.random.RandomState(self.random_state)
+                    )
+        
+    def predict(self, X):
+        if not hasattr(self, 'best_estimator_'):
+            raise NotFittedError('Call `fit` before `predict_proba`.')
+        else:
+            return self.best_estimator_.predict_proba(X)
