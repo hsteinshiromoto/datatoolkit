@@ -7,17 +7,14 @@ Welcome to DataToolkit's documentation!
 =======================================
 
 .. toctree::
-   :maxdepth: 2
-   :caption: Contents:
-
-API
-===
+   :maxdepth: 1
+   :caption: Modules:
 
    hypothesis
    mock_dataset
    model_selection
    utils
-   visualization
+   visualize
 
 Readme
 ======
