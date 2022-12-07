@@ -3,22 +3,28 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to datatoolkit's documentation!
+Welcome to DataToolkit's documentation!
 =======================================
 
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
 
-   mock_dataset
+API
+===
+
    hypothesis
+   mock_dataset
+   model_selection
    utils
    visualization
 
-Installation
-===========
+Readme
+======
 
-``pip install datatoolkit``
+.. include:: ../../README.md
+   :parser: myst_parser.sphinx_
+
 
 Indices and tables
 ==================
