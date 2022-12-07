@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Model Selection &mdash; DataToolkit 0.2.0 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Utils" href="utils.html" />
+    <link rel="prev" title="Mock Dataset" href="mock_dataset.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> DataToolkit
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Modules:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="hypothesis.html">Hypothesis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mock_dataset.html">Mock Dataset</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Model Selection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utils.html">Utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="visualize.html">Visualize</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">DataToolkit</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Model Selection</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/model_selection.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-datatoolkit.model_selection">
+<span id="model-selection"></span><h1>Model Selection<a class="headerlink" href="#module-datatoolkit.model_selection" title="Permalink to this headline"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="datatoolkit.model_selection.BayesianSearchCV">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">datatoolkit.model_selection.</span></span><span class="sig-name descname"><span class="pre">BayesianSearchCV</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">estimator:</span> <span class="pre">sklearn.base.BaseEstimator,</span> <span class="pre">parameter_space:</span> <span class="pre">dict[str,</span> <span class="pre">&lt;module</span> <span class="pre">'hyperopt.hp'</span> <span class="pre">from</span> <span class="pre">'/usr/local/lib/python3.9/site-packages/hyperopt/hp.py'&gt;],</span> <span class="pre">n_iter:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">10,</span> <span class="pre">scoring=typing.Union[collections.abc.Iterable[str],</span> <span class="pre">collections.abc.Callable,</span> <span class="pre">NoneType],</span> <span class="pre">cv=&lt;class</span> <span class="pre">'sklearn.model_selection._split.StratifiedShuffleSplit'&gt;,</span> <span class="pre">refit:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'loss',</span> <span class="pre">verbose=0,</span> <span class="pre">random_state=None,</span> <span class="pre">error_score='raise',</span> <span class="pre">return_train_score=False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#datatoolkit.model_selection.BayesianSearchCV" title="Permalink to this definition"></a></dt>
+<dd><p>Bayesian Search Cross Validation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>(</strong><strong>BaseEstimator</strong><strong>)</strong> – Sci-kit learn base estimator.</p></li>
+<li><p><strong>(</strong><strong>ClassifierMixin</strong><strong>)</strong> – Sci-kit learn classifier mixin.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>TypeError</strong> – When scoring argument is of wrong type.</p></li>
+<li><p><strong>NotFittedError</strong> – When estimator is not fitted.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">References</p>
+<p>[1] <a class="reference external" href="https://stackoverflow.com/questions/52408949/cross-validation-and-parameters-tuning-with-xgboost-and-hyperopt">https://stackoverflow.com/questions/52408949/cross-validation-and-parameters-tuning-with-xgboost-and-hyperopt</a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="datatoolkit.model_selection.BayesianSearchCV.cross_validate">
+<span class="sig-name descname"><span class="pre">cross_validate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parameter_space</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">collections.abc.Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">collections.abc.Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#datatoolkit.model_selection.BayesianSearchCV.cross_validate" title="Permalink to this definition"></a></dt>
+<dd><p>Fit estimator on training set and evaluate on validation set, in accordance to cross-validation generator.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>parameter_space</strong> (<em>dict</em>) – Dict containing parameter space.</p></li>
+<li><p><strong>X</strong> (<em>Iterable</em><em>[</em><em>float</em><em>]</em>) – Array-like of shape (n_samples, n_features) containing predictors.</p></li>
+<li><p><strong>y</strong> (<em>Iterable</em><em>[</em><em>float</em><em>]</em>) – Array-like of shape (n_samples,) containing target label.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Dict containing cross validation results.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="datatoolkit.model_selection.BayesianSearchCV.fit">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">collections.abc.Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">collections.abc.Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#datatoolkit.model_selection.BayesianSearchCV.fit" title="Permalink to this definition"></a></dt>
+<dd><p>Fits estimator.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X</strong> (<em>Iterable</em><em>[</em><em>float</em><em>]</em>) – Matrix of shape (n_samples, n_features).</p></li>
+<li><p><strong>y</strong> (<em>Iterable</em><em>[</em><em>float</em><em>]</em>) – Array-like of shape (n_samples,).</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="datatoolkit.model_selection.BayesianSearchCV.get_dataset_type_score_name_index">
+<span class="sig-name descname"><span class="pre">get_dataset_type_score_name_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">split_iterator</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">collections.abc.Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">collections.abc.Generator</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#datatoolkit.model_selection.BayesianSearchCV.get_dataset_type_score_name_index" title="Permalink to this definition"></a></dt>
+<dd><p>Generates tuple composed of dataset type, score name, and index.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>split_iterator</strong> (<em>Union</em><em>[</em><em>Iterable</em><em>[</em><em>int</em><em>]</em><em>, </em><em>None</em><em>]</em><em>, </em><em>optional</em>) – Array-like of shape (n_splits,) having the size of number of CV splits. Defaults to None.</p>
+</dd>
+<dt class="field-even">Yields</dt>
+<dd class="field-even"><p><em>Generator[tuple[str, str, int]]</em> – Tuple composed of dataset type, score name, and index.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="datatoolkit.model_selection.BayesianSearchCV.objective">
+<span class="sig-name descname"><span class="pre">objective</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">collections.abc.Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">collections.abc.Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">score_name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#datatoolkit.model_selection.BayesianSearchCV.objective" title="Permalink to this definition"></a></dt>
+<dd><p>Objective function to be minimized.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y_true</strong> (<em>Iterable</em><em>[</em><em>float</em><em>]</em>) – Array-like of shape (n_samples,) containing true values of target label.</p></li>
+<li><p><strong>y_pred</strong> (<em>Iterable</em><em>[</em><em>float</em><em>]</em>) – Array-like of shape (n_samples,) containing predicted values of target label.</p></li>
+<li><p><strong>score_name</strong> (<em>str</em>) – _description_</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Returns absolute difference between score and optimal value.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="datatoolkit.model_selection.BayesianSearchCV.optimize">
+<span class="sig-name descname"><span class="pre">optimize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">collections.abc.Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">collections.abc.Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#datatoolkit.model_selection.BayesianSearchCV.optimize" title="Permalink to this definition"></a></dt>
+<dd><p>Runs hyperparameter optimization.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X</strong> (<em>Iterable</em><em>[</em><em>float</em><em>]</em>) – Array-like of shape (n_samples, n_features) containing predictors.</p></li>
+<li><p><strong>y</strong> (<em>Iterable</em><em>[</em><em>float</em><em>]</em>) – Array-like of shape (n_samples,) containing target label.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Optimal parameter space.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="datatoolkit.model_selection.BayesianSearchCV.post_process_cv_results">
+<span class="sig-name descname"><span class="pre">post_process_cv_results</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#datatoolkit.model_selection.BayesianSearchCV.post_process_cv_results" title="Permalink to this definition"></a></dt>
+<dd><p>Process cross validation results by calculating average and standard deviation of scores.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="datatoolkit.model_selection.BayesianSearchCV.predict">
+<span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">collections.abc.Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">collections.abc.Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#datatoolkit.model_selection.BayesianSearchCV.predict" title="Permalink to this definition"></a></dt>
+<dd><p>Predicts observation class</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>X</strong> (<em>Iterable</em><em>[</em><em>float</em><em>]</em>) – Array-like of shape (n_samples, n_features) containing predictors.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Classes.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Iterable[float]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="datatoolkit.model_selection.BayesianSearchCV.predict_proba">
+<span class="sig-name descname"><span class="pre">predict_proba</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">collections.abc.Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">collections.abc.Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#datatoolkit.model_selection.BayesianSearchCV.predict_proba" title="Permalink to this definition"></a></dt>
+<dd><p>Predict probabilities observation of be in a class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>X</strong> (<em>Iterable</em><em>[</em><em>float</em><em>]</em>) – Array-like of shape (n_samples, n_features) containing predictors.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Classes probabilities.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Iterable[float]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="datatoolkit.model_selection.BayesianSearchCV.scorer_class_map">
+<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">scorer_class_map</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_pred</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">np.ndarray</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">score_name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">0.5</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">np.ndarray</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#datatoolkit.model_selection.BayesianSearchCV.scorer_class_map" title="Permalink to this definition"></a></dt>
+<dd><p>Maps score name to class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y_pred</strong> (<em>np.ndarray</em><em>[</em><em>float</em><em>]</em>) – Array-like of shape (n_samples,).</p></li>
+<li><p><strong>score_name</strong> (<em>str</em>) – Name of the performance metric</p></li>
+<li><p><strong>threshold</strong> (<em>float</em><em>, </em><em>optional</em>) – Threshold used to transform probability into class. Defaults to 0.5.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Array-like of shape (n_samples,).</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>np.ndarray[float]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="datatoolkit.model_selection.BayesianSearchCV.scorer_optimal_value">
+<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">scorer_optimal_value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">score_name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#datatoolkit.model_selection.BayesianSearchCV.scorer_optimal_value" title="Permalink to this definition"></a></dt>
+<dd><p>Maps score name to optimal value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>score_name</strong> (<em>str</em>) – Name of performance metric</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Optimal value.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="datatoolkit.model_selection.ClassificationCostFunction">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">datatoolkit.model_selection.</span></span><span class="sig-name descname"><span class="pre">ClassificationCostFunction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">metrics</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">collections.abc.Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">M</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">np.ndarray</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric_class_opt_val_map</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">proba_threshold</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">0.5</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#datatoolkit.model_selection.ClassificationCostFunction" title="Permalink to this definition"></a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="datatoolkit.model_selection.ClassificationCostFunction.objective">
+<span class="sig-name descname"><span class="pre">objective</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">np.ndarray</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">np.ndarray</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#datatoolkit.model_selection.ClassificationCostFunction.objective" title="Permalink to this definition"></a></dt>
+<dd><p>Objective function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y_true</strong> (<em>np.ndarray</em><em>[</em><em>float</em><em>]</em>) – Array-like of true labels of length N.</p></li>
+<li><p><strong>y_pred</strong> (<em>np.ndarray</em><em>[</em><em>float</em><em>]</em>) – Array-like of predicted labels of length N.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="datatoolkit.model_selection.CostFunction">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">datatoolkit.model_selection.</span></span><span class="sig-name descname"><span class="pre">CostFunction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">metrics</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">collections.abc.Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">M</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">np.ndarray</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#datatoolkit.model_selection.CostFunction" title="Permalink to this definition"></a></dt>
+<dd><p>Abstract class for cost functions</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="datatoolkit.model_selection.CostFunction.objective">
+<em class="property"><span class="pre">abstract</span> </em><span class="sig-name descname"><span class="pre">objective</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">np.ndarray</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">np.ndarray</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#datatoolkit.model_selection.CostFunction.objective" title="Permalink to this definition"></a></dt>
+<dd><p>Objective function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y_true</strong> (<em>np.ndarray</em><em>[</em><em>float</em><em>]</em>) – Array-like of true labels of length N.</p></li>
+<li><p><strong>y_pred</strong> (<em>np.ndarray</em><em>[</em><em>float</em><em>]</em>) – Array-like of predicted labels of length N.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="mock_dataset.html" class="btn btn-neutral float-left" title="Mock Dataset" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="utils.html" class="btn btn-neutral float-right" title="Utils" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, Humberto STEIN SHIROMOTO.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
