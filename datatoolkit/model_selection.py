@@ -168,7 +168,7 @@ class BayesianSearchCV(BaseEstimator, ClassifierMixin):
         n_iter: int = 10,
         scoring=Union[Iterable[str], Callable, None],
         cv=StratifiedShuffleSplit,
-        refit=True,
+        refit: str = "loss",
         verbose=0,
         random_state=None,
         error_score="raise",
@@ -201,7 +201,7 @@ class BayesianSearchCV(BaseEstimator, ClassifierMixin):
         _ = self.optimize(X, y)
         self.post_process_cv_results()
 
-        self.best_index_ = np.argmin(self.cv_results_["loss"])
+        self.best_index_ = np.argmin(self.cv_results_["rank_score"])
         self.best_params_ = self.cv_results_["parameters"][self.best_index_]
 
         if self.refit:
@@ -287,6 +287,10 @@ class BayesianSearchCV(BaseEstimator, ClassifierMixin):
 
         yield from iterable
 
+    def _check_refit_scoring(self) -> bool:
+        if isinstance(self.scoring, Iterable):
+            return self.refit in self.scoring
+
     def objective(
         self, y_true: Iterable[float], y_pred: Iterable[float], score_name: str
     ) -> float:
@@ -314,9 +318,15 @@ class BayesianSearchCV(BaseEstimator, ClassifierMixin):
                 scores_iterable, axis=0
             )
 
-        ranks = list(range(len(self.cv_results_["loss"])))
+        if self._check_refit_scoring():
+            refit_col_name = f"average_val_{self.refit}"
+
+        else:
+            refit_col_name = "loss"
+
+        ranks = list(range(len(self.cv_results_[refit_col_name])))
         for r, i in enumerate(
-            sorted(ranks, key=lambda i: self.cv_results_["loss"][i]), 1
+            sorted(ranks, key=lambda i: self.cv_results_[refit_col_name][i]), 1
         ):
             ranks[i] = r
 
