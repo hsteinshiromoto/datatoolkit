@@ -12,6 +12,7 @@ from sklearn.base import BaseEstimator, ClassifierMixin
 from sklearn.datasets import make_classification
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import GridSearchCV, StratifiedShuffleSplit
+from sklearn.exceptions import NotFittedError
 
 
 class CostFunction(ABC):
@@ -382,8 +383,14 @@ class BayesianSearchCV(BaseEstimator, ClassifierMixin):
             rstate=np.random.RandomState(self.random_state),
         )
 
-    def predict(self, X):
+    def predict_proba(self, X):
         if not hasattr(self, "best_estimator_"):
             raise NotFittedError("Call `fit` before `predict_proba`.")
         else:
             return self.best_estimator_.predict_proba(X)
+
+    def predict(self, X):
+        if not hasattr(self, "best_estimator_"):
+            raise NotFittedError("Call `fit` before `predict`.")
+        else:
+            return self.best_estimator_.predict(X)
