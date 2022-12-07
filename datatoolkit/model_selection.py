@@ -202,6 +202,9 @@ class BayesianSearchCV(BaseEstimator, ClassifierMixin):
         self.random_state = random_state
         self.refit = refit
         self.scoring = scoring
+        self.error_score = error_score
+        self.return_train_score = return_train_score
+        self.verbose = verbose
 
     def fit(self, X, y):
         # Instantiate estimator with optimized parameters
@@ -414,7 +417,6 @@ class BayesianSearchCV(BaseEstimator, ClassifierMixin):
             algo=tpe.suggest,
             max_evals=self.n_iter,
             trials=trials,
-            rstate=np.random.RandomState(self.random_state),
         )
 
     def predict_proba(self, X):
