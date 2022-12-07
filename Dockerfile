@@ -15,6 +15,7 @@ ARG PROJECT_NAME
 ARG USERNAME=vscode
 ARG USER_UID=1000
 ARG USER_GID=$USER_UID
+
 # ---
 # Enviroment variables
 # ---
@@ -52,7 +53,7 @@ WORKDIR $HOME
 # USER $USERNAME
 
 # Get poetry
-RUN curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
+RUN curl -sSL https://install.python-poetry.org | python3 -
 ENV PATH="${PATH}:$HOME/.poetry/bin"
 ENV PATH="${PATH}:$HOME/.local/bin"
 
