@@ -249,6 +249,14 @@ class BayesianSearchCV(BaseEstimator, ClassifierMixin):
 
     @staticmethod
     def scorer_optimal_value(score_name: str) -> float:
+        """Maps score name to optimal value.
+
+        Args:
+            score_name (str): Name of performance metric
+
+        Returns:
+            float: Optimal value.
+        """
         if score_name in {
             "accuracy_score",
             "balanced_accuracy_score",
@@ -277,6 +285,16 @@ class BayesianSearchCV(BaseEstimator, ClassifierMixin):
     def scorer_class_map(
         y_pred: "np.ndarray[float]", score_name: str, threshold: float = 0.5
     ) -> "np.ndarray[float]":
+        """Maps score name to class.
+
+        Args:
+            y_pred (np.ndarray[float]): Array-like of shape (n_samples,).
+            score_name (str): Name of the performance metric
+            threshold (float, optional): Threshold used to transform probability into class. Defaults to 0.5.
+
+        Returns:
+            np.ndarray[float]: Array-like of shape (n_samples,).
+        """
         if score_name in {
             "accuracy_score",
             "balanced_accuracy_score",
@@ -304,12 +322,25 @@ class BayesianSearchCV(BaseEstimator, ClassifierMixin):
             return y_pred
 
     def _raise_type_error(self):
+        """Raises type error when scoring is not an iterable or a callable.
+
+        Raises:
+            TypeError: Raises type error when scoring is not an iterable or a callable.
+        """
         msg = f"scoring must be an iterable or a callable, got {type(self.scoring)}."
         raise TypeError(msg)
 
     def get_dataset_type_score_name_index(
         self, split_iterator: Union[Iterable[int], None] = None
     ) -> Generator[tuple[str, str, int]]:
+        """Generates tuple composed of dataset type, score name, and index.
+
+        Args:
+            split_iterator (Union[Iterable[int], None], optional): Array-like of shape (n_splits,) having the size of number of CV splits. Defaults to None.
+
+        Yields:
+            Generator[tuple[str, str, int]]: Tuple composed of dataset type, score name, and index.
+        """
         split_iterator = split_iterator or [1]
 
         if isinstance(self.scoring, Iterable):
@@ -324,6 +355,11 @@ class BayesianSearchCV(BaseEstimator, ClassifierMixin):
         yield from iterable
 
     def _check_refit_scoring(self) -> bool:
+        """Check if refit performance metric is in scoring.
+
+        Returns:
+            bool: Indicator if refit performance metric is in scoring.
+        """
         if isinstance(self.scoring, Iterable):
             return self.refit in self.scoring
 
