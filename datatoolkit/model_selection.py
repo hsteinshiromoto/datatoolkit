@@ -10,9 +10,10 @@ import sklearn.metrics as sm
 from hyperopt import STATUS_OK, Trials, fmin, hp, tpe
 from sklearn.base import BaseEstimator, ClassifierMixin
 from sklearn.datasets import make_classification
+from sklearn.exceptions import NotFittedError
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import GridSearchCV, StratifiedShuffleSplit
-from sklearn.exceptions import NotFittedError
+from sklearn.utils.validation import check_array, check_is_fitted, check_X_y
 
 
 class CostFunction(ABC):
@@ -369,6 +370,16 @@ class BayesianSearchCV(BaseEstimator, ClassifierMixin):
     def objective(
         self, y_true: Iterable[float], y_pred: Iterable[float], score_name: str
     ) -> float:
+        """Objective function to be minimized.
+
+        Args:
+            y_true (Iterable[float]): Array-like of shape (n_samples,) containing true values of target label.
+            y_pred (Iterable[float]): Array-like of shape (n_samples,) containing predicted values of target label.
+            score_name (str): _description_
+
+        Returns:
+            float: Returns absolute difference between score and optimal value.
+        """
 
         scorer = getattr(sm, score_name)
         _y_pred = self.scorer_class_map(y_pred, score_name)
@@ -376,7 +387,7 @@ class BayesianSearchCV(BaseEstimator, ClassifierMixin):
         return abs(scorer(y_true, _y_pred) - self.scorer_optimal_value(score_name))
 
     def post_process_cv_results(self):
-
+        """Process cross validation results by calculating average and standard deviation of scores."""
         for (
             dataset_type_name,
             score_name,
@@ -407,7 +418,19 @@ class BayesianSearchCV(BaseEstimator, ClassifierMixin):
 
         self.cv_results_["rank_score"] = ranks
 
-    def cross_validate(self, parameter_space, X, y):
+    def cross_validate(
+        self, parameter_space: dict, X: Iterable[float], y: Iterable[float]
+    ) -> dict:
+        """Fit estimator on training set and evaluate on validation set, in accordance to cross-validation generator.
+
+        Args:
+            parameter_space (dict): Dict containing parameter space.
+            X (Iterable[float]): Array-like of shape (n_samples, n_features) containing predictors.
+            y (Iterable[float]): Array-like of shape (n_samples,) containing target label.
+
+        Returns:
+            dict: Dict containing cross validation results.
+        """
         # sourcery skip: remove-dict-keys
 
         original_parameters = self.estimator.get_params(deep=True)
@@ -457,7 +480,16 @@ class BayesianSearchCV(BaseEstimator, ClassifierMixin):
 
         return {"loss": loss, "status": STATUS_OK}
 
-    def optimize(self, X, y):
+    def optimize(self, X: Iterable[float], y: Iterable[float]) -> dict:
+        """Runs hyperparameter optimization.
+
+        Args:
+            X (Iterable[float]): Array-like of shape (n_samples, n_features) containing predictors.
+            y (Iterable[float]): Array-like of shape (n_samples,) containing target label.
+
+        Returns:
+            dict: Optimal parameter space.
+        """
         trials = Trials()
         return fmin(
             fn=partial(self.cross_validate, X=X, y=y),
@@ -465,16 +497,28 @@ class BayesianSearchCV(BaseEstimator, ClassifierMixin):
             algo=tpe.suggest,
             max_evals=self.n_iter,
             trials=trials,
-        )
+        )  # type: ignore
 
-    def predict_proba(self, X):
-        if not hasattr(self, "best_estimator_"):
-            raise NotFittedError("Call `fit` before `predict_proba`.")
-        else:
-            return self.best_estimator_.predict_proba(X)
+    def predict_proba(self, X: Iterable[float]) -> Iterable[float]:
+        """Predict probabilities observation of be in a class.
 
-    def predict(self, X):
-        if not hasattr(self, "best_estimator_"):
-            raise NotFittedError("Call `fit` before `predict`.")
-        else:
-            return self.best_estimator_.predict(X)
+        Args:
+            X (Iterable[float]): Array-like of shape (n_samples, n_features) containing predictors.
+
+        Returns:
+            Iterable[float]: Classes probabilities.
+        """
+        check_is_fitted(self)
+        return self.best_estimator_.predict_proba(X)
+
+    def predict(self, X: Iterable[float]) -> Iterable[float]:
+        """Predicts observation class
+
+        Args:
+            X (Iterable[float]): Array-like of shape (n_samples, n_features) containing predictors.
+
+        Returns:
+            Iterable[float]: Classes.
+        """
+        check_is_fitted(self)
+        return self.best_estimator_.predict(X)
