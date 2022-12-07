@@ -291,6 +291,9 @@ class BayesianSearchCV(BaseEstimator, ClassifierMixin):
         if isinstance(self.scoring, Iterable):
             return self.refit in self.scoring
 
+        else:
+            return False
+
     def objective(
         self, y_true: Iterable[float], y_pred: Iterable[float], score_name: str
     ) -> float:
