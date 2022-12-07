@@ -27,21 +27,6 @@ test:
 
 	@echo "${DOCKER_IMAGE_TAG}"
 
-## Bump major version number
-bump_major:
-	@echo "Bumping major version from ${CURRENT_VERSION}"
-	bumpversion --current-version ${CURRENT_VERSION} major setup.py ${PROJECT_NAME}/__init__.py
-	
-## Bump minor version number
-bump_minor:
-	@echo "Bumping minor version from ${CURRENT_VERSION}"
-	bumpversion --current-version ${CURRENT_VERSION} minor setup.py ${PROJECT_NAME}/__init__.py
-
-## Bump patch version number
-bump_patch:
-	@echo "Bumping patch version from ${CURRENT_VERSION}"
-	bumpversion --current-version ${CURRENT_VERSION} patch setup.py ${PROJECT_NAME}/__init__.py
-
 ## Build Python package
 build:
 	poetry build
