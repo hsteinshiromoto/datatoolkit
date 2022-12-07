@@ -1,6 +1,6 @@
 SHELL:=/bin/bash
 .DEFAULT_GOAL := help
-.PHONY: help Makefile
+.PHONY: help docs
 
 # ---
 # Variables
@@ -82,8 +82,8 @@ hooks:
 	cp bin/post-checkout .git/hooks/post-checkout
 
 ## Sphinx documentation
-%: Makefile
-	@$(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
+docs:
+	@$(SPHINXBUILD) -M html "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
 	cp -r docs/html/* docs/ && rm -R docs/html
 #################################################################################
 # Self Documenting Commands                                                     #
