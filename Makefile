@@ -85,7 +85,7 @@ hooks:
 docs:
 	@$(SPHINXBUILD) -M html "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
 	cp -r docs/html/* docs/ && rm -R docs/html
-	poetry export -f requirements.txt --output requirements.txt
+	poetry export -f requirements.txt --output requirements.txt --without-hashes --with dev
 #################################################################################
 # Self Documenting Commands                                                     #
 #################################################################################
