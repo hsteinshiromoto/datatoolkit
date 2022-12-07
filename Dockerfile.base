@@ -13,6 +13,7 @@ ARG DEBIAN_FRONTEND=noninteractive
 # ---
 # Enviroment variables
 # ---
+
 ENV LANG=C.UTF-8 \
     LC_ALL=C.UTF-8
 ENV TZ Australia/Sydney
