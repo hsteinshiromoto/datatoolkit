@@ -1,15 +1,17 @@
-import sklearn.metrics as sm
-from sklearn.datasets import make_classification
-from sklearn.model_selection import GridSearchCV
-from sklearn.linear_model import LogisticRegression
-from collections.abc import Iterable, Callable, Generator
-from typing import Union
-from itertools import product
-from functools import partial
-import pandas as pd
-import numpy as np
-
 from abc import ABC, abstractmethod
+from collections.abc import Callable, Generator, Iterable
+from functools import partial
+from itertools import product
+from typing import Union
+
+import numpy as np
+import pandas as pd
+import sklearn.metrics as sm
+from hyperopt import STATUS_OK, Trials, fmin, hp, tpe
+from sklearn.base import BaseEstimator, ClassifierMixin
+from sklearn.datasets import make_classification
+from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import GridSearchCV, StratifiedShuffleSplit
 
 
 class CostFunction(ABC):
