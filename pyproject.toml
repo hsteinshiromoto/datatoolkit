@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "datatoolkit"
-version = '0.2.2'
+version = '0.2.3'
 description="A collection of tools for visualization and data processing for exploratory data analysis"
 readme = "README.md"
 authors = ["Humberto STEIN SHIROMOTO <h.stein.shiromoto@gmail.com>"]
