@@ -10,7 +10,7 @@ README = (HERE / "README.md").read_text()
 # This call to setup() does all the work
 setup(
     name="datatoolkit",
-    version="0.1.0",
+    version="0.2.2",
     description="A collection of tools for visualization and data processing for exploratory data analysis.",
     long_description=README,
     long_description_content_type="text/markdown",
@@ -25,7 +25,16 @@ setup(
     ],
     packages=["datatoolkit"],
     include_package_data=True,
-    install_requires=["pandas", "seaborn", "typeguard", "statsmodels", "bokeh", "scipy", "numpy", "networkx"],
+    install_requires=[
+        "pandas",
+        "seaborn",
+        "typeguard",
+        "statsmodels",
+        "bokeh",
+        "scipy",
+        "numpy",
+        "networkx",
+    ],
     entry_points={
         "console_scripts": [
             "datatoolkit=datatoolkit.__main__:main",
