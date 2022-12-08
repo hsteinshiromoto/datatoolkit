@@ -4,7 +4,7 @@ import subprocess
 import sys
 from abc import ABC, abstractmethod
 from collections import Sequence
-from collections.abc import Iterable
+from collections.abc import Iterable, Callable
 from pathlib import Path
 from typing import Union
 
@@ -366,21 +366,38 @@ def make_graph(
     return G
 
 
-def make_distribution(distribution_name: str, params: dict):
-    """Returns SciPy statistical distribution object
+def make_distributions(
+    parameters: dict[str, dict[str, Union[str, tuple, Iterable]]]
+) -> dict[str, Union[Callable, Iterable]]:
+    """Returns SciPy statistical distribution objects.
 
     Args:
-        distribution_name (str): Name of the distribution.
-        params (dict): Distribution parameters.
+        parameters (dict[str, dict[str, Union[str, tuple, Iterable]]]): Distribution parameters.
 
     Returns:
-        _type_: _description_
+        dict[str, Union[Callable, Iterable]]: Distribution objects
 
     Example:
-        >>> params = {"loc": 1, "scale": 0.05}
-        >>> half_norm = make_distribution("halfnorm", params)
-        >>> half_norm.stats(moments='mvsk')
-        (array(1.03989423), array(0.00090845), array(0.99527175), array(0.8691773))
+        >>> parameters = {
+        ...    "min_weight_fraction_leaf": {"distribution": "norm", "args": (0.25, 0.01)},
+        ...    "criterion": {"distribution": "choice", "args": ["gini", "entropy"]} }
+        >>> distr_dict = make_distributions(parameters)
+        >>> distr_dict["min_weight_fraction_leaf"].stats(moments='mvsk')
+        (array(0.25), array(0.0001), array(0.), array(0.))
+        >>> distr_dict["criterion"]
+        ['gini', 'entropy']
     """
-    dist = getattr(ss, distribution_name)
-    return dist(**params)
+    params_dict = {}
+    for parameter, description in parameters.items():
+        try:
+            distr = getattr(ss, description["distribution"])
+
+        except AttributeError:
+            distribution = description["args"]
+
+        else:
+            distribution = distr(*description["args"])
+
+        params_dict[parameter] = distribution
+
+    return params_dict
