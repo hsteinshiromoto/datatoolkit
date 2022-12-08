@@ -7,10 +7,19 @@ HERE = pathlib.Path(__file__).parent
 # The text of the README file
 README = (HERE / "README.md").read_text()
 
+docs_extras = [
+    "Sphinx >= 3.0.0",  # Force RTD to use >= 3.0.0
+    "docutils",
+    "pylons-sphinx-themes >= 1.0.8",  # Ethical Ads
+    "pylons_sphinx_latesturl",
+    "repoze.sphinx.autointerface",
+    "sphinxcontrib-autoprogram",
+]
+
 # This call to setup() does all the work
 setup(
     name="datatoolkit",
-    version="0.2.2",
+    version="0.2.3",
     description="A collection of tools for visualization and data processing for exploratory data analysis.",
     long_description=README,
     long_description_content_type="text/markdown",
@@ -40,4 +49,5 @@ setup(
             "datatoolkit=datatoolkit.__main__:main",
         ]
     },
+    extras_require={"docs": docs_extras},
 )
