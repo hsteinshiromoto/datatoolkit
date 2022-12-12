@@ -28,7 +28,7 @@ PREVIOUS_RELEASE_DATE=$(git log --tags --simplify-by-decoration --pretty="format
 # Modification of files
 # ---
 
-if [ "$BRANCH_TYPE" == "release" ]; then
+if [ "$BRANCH_TYPE" == "release" ] | [ "$BRANCH_TYPE" == "hotfix" ]; then
 	echo "Running on branch $BRANCH_NAME"
 
 	echo "Updating version $PREVIOUS_VERSION to $NEXT_VERSION"
