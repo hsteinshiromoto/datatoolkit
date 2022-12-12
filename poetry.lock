@@ -1631,23 +1631,6 @@ files = [
 six = ">=1.5.2"
 
 [[package]]
-name = "poetryup"
-version = "0.12.5"
-description = "Update dependencies and bump their version in the pyproject.toml file"
-category = "dev"
-optional = false
-python-versions = ">=3.6,<4.0"
-files = [
-    {file = "poetryup-0.12.5-py3-none-any.whl", hash = "sha256:9ce84895acb665e3711e9ede8d06f7f18c6ac013e9387079ed0fefdfd29cd525"},
-    {file = "poetryup-0.12.5.tar.gz", hash = "sha256:fcf601d29200b2c7724e504deccebbb6ec005bf49711a880199fe22219968483"},
-]
-
-[package.dependencies]
-packaging = ">=21.3,<22.0"
-tomlkit = ">=0.11.0,<0.12.0"
-typer = ">=0.4.1,<0.5.0"
-
-[[package]]
 name = "prompt-toolkit"
 version = "3.0.36"
 description = "Library for building powerful interactive command lines in Python"
@@ -2542,18 +2525,6 @@ files = [
 ]
 
 [[package]]
-name = "tomlkit"
-version = "0.11.6"
-description = "Style preserving TOML library"
-category = "dev"
-optional = false
-python-versions = ">=3.6"
-files = [
-    {file = "tomlkit-0.11.6-py3-none-any.whl", hash = "sha256:07de26b0d8cfc18f871aec595fda24d95b08fef89d147caa861939f37230bf4b"},
-    {file = "tomlkit-0.11.6.tar.gz", hash = "sha256:71b952e5721688937fb02cf9d354dbcf0785066149d2855e44531ebdd2b65d73"},
-]
-
-[[package]]
 name = "tornado"
 version = "6.2"
 description = "Tornado is a Python web framework and asynchronous networking library, originally developed at FriendFeed."
@@ -2652,27 +2623,6 @@ files = [
 [package.extras]
 doc = ["sphinx-autodoc-typehints (>=1.2.0)", "sphinx-rtd-theme"]
 test = ["mypy", "pytest", "typing-extensions"]
-
-[[package]]
-name = "typer"
-version = "0.4.2"
-description = "Typer, build great CLIs. Easy to code. Based on Python type hints."
-category = "dev"
-optional = false
-python-versions = ">=3.6"
-files = [
-    {file = "typer-0.4.2-py3-none-any.whl", hash = "sha256:023bae00d1baf358a6cc7cea45851639360bb716de687b42b0a4641cd99173f1"},
-    {file = "typer-0.4.2.tar.gz", hash = "sha256:b8261c6c0152dd73478b5ba96ba677e5d6948c715c310f7c91079f311f62ec03"},
-]
-
-[package.dependencies]
-click = ">=7.1.1,<9.0.0"
-
-[package.extras]
-all = ["colorama (>=0.4.3,<0.5.0)", "shellingham (>=1.3.0,<2.0.0)"]
-dev = ["autoflake (>=1.3.1,<2.0.0)", "flake8 (>=3.8.3,<4.0.0)", "pre-commit (>=2.17.0,<3.0.0)"]
-doc = ["mdx-include (>=1.4.1,<2.0.0)", "mkdocs (>=1.1.2,<2.0.0)", "mkdocs-material (>=8.1.4,<9.0.0)"]
-test = ["black (>=22.3.0,<23.0.0)", "coverage (>=5.2,<6.0)", "isort (>=5.0.6,<6.0.0)", "mypy (==0.910)", "pytest (>=4.4.0,<5.4.0)", "pytest-cov (>=2.10.0,<3.0.0)", "pytest-sugar (>=0.9.4,<0.10.0)", "pytest-xdist (>=1.32.0,<2.0.0)", "shellingham (>=1.3.0,<2.0.0)"]
 
 [[package]]
 name = "typing-extensions"
@@ -2835,4 +2785,4 @@ testing = ["flake8 (<5)", "func-timeout", "jaraco.functools", "jaraco.itertools"
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.8,<4"
-content-hash = "8ef5e506ca7389eb31868ad3395fe3ef235974b7e67a80f0f586a09f46536975"
+content-hash = "2c19e198aa9b9a82f51b3256a6ad0c6a345d70e018ee19fce3173003a65cb948"
