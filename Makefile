@@ -86,6 +86,9 @@ docs:
 	@$(SPHINXBUILD) -M html "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
 	cp -r docs/html/* docs/ && rm -R docs/html
 	poetry export -f requirements.txt --output requirements.txt --without-hashes --with dev
+
+pull:
+	docker pull ghcr.io/hsteinshiromoto/datatoolkit/datatoolkit:latest
 #################################################################################
 # Self Documenting Commands                                                     #
 #################################################################################
