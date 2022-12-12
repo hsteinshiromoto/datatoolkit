@@ -46,11 +46,11 @@ jobs:
           echo ::set-output name=image_exists::$(echo ${response})
 
       - name: Build docker image if it is not on registry
-        if: ${{ steps.image_exists.outputs.image_exists == 1 }}
+        # if: ${{ steps.image_exists.outputs.image_exists == 1 }}
         run: make image
 
       - name: Push image to Github Registry
-        if: ${{ steps.image_exists.outputs.image_exists == 1 }}
+        # if: ${{ steps.image_exists.outputs.image_exists == 1 }}
         run: |
           IMAGE_ID=ghcr.io/${{ github.repository }}/$IMAGE_NAME
 
