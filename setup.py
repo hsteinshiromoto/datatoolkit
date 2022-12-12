@@ -30,19 +30,17 @@ setup(
     classifiers=[
         "License :: OSI Approved :: MIT License",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.8",
     ],
     packages=["datatoolkit"],
     include_package_data=True,
     install_requires=[
-        "pandas",
         "seaborn",
         "typeguard",
         "statsmodels",
         "bokeh",
-        "scipy",
-        "numpy",
         "networkx",
+        "hyperopt",
     ],
     entry_points={
         "console_scripts": [
