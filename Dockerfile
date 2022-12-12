@@ -12,7 +12,7 @@ ARG DEBIAN_FRONTEND=noninteractive
 
 # Add vscode user to the container
 ARG PROJECT_NAME
-ARG PYTHON_VERSION=3.8
+ARG PYTHON_VERSION=3.8.16
 # ---
 # Enviroment variables
 # ---
@@ -49,7 +49,6 @@ ENV PATH="${PYENV_ROOT}/shims:${PYENV_ROOT}/bin:${PATH}"
 # Install Python and set the correct version
 # ---
 RUN pyenv install $PYTHON_VERSION && pyenv global $PYTHON_VERSION
-RUN pyenv init --path
 
 # ---
 # Copy Container Setup Scripts
@@ -67,5 +66,6 @@ RUN poetry config virtualenvs.create false\
 && poetry install --no-interaction --no-ansi
 
 ENV PATH="${PATH}:$HOME/.local/bin"
+
 # Need for Pytest
-# ENV PATH="${PATH}:${PYENV_ROOT}/versions/$PYTHON_VERSION/bin"
+ENV PATH="${PATH}:${PYENV_ROOT}/versions/$PYTHON_VERSION/bin"
