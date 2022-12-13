@@ -1,4 +1,4 @@
-from abc import abstractmethod, ABCMeta
+from abc import abstractmethod
 from collections.abc import Callable, Generator, Iterable
 from functools import partial
 from itertools import product
@@ -16,7 +16,7 @@ from sklearn.model_selection import GridSearchCV, StratifiedShuffleSplit
 from sklearn.utils.validation import check_array, check_is_fitted, check_X_y
 
 
-class CostFunction(metaclass=ABCMeta):
+class CostFunction():
     """Abstract class for cost functions"""
 
     def __init__(self, metrics: Iterable[str], M: "np.ndarray[float]"):
