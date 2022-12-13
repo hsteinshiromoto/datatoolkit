@@ -19,6 +19,7 @@ BUILD_DATE = $(shell date +%Y%m%d-%H:%M:%S)
 
 BASE_IMAGE_TAG=$(shell git ls-files -s Dockerfile.base | awk '{print $$2}' | cut -c1-16)
 APP_IMAGE_TAG=$(shell git ls-files -s Dockerfile | awk '{print $$2}' | cut -c1-16)
+PYTHON_VERSION="3.9.16"
 
 # ---
 # Sphix documentation settings
@@ -71,6 +72,7 @@ app_image:
 	docker build --build-arg BUILD_DATE=${BUILD_DATE} \
 				--build-arg DOCKER_PARENT_IMAGE=${DOCKER_PARENT_IMAGE} \
 				--build-arg PROJECT_NAME=${PROJECT_NAME} \
+				--build-arg PYTHON_VERSION=${PYTHON_VERSION} \
 				-t ${DOCKER_IMAGE_TAG} .
 	@echo "Done"
 
@@ -86,6 +88,13 @@ docs:
 	@$(SPHINXBUILD) -M html "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
 	cp -r docs/html/* docs/ && rm -R docs/html
 	poetry export -f requirements.txt --output requirements.txt --without-hashes --with dev
+
+pull:
+	docker pull ghcr.io/hsteinshiromoto/datatoolkit/datatoolkit:latest
+
+pyenv:
+	pyenv install -v ${PYTHON_VERSION}
+	pyenv global ${PYTHON_VERSION}
 #################################################################################
 # Self Documenting Commands                                                     #
 #################################################################################

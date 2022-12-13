@@ -12,53 +12,60 @@ ARG DEBIAN_FRONTEND=noninteractive
 
 # Add vscode user to the container
 ARG PROJECT_NAME
-ARG USERNAME=vscode
-ARG USER_UID=1000
-ARG USER_GID=$USER_UID
-
+ARG PYTHON_VERSION
 # ---
 # Enviroment variables
 # ---
 ENV LANG=C.UTF-8 \
     LC_ALL=C.UTF-8
 ENV TZ Australia/Sydney
-ENV SHELL=/bin/bash
+ENV SHELL /bin/bash
 ENV PROJECT_NAME=$PROJECT_NAME
 ENV HOME=/home/$PROJECT_NAME
+ENV PYTHON_VERSION=$PYTHON_VERSION
 
-# ---
-# Setup vscode as nonroot user
-# ---
-RUN groupadd --gid $USER_GID $USERNAME \
-    && useradd --uid $USER_UID --gid $USER_GID -m $USERNAME \
-    #
-    # [Optional] Add sudo support. Omit if you don't need to install software after connecting.
-    && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
-    && chmod 0440 /etc/sudoers.d/$USERNAME
+# Set container time zone
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
-# ---
-# Copy Container Setup Scripts
-# ---
-COPY bin/entrypoint.sh /usr/local/bin/entrypoint.sh
-COPY poetry.lock /usr/local/poetry.lock
-COPY pyproject.toml /usr/local/pyproject.toml
-
-RUN chmod +x /usr/local/bin/entrypoint.sh
+LABEL org.label-schema.build-date=$BUILD_DATE \
+    maintainer="Humberto STEIN SHIROMOTO <h.stein.shiromoto@gmail.com>"
 
 # Create the "home" folder
 RUN mkdir -p $HOME
 WORKDIR $HOME
 
-# N.B.: Keep the order 1. entrypoint, 2. cmd
-# USER $USERNAME
+# ---
+# Install pyenv
+#
+# References:
+#   [1] https://stackoverflow.com/questions/65768775/how-do-i-integrate-pyenv-poetry-and-docker
+# ---
+
+RUN git clone --depth=1 https://github.com/pyenv/pyenv.git $HOME/.pyenv
+ENV PYENV_ROOT="${HOME}/.pyenv"
+ENV PATH="${PYENV_ROOT}/shims:${PYENV_ROOT}/bin:${PATH}"
+
+# ---
+# Install Python and set the correct version
+# ---
+RUN pyenv install $PYTHON_VERSION && pyenv global $PYTHON_VERSION
+
+# ---
+# Copy Container Setup Scripts
+# ---
+COPY poetry.lock /usr/local/poetry.lock
+COPY pyproject.toml /usr/local/pyproject.toml
 
 # Get poetry
 RUN curl -sSL https://install.python-poetry.org | python3 -
 ENV PATH="${PATH}:$HOME/.poetry/bin"
 ENV PATH="${PATH}:$HOME/.local/bin"
 
-RUN poetry config virtualenvs.create false \
-    && cd /usr/local \
-    && poetry install --no-interaction --no-ansi
+RUN poetry config virtualenvs.create false\ 
+&& cd /usr/local \
+&& poetry install --no-interaction --no-ansi
 
-ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+ENV PATH="${PATH}:$HOME/.local/bin"
+
+# Need for Pytest
+ENV PATH="${PATH}:${PYENV_ROOT}/versions/$PYTHON_VERSION/bin"
