@@ -1,4 +1,4 @@
-from abc import abstractmethod
+from abc import abstractmethod, ABCMeta
 from collections.abc import Callable, Generator, Iterable
 from functools import partial
 from itertools import product
@@ -36,7 +36,6 @@ class CostFunction():
         self.M = M or np.identity(len(metrics))  # type: ignore
         self._check_positive_definite(self.M)
 
-    @abstractmethod
     def objective(
         self, y_true: "np.ndarray[float]", y_pred: "np.ndarray[float]"
     ) -> float:
@@ -46,7 +45,6 @@ class CostFunction():
             y_true (np.ndarray[float]): Array-like of true labels of length N.
             y_pred (np.ndarray[float]): Array-like of predicted labels of length N.
         """
-        pass
 
     @staticmethod
     def _to_array(y: Iterable[float]) -> "np.ndarray[float]":
