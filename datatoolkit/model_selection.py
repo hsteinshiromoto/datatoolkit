@@ -19,7 +19,7 @@ from sklearn.utils.validation import check_array, check_is_fitted, check_X_y
 class CostFunction(ABC):
     """Abstract class for cost functions"""
 
-    def __init__(self, metrics: Iterable[str], M: "np.ndarray[float]") -> None:
+    def __init__(self, metrics: Iterable[str], M: "np.ndarray[float]"):
         """Cost function constructor.
 
         Args:
