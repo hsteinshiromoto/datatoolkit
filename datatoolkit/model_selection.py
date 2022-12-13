@@ -16,7 +16,7 @@ from sklearn.model_selection import GridSearchCV, StratifiedShuffleSplit
 from sklearn.utils.validation import check_array, check_is_fitted, check_X_y
 
 
-class CostFunction():
+class CostFunction(metaclass=ABCMeta):
     """Abstract class for cost functions"""
 
     def __init__(self, metrics: Iterable[str], M: "np.ndarray[float]"):
@@ -36,6 +36,7 @@ class CostFunction():
         self.M = M or np.identity(len(metrics))  # type: ignore
         self._check_positive_definite(self.M)
 
+    @abstractmethod
     def objective(
         self, y_true: "np.ndarray[float]", y_pred: "np.ndarray[float]"
     ) -> float:
@@ -45,6 +46,7 @@ class CostFunction():
             y_true (np.ndarray[float]): Array-like of true labels of length N.
             y_pred (np.ndarray[float]): Array-like of predicted labels of length N.
         """
+        pass
 
     @staticmethod
     def _to_array(y: Iterable[float]) -> "np.ndarray[float]":
