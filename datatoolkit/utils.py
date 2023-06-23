@@ -156,6 +156,14 @@ class QuantizeDatetime(Group):
         )()
 
 
+
+def flatten(array):
+    for x in array:
+        if isinstance(x, Iterable) and not isinstance(x, (str, bytes)):
+            yield from flatten(x)
+        else:
+            yield x
+
 # @log_fun
 @typechecked
 def make_pivot(
