@@ -156,6 +156,27 @@ class QuantizeDatetime(Group):
         )()
 
 
+
+def flatten(array: Iterable[Iterable]) -> Iterable:
+    """Flattens nested iterable
+
+    Args:
+        array (Iterable[Iterable]): Nested iterable
+
+    Yields:
+        Iterable: Flattened iterable
+
+    Example:
+        >>> a = [1, [a, b]]
+        >>> list(flatten(a))
+        [1, a, b]
+    """
+    for x in array:
+        if isinstance(x, Iterable) and not isinstance(x, (str, bytes)):
+            yield from flatten(x)
+        else:
+            yield x
+
 # @log_fun
 @typechecked
 def make_pivot(
