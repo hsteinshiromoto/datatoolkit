@@ -26,6 +26,7 @@
 		"mhutchie.git-graph",
 		"mikestead.dotenv",
 		"ms-python.black-formatter"
+		"ms-python.isort",
 		"ms-python.python",
 		"ms-python.vscode-pylance",
 		"ms-toolsai.jupyter",
