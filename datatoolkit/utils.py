@@ -3,7 +3,7 @@ import operator
 import subprocess
 import sys
 from abc import ABC, abstractmethod
-from collections.abc import Iterable, Callable, Sequence
+from collections.abc import Callable, Iterable, Sequence
 from pathlib import Path
 from typing import Union
 
@@ -11,6 +11,7 @@ import networkx as nx
 import numpy as np
 import pandas as pd
 import scipy.stats as ss
+from deprecated import deprecated
 from typeguard import typechecked
 
 PROJECT_ROOT = Path(
@@ -26,6 +27,7 @@ sys.path.append(PROJECT_ROOT)
 # from src.make_logger import log_fun
 
 
+@deprecated
 class Group(ABC):
     @typechecked
     def __init__(
