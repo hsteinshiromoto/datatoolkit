@@ -135,12 +135,26 @@ class Summarize(Group):
             [f"proportions_{self.feature}", f"cum_proportions_{self.feature}"]
         ]
 
-    def get_entropy(self):
+    def get_entropy(self) -> pd.DataFrame:
         """
         Calculates the entropy of the grouped data for the specified feature and adds it to the summarized data.
 
+        Returns:
+            pd.DataFrame: A DataFrame with the entropy of the feature for each group.
+
+        Example:
+            >>> data = pd.DataFrame({'by': ['A', 'A', 'B', 'B', 'B', 'C'], 'feature': [1, 2, 3, 1, 2, 3]})
+            >>> summarize = Summarize(feature='feature', by=['by'], data=data)
+            >>> summarize.get_entropy() # doctest: +NORMALIZE_WHITESPACE
+                entropy_feature
+            by
+            A          0.636514
+            B          1.011404
+            C          0.000000
         """
         self.summarized_data[f"entropy_{self.feature}"] = self.grouped.apply(entropy)
+
+        return self.summarized_data[[f"entropy_{self.feature}"]]
 
     def get_summary(self):
         """
