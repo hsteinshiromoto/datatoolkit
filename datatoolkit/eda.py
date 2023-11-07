@@ -137,7 +137,12 @@ class Numerical(Summarize):
         by: list[int | str],
         data: pd.DataFrame,
         bins: Union[Sequence, str, int] = "auto",
-        summary_dict: dict = {
+        summary_dict: dict = {},
+    ):
+        super().__init__(feature=feature, by=by, data=data)
+
+        self.bins = bins
+        self.summary_dict = summary_dict or {
             "sum": self.grouped.sum,
             "min": self.grouped.min,
             "mean": self.grouped.mean,
@@ -145,12 +150,7 @@ class Numerical(Summarize):
             0.5: self.grouped.median,
             0.75: self.grouped.quantile,
             "max": self.grouped.max,
-        },
-    ):
-        super().__init__(feature=feature, by=by, data=data)
-
-        self.bins = bins
-        self.summary_dict = summary_dict
+        }
 
     def make_bins(self) -> np.ndarray:
         """Create bins for the data
