@@ -16,7 +16,7 @@ typeguard = "^2.12.1"
 hyperopt = "^0.2.7"
 scikit-learn = "^1.2.0"
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
 bumpversion = "^0.6.0"
 Deprecated = "^1.2.13"
 icecream = "^2.1.1"
@@ -28,12 +28,36 @@ Sphinx = "^4.2.0"
 sphinx-rtd-theme = "^1.0.0"
 black = "^22.10.0"
 watermark = "^2.3.1"
-
-[tool.poetry.group.dev.dependencies]
 myst-parser = "^0.18.1"
 sphinxcontrib-napoleon = "^0.7"
-pytest = "^7.4.3"
+
+[tool.black]
+quiet = true
+
+[tool.isort]
+profile = "black"
+
+[tool.pytest.ini_options]
+testpaths = [
+    "tests", "datatoolkit"
+]
+pythonpath = [
+    ".", "datatoolkit"
+]
+addopts = """
+--strict-markers
+--doctest-modules 
+--doctest-report
+ndiff
+-r sxX
+--show-capture=log
+"""
+
+cache_dir = ".cache/pytest/"
+
+markers = []
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
+
