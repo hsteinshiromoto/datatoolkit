@@ -1,5 +1,6 @@
 __version__ = "0.2.5"
 
+from datatoolkit.eda import Group, Summarize, Numerical
 from datatoolkit.utils import Quantize, QuantizeDatetime, MostFrequent
 from datatoolkit.mock_dataset import DataTypes, MockData
 from datatoolkit.model_selection import (
