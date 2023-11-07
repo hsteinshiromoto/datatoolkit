@@ -82,10 +82,13 @@ class Summarize(Group):
         self.make_groups()
         self.get_count()
 
-    def get_count(self):
+    def get_count(self) -> pd.DataFrame:
         """
         Returns a pandas DataFrame with the count of occurrences of each unique value in the specified feature column.
         Also adds a cumulative count column to the DataFrame.
+
+        Returns:
+            pd.DataFrame: A DataFrame with the count of occurrences of each unique value in the specified feature column.
 
         Example:
             >>> data = pd.DataFrame({'by': ['A', 'A', 'B', 'B', 'B', 'C'], 'feature': [1, 2, 3, 1, 2, 3]})
@@ -107,10 +110,13 @@ class Summarize(Group):
 
         return self.summarized_data
 
-    def get_proportion(self):
+    def get_proportion(self) -> pd.DataFrame:
         """
         Calculates the proportion and cumulative proportion of the feature in the dataset.
         The results are stored in the summarized_data attribute of the Group object.
+
+        Returns:
+            pd.DataFrame: A DataFrame with the proportion and cumulative proportion of the feature in the dataset.
 
         Example:
             >>> data = pd.DataFrame({'by': ['A', 'A', 'B', 'B', 'B', 'C'], 'feature': [1, 2, 3, 1, 2, 3]})
