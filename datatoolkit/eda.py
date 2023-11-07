@@ -120,7 +120,16 @@ class Summarize(Group):
 
 
 class Numerical(Summarize):
-    """Aggregates numerical data frame and provides summary"""
+    """
+    A class for calculating summary statistics for numerical data.
+
+    Args:
+        feature (str): The name of the numerical feature to summarize.
+        by (list[int | str]): A list of column names to group the data by.
+        data (pd.DataFrame): The input data.
+        bins (Union[Sequence, str, int], optional): The number of bins to use for binning the data. Defaults to "auto".
+        summary_dict (dict, optional): A dictionary of summary statistics to calculate. Defaults to {"sum": self.grouped.sum, "min": self.grouped.min, "mean": self.grouped.mean, 0.25: self.grouped.quantile, 0.5: self.grouped.median, 0.75: self.grouped.quantile, "max": self.grouped.max}.
+    """
 
     def __init__(
         self,
@@ -155,9 +164,9 @@ class Numerical(Summarize):
         pass
 
     def get_statistics(self) -> pd.DataFrame:
-        """Calculates summary statistics in each bin
+        """calculates summary statistics in each bin
 
-        Returns:
+        returns:
             (pd.DataFrame): Statistics summary
         """
         self.get_summary()
