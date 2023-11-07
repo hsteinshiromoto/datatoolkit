@@ -75,6 +75,17 @@ class Summarize(Group):
         Calculates the entropy of each group.
     get_summary()
         Summarizes the data by groups.
+
+    Example
+    -------
+    >>> data = pd.DataFrame({'by': ['A', 'A', 'B', 'B', 'B', 'C'], 'feature': [1, 2, 3, 1, 2, 3]})
+    >>> summarize = Summarize(feature='feature', by=['by'], data=data)
+    >>> summary = summarize.get_summary()
+    >>> summary.columns # doctest: +NORMALIZE_WHITESPACE
+        Index(['count_feature', 'cum_count_feature', 'proportions_feature',
+            'cum_proportions_feature', 'entropy_feature'],
+            dtype='object')
+
     """
 
     def __init__(self, feature: str, by: list[Union[int, str]], data: pd.DataFrame):
@@ -166,10 +177,10 @@ class Summarize(Group):
         """
         Generates a summary of the data, including group counts, proportions, and entropy.
         """
-        self.make_groups()
-        self.get_count()
         self.get_proportion()
         self.get_entropy()
+
+        return self.summarized_data
 
 
 class Numerical(Summarize):
