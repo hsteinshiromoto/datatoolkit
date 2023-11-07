@@ -14,14 +14,14 @@ from datatoolkit import Group, mock_dataset, Summarize, Numerical
 
 @pytest.fixture(scope="module")
 def get_data() -> pd.DataFrame:
-
-    specs = {"float": [100, 1, 0]
-            ,"int": [100, 1, 0]
-            ,"categorical": [100, 1, 0]
-            ,"bool": [100, 1, 0]
-            ,"str": [100, 1, 0]
-            ,"datetime": [100, 1, 0]
-            }
+    specs = {
+        "float": [100, 1, 0],
+        "int": [100, 1, 0],
+        "categorical": [100, 1, 0],
+        "bool": [100, 1, 0],
+        "str": [100, 1, 0],
+        "datetime": [100, 1, 0],
+    }
 
     data, meta_data = mock_dataset(specs, True)
 
@@ -30,11 +30,11 @@ def get_data() -> pd.DataFrame:
 
 def test_Group_make_groups(get_data):
     data = get_data
-    
+
     group = Group(feature="float_0", by=["categorical_0"], data=data)
     group.make_groups()
 
-    assert isinstance(group.grouped, pd.core.groupby.SeriesGroupBy)import sys
+    assert isinstance(group.grouped, pd.core.groupby.SeriesGroupBy)
 
 
 class TestSummarize:
@@ -74,7 +74,7 @@ class TestSummarize:
         assert "cum_count_float_0" in summarize.summarized_data.columns
         assert "proportions_float_0" in summarize.summarized_data.columns
         assert "cum_proportions_float_0" in summarize.summarized_data.columns
-        assert "entropy_float_0" in summarize.summarized_data.columnsimport sys
+        assert "entropy_float_0" in summarize.summarized_data.columns
 
 
 class TestNumerical:
