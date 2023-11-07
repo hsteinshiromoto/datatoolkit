@@ -9,7 +9,7 @@ PROJECT_ROOT = Path(__file__).parents[1].resolve()
 
 sys.path.append(str(PROJECT_ROOT))
 
-from datatoolkit import Group, mock_dataset, Summarize
+from datatoolkit import Group, mock_dataset, Summarize, Numerical
 
 
 @pytest.fixture(scope="module")
@@ -74,4 +74,34 @@ class TestSummarize:
         assert "cum_count_float_0" in summarize.summarized_data.columns
         assert "proportions_float_0" in summarize.summarized_data.columns
         assert "cum_proportions_float_0" in summarize.summarized_data.columns
-        assert "entropy_float_0" in summarize.summarized_data.columns
+        assert "entropy_float_0" in summarize.summarized_data.columnsimport sys
+
+
+class TestNumerical:
+    def test_make_bins(self, get_data):
+        data = get_data
+        numerical = Numerical(feature="float_0", by=["categorical_0"], data=data)
+        bins = numerical.make_bins()
+
+        assert isinstance(bins, np.ndarray)
+
+    def test_get_statistics(self, get_data):
+        data = get_data
+        numerical = Numerical(feature="float_0", by=["categorical_0"], data=data)
+        stats = numerical.get_statistics()
+
+        assert isinstance(stats, pd.DataFrame)
+        assert "sum_float_0" in stats.columns
+        assert "min_float_0" in stats.columns
+        assert "mean_float_0" in stats.columns
+        assert "25.0%_float_0" in stats.columns
+        assert "50.0%_float_0" in stats.columns
+        assert "75.0%_float_0" in stats.columns
+        assert "max_float_0" in stats.columns
+
+    def test_get_statistics_with_non_numeric_feature(self, get_data):
+        data = get_data
+        numerical = Numerical(feature="categorical_0", by=["float_0"], data=data)
+
+        with pytest.raises(TypeError):
+            numerical.get_statistics()
