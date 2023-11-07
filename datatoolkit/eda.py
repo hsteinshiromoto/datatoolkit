@@ -171,12 +171,14 @@ class Numerical(Summarize):
         """
         self.get_summary()
 
-        if np.issubdtype(self.data[self.feature].dtype, np.number):
-            for stat, fun in self.summary_dict.items():
-                if isinstance(stat, float):
-                    self.summarized_data[f"{stat*100}%_{self.feature}"] = fun(stat)
-                else:
-                    self.summarized_data[f"{stat}_{self.feature}"] = fun()
+        if not np.issubdtype(self.data[self.feature].dtype, np.number):
+            raise TypeError(f"Expected feature {self.feature} to be numeric")
+
+        for stat, fun in self.summary_dict.items():
+            if isinstance(stat, float):
+                self.summarized_data[f"{stat*100}%_{self.feature}"] = fun(stat)
+            else:
+                self.summarized_data[f"{stat}_{self.feature}"] = fun()
 
         return self.summarized_data
 
