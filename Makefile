@@ -19,7 +19,7 @@ BUILD_DATE = $(shell date +%Y%m%d-%H:%M:%S)
 
 BASE_IMAGE_TAG=$(shell git ls-files -s Dockerfile.base | awk '{print $$2}' | cut -c1-16)
 APP_IMAGE_TAG=$(shell git ls-files -s Dockerfile | awk '{print $$2}' | cut -c1-16)
-PYTHON_VERSION="3.9.16"
+PYTHON_VERSION="3.11.6"
 
 # ---
 # Sphix documentation settings

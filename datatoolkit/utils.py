@@ -3,8 +3,7 @@ import operator
 import subprocess
 import sys
 from abc import ABC, abstractmethod
-from collections import Sequence
-from collections.abc import Iterable, Callable
+from collections.abc import Iterable, Callable, Sequence
 from pathlib import Path
 from typing import Union
 
@@ -156,7 +155,6 @@ class QuantizeDatetime(Group):
         )()
 
 
-
 def flatten(array: Iterable[Iterable]) -> Iterable:
     """Flattens nested iterable
 
@@ -176,6 +174,7 @@ def flatten(array: Iterable[Iterable]) -> Iterable:
             yield from flatten(x)
         else:
             yield x
+
 
 # @log_fun
 @typechecked

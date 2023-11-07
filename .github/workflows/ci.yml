@@ -24,33 +24,39 @@ jobs:
     name: Build docker image
     runs-on: ubuntu-latest
     outputs:
-      docker_version: ${{ steps.docker_version.outputs.version }}
+      docker: ${{ steps.changed_files.outputs.build_image }}
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
-      - name: Get docker version
-        id: docker_version
-        run: |
-          echo "::set-output name=version::$(git ls-files -s Dockerfile | awk '{print $2}' | cut -c1-16)"
+      - name: Detecting file changes
+        uses: dorny/paths-filter@v2
+        id: changed_files
+        with:
+          base: dev
+          filters: |
+            build_image:
+              - 'Dockerfile'
+              - 'Dockerfile.base'
+              - 'Makefile'
+              - 'poetry.lock'
+              - 'pyproject.toml'
+              - 'requirements.txt'
+              - 'debian-requirements.txt'
+              - '.github/workflows/ci.yml'
+
 
       - name: Log into registry
+        if: steps.changed_files.outputs.build_image == 'true'
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
-      #! TODO: Change how output of steps are defined, in accordance to https://github.blog/changelog/2022-10-11-github-actions-deprecating-save-state-and-set-output-commands/
-      - name: Check if image exists
-        id: image_exists
-        run: |
-          response=$(docker manifest inspect ghcr.io/${{ github.repository }}/$IMAGE_NAME:${{ steps.docker_version.outputs.version }} > /dev/null ; echo $?)
-          echo ::set-output name=image_exists::$(echo ${response})
-
-      - name: Build docker image if it is not on registry
-        if: ${{ steps.image_exists.outputs.image_exists == 1 }}
+      - name: Build docker image in case of file changes
+        if: steps.changed_files.outputs.build_image == 'true'
         run: make image
 
       - name: Push image to Github Registry
-        if: ${{ steps.image_exists.outputs.image_exists == 1 }}
+        if: steps.changed_files.outputs.build_image == 'true'
         run: |
           IMAGE_ID=ghcr.io/${{ github.repository }}/$IMAGE_NAME
 
@@ -84,7 +90,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Run tests
         run: pytest tests/test_mock_dataset.py
@@ -103,7 +109,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Run tests
         run: echo "Success"
@@ -125,7 +131,7 @@ jobs:
       # check-out repo and set-up python
       # ---
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       # ---
       # build and upload artifacts
