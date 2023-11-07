@@ -12,7 +12,7 @@ class Group:
     """
     A class for creating groups based on a feature and grouping variables.
 
-    Parameters:
+    Attributes:
     -----------
     feature : str
         The feature to group by.
@@ -123,12 +123,21 @@ class Numerical(Summarize):
     """
     A class for calculating summary statistics for numerical data.
 
-    Args:
-        feature (str): The name of the numerical feature to summarize.
-        by (list[int | str]): A list of column names to group the data by.
-        data (pd.DataFrame): The input data.
-        bins (Union[Sequence, str, int], optional): The number of bins to use for binning the data. Defaults to "auto".
-        summary_dict (dict, optional): A dictionary of summary statistics to calculate. Defaults to {"sum": self.grouped.sum, "min": self.grouped.min, "mean": self.grouped.mean, 0.25: self.grouped.quantile, 0.5: self.grouped.median, 0.75: self.grouped.quantile, "max": self.grouped.max}.
+    Attributes
+    ----------
+    summary_dict: dict, optional
+        A dictionary of summary statistics to calculate. Defaults to {}.
+
+    Methods
+    -------
+    get_statistics()
+        Calculates summary statistics for the data.
+
+    make_bins()
+        Create bins for the data
+
+    binarize()
+        Binarize the data
     """
 
     def __init__(
