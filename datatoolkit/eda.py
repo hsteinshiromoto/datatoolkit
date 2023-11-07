@@ -1,10 +1,12 @@
-import pandas as pd
-import numpy as np
-import seaborn as sns
 from abc import ABC, abstractmethod
-from typeguard import typechecked
-from typing import Union, Sequence
+from typing import Sequence, Union
+
+import numpy as np
+import pandas as pd
+import seaborn as sns
 from scipy.stats import entropy
+from typeguard import typechecked
+
 
 class Group:
     """
@@ -26,12 +28,7 @@ class Group:
     """
 
     @typechecked
-    def __init__(
-        self,
-        feature: str,
-        by: list[int | str],
-        data: pd.DataFrame
-    ):
+    def __init__(self, feature: str, by: list[int | str], data: pd.DataFrame):
         """
         Initialize the Group class with the specified feature, by group(s), and data.
 
@@ -45,8 +42,7 @@ class Group:
         self.feature = feature or by
 
     def make_groups(self):
-        """Creates groups based on the feature
-        """
+        """Creates groups based on the feature"""
         self.grouped = self.data.groupby(self.by)[self.feature]
 
     def __repr__(self):
@@ -55,22 +51,18 @@ class Group:
     def __str__(self):
         return f"{self.__class__.__name__}(data={self.data}, features={self.by})"
 
-class Summarize(Group):
 
+class Summarize(Group):
     def get_count(self):
-        """Calculates the count of each group
-        """
-        self.summarized_data = self.grouped.count.to_frame(
-            name=f"count_{self.feature}"
-        )
+        """Calculates the count of each group"""
+        self.summarized_data = self.grouped.count.to_frame(name=f"count_{self.feature}")
 
         self.summarized_data[f"cum_count_{self.feature}"] = self.summarized_data[
             f"count_{self.feature}"
         ].cumsum()
 
     def get_proportion(self):
-        """Calculates the proportion of each group
-        """
+        """Calculates the proportion of each group"""
         self.summarized_data[f"proportions_{self.feature}"] = (
             self.summarized_data[f"count_{self.feature}"]
             / self.summarized_data[f"count_{self.feature}"].sum()
@@ -81,8 +73,7 @@ class Summarize(Group):
         ].cumsum()
 
     def get_entropy(self):
-        """Calculates the entropy of each group
-        """
+        """Calculates the entropy of each group"""
         self.summarized_data[f"entropy_{self.feature}"] = self.grouped.apply(entropy)
 
     def get_summary(self):
@@ -91,27 +82,30 @@ class Summarize(Group):
         self.get_proportion()
         self.get_entropy()
 
+
 class Numerical(Summarize):
-    """Aggregates numerical data frame and provides summary
-    """
-    def __init__(self, 
+    """Aggregates numerical data frame and provides summary"""
+
+    def __init__(
+        self,
         feature: str,
         by: list[int | str],
         data: pd.DataFrame,
         bins: Union[Sequence, str, int] = "auto",
-        summary_dict: dict = None):
+        summary_dict: dict = None,
+    ):
         super().__init__(feature=feature, by=by, data=data)
 
         self.bins = bins
         self.summary_dict = {
-                "sum": self.grouped.sum,
-                "min": self.grouped.min,
-                "mean": self.grouped.mean,
-                0.25: self.grouped.quantile,
-                0.5: self.grouped.median,
-                0.75: self.grouped.quantile,
-                "max": self.grouped.max,
-            }
+            "sum": self.grouped.sum,
+            "min": self.grouped.min,
+            "mean": self.grouped.mean,
+            0.25: self.grouped.quantile,
+            0.5: self.grouped.median,
+            0.75: self.grouped.quantile,
+            "max": self.grouped.max,
+        }
 
     def make_bins(self) -> np.ndarray:
         """Create bins for the data
@@ -141,8 +135,6 @@ class Numerical(Summarize):
 
         return self.summarized_data
 
-    
-
     def __call__(self):
         return self.get_statistics()
 
@@ -157,12 +149,9 @@ class GroupCategorical(Group):
         grouped = self.data.groupby(self.groupby_args)[self.feature]
 
         output = grouped.count().to_frame(name=f"count_{self.feature}")
-        output[f"cum_count_{self.feature}"] = output[
-            f"count_{self.feature}"
-        ].cumsum()
+        output[f"cum_count_{self.feature}"] = output[f"count_{self.feature}"].cumsum()
         output[f"proportions_{self.feature}"] = (
-            output[f"count_{self.feature}"]
-            / output[f"count_{self.feature}"].sum()
+            output[f"count_{self.feature}"] / output[f"count_{self.feature}"].sum()
         )
         output[f"cum_proportions_{self.feature}"] = output[
             f"proportions_{self.feature}"
