@@ -80,6 +80,7 @@ class Summarize(Group):
         super().__init__(feature=feature, by=by, data=data)
 
         self.make_groups()
+        self.get_count()
 
     def get_count(self):
         """
@@ -110,6 +111,16 @@ class Summarize(Group):
         """
         Calculates the proportion and cumulative proportion of the feature in the dataset.
         The results are stored in the summarized_data attribute of the Group object.
+
+        Example:
+            >>> data = pd.DataFrame({'by': ['A', 'A', 'B', 'B', 'B', 'C'], 'feature': [1, 2, 3, 1, 2, 3]})
+            >>> summarize = Summarize(feature='feature', by=['by'], data=data)
+            >>> summarize.get_proportion() # doctest: +NORMALIZE_WHITESPACE
+                proportions_feature  cum_proportions_feature
+            by
+            A              0.333333                 0.333333
+            B              0.500000                 0.833333
+            C              0.166667                 1.000000
         """
         self.summarized_data[f"proportions_{self.feature}"] = (
             self.summarized_data[f"count_{self.feature}"]
@@ -119,6 +130,10 @@ class Summarize(Group):
         self.summarized_data[f"cum_proportions_{self.feature}"] = self.summarized_data[
             f"proportions_{self.feature}"
         ].cumsum()
+
+        return self.summarized_data[
+            [f"proportions_{self.feature}", f"cum_proportions_{self.feature}"]
+        ]
 
     def get_entropy(self):
         """
