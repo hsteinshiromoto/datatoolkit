@@ -53,8 +53,35 @@ class Group:
 
 
 class Summarize(Group):
+    """
+    A class used to summarize data by groups.
+
+    Attributes
+    ----------
+    feature : str
+        The name of the feature to be summarized.
+    data : pandas.DataFrame
+        The data to be summarized.
+    groups : list
+        The list of groups to be used for summarization.
+
+    Methods
+    -------
+    get_count()
+        Calculates the count of each group.
+    get_proportion()
+        Calculates the proportion of each group.
+    get_entropy()
+        Calculates the entropy of each group.
+    get_summary()
+        Summarizes the data by groups.
+    """
+
     def get_count(self):
-        """Calculates the count of each group"""
+        """
+        Returns a pandas DataFrame with the count of occurrences of each unique value in the specified feature column.
+        Also adds a cumulative count column to the DataFrame.
+        """
         self.summarized_data = self.grouped.count.to_frame(name=f"count_{self.feature}")
 
         self.summarized_data[f"cum_count_{self.feature}"] = self.summarized_data[
@@ -62,7 +89,10 @@ class Summarize(Group):
         ].cumsum()
 
     def get_proportion(self):
-        """Calculates the proportion of each group"""
+        """
+        Calculates the proportion and cumulative proportion of the feature in the dataset.
+        The results are stored in the summarized_data attribute of the Group object.
+        """
         self.summarized_data[f"proportions_{self.feature}"] = (
             self.summarized_data[f"count_{self.feature}"]
             / self.summarized_data[f"count_{self.feature}"].sum()
@@ -73,10 +103,16 @@ class Summarize(Group):
         ].cumsum()
 
     def get_entropy(self):
-        """Calculates the entropy of each group"""
+        """
+        Calculates the entropy of the grouped data for the specified feature and adds it to the summarized data.
+
+        """
         self.summarized_data[f"entropy_{self.feature}"] = self.grouped.apply(entropy)
 
     def get_summary(self):
+        """
+        Generates a summary of the data, including group counts, proportions, and entropy.
+        """
         self.make_groups()
         self.get_count()
         self.get_proportion()
@@ -92,12 +128,7 @@ class Numerical(Summarize):
         by: list[int | str],
         data: pd.DataFrame,
         bins: Union[Sequence, str, int] = "auto",
-        summary_dict: dict = None,
-    ):
-        super().__init__(feature=feature, by=by, data=data)
-
-        self.bins = bins
-        self.summary_dict = {
+        summary_dict: dict = {
             "sum": self.grouped.sum,
             "min": self.grouped.min,
             "mean": self.grouped.mean,
@@ -105,7 +136,12 @@ class Numerical(Summarize):
             0.5: self.grouped.median,
             0.75: self.grouped.quantile,
             "max": self.grouped.max,
-        }
+        },
+    ):
+        super().__init__(feature=feature, by=by, data=data)
+
+        self.bins = bins
+        self.summary_dict = summary_dict
 
     def make_bins(self) -> np.ndarray:
         """Create bins for the data
