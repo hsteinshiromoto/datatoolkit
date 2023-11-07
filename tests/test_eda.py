@@ -3,6 +3,7 @@ from pathlib import Path
 
 import pandas as pd
 import pytest
+from deprecated import deprecated
 
 PROJECT_ROOT = Path(__file__).parents[1].resolve()
 
@@ -28,6 +29,7 @@ def get_data() -> pd.DataFrame:
     return data
 
 
+@deprecated
 def test_Group_make_groups(get_data):
     data = get_data
 
@@ -37,6 +39,7 @@ def test_Group_make_groups(get_data):
     assert isinstance(group.grouped, pd.core.groupby.SeriesGroupBy)
 
 
+@deprecated
 class TestSummarize:
     def test_get_count(self, get_data):
         data = get_data
@@ -77,6 +80,7 @@ class TestSummarize:
         assert "entropy_float_0" in summarize.summarized_data.columns
 
 
+@deprecated
 class TestNumerical:
     def test_make_bins(self, get_data):
         data = get_data
