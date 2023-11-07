@@ -28,13 +28,13 @@ class Group:
     """
 
     @typechecked
-    def __init__(self, feature: str, by: list[int | str], data: pd.DataFrame):
+    def __init__(self, feature: str, by: list[Union[str, int]], data: pd.DataFrame):
         """
         Initialize the Group class with the specified feature, by group(s), and data.
 
         Args:
             feature (str): The name of the feature to analyze.
-            by (list[int | str]): The column(s) to group the data by.
+            by (list[Union[int, str]]): The column(s) to group the data by.
             data (pd.DataFrame): The input data to analyze.
         """
         self.by = by
@@ -143,7 +143,7 @@ class Numerical(Summarize):
     def __init__(
         self,
         feature: str,
-        by: list[int | str],
+        by: list[Union[int, str]],
         data: pd.DataFrame,
         bins: Union[Sequence, str, int] = "auto",
         summary_dict: dict = {},
