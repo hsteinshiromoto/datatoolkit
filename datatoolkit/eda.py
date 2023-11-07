@@ -187,33 +187,3 @@ class Numerical(Summarize):
 
     def __call__(self):
         return self.get_statistics()
-
-
-class GroupCategorical(Group):
-    def summarize(self):
-        """Calculates summary statistics in each bin
-
-        Returns:
-            (pd.DataFrame): Statistics summary
-        """
-        grouped = self.data.groupby(self.groupby_args)[self.feature]
-
-        output = grouped.count().to_frame(name=f"count_{self.feature}")
-        output[f"cum_count_{self.feature}"] = output[f"count_{self.feature}"].cumsum()
-        output[f"proportions_{self.feature}"] = (
-            output[f"count_{self.feature}"] / output[f"count_{self.feature}"].sum()
-        )
-        output[f"cum_proportions_{self.feature}"] = output[
-            f"proportions_{self.feature}"
-        ].cumsum()
-
-        return output
-
-    def __repr__(self):
-        return f"{self.__class__.__name__}(data={self.data}, feature={self.feature})"
-
-    def __str__(self):
-        return f"{self.__class__.__name__}(data={self.data}, feature={self.feature})"
-
-    def __call__(self, fun: str = None):
-        return self.binarize(fun)
