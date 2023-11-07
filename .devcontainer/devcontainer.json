@@ -32,6 +32,7 @@
 		"ms-python.python",
 		"ms-python.vscode-pylance",
 		"ms-toolsai.jupyter",
+		"ms-vscode.makefile-tools",
 		"njpwerner.autodocstring",
 		"njpwerner.autodocstring",
 		"njqdev.vscode-python-typehint",
