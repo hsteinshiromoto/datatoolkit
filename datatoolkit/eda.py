@@ -1,5 +1,5 @@
-from typing import Union
 from collections.abc import Sequence
+from typing import Union
 
 import numpy as np
 import pandas as pd
@@ -76,16 +76,35 @@ class Summarize(Group):
         Summarizes the data by groups.
     """
 
+    def __init__(self, feature: str, by: list[Union[int, str]], data: pd.DataFrame):
+        super().__init__(feature=feature, by=by, data=data)
+
+        self.make_groups()
+
     def get_count(self):
         """
         Returns a pandas DataFrame with the count of occurrences of each unique value in the specified feature column.
         Also adds a cumulative count column to the DataFrame.
+
+        Example:
+            >>> data = pd.DataFrame({'by': ['A', 'A', 'B', 'B', 'B', 'C'], 'feature': [1, 2, 3, 1, 2, 3]})
+            >>> summarize = Summarize(feature='feature', by=['by'], data=data)
+            >>> summarize.get_count()  # doctest: +NORMALIZE_WHITESPACE
+                count_feature  cum_count_feature
+            by
+            A               2                  2
+            B               3                  5
+            C               1                  6
         """
-        self.summarized_data = self.grouped.count.to_frame(name=f"count_{self.feature}")
+        self.summarized_data = self.grouped.count().to_frame(
+            name=f"count_{self.feature}"
+        )
 
         self.summarized_data[f"cum_count_{self.feature}"] = self.summarized_data[
             f"count_{self.feature}"
         ].cumsum()
+
+        return self.summarized_data
 
     def get_proportion(self):
         """
