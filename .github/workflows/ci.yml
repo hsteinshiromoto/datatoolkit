@@ -28,7 +28,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Get docker version
         id: docker_version
@@ -84,7 +84,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Run tests
         run: pytest tests/test_mock_dataset.py
@@ -103,7 +103,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Run tests
         run: echo "Success"
@@ -125,7 +125,7 @@ jobs:
       # check-out repo and set-up python
       # ---
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       # ---
       # build and upload artifacts
