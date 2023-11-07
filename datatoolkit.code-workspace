@@ -1,0 +1,18 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"[python]": {
+			"editor.defaultFormatter": "ms-python.black-formatter"
+			,"editor.codeActionsOnSave": {
+				"source.organizeImports.ruff": true
+				,"source.organizeImports": true
+			}
+			,"editor.formatOnSave": true
+			,"isort.args":["--profile", "black"],
+		}
+	}
+}
