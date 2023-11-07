@@ -164,10 +164,13 @@ class Numerical(Summarize):
         pass
 
     def get_statistics(self) -> pd.DataFrame:
-        """calculates summary statistics in each bin
+        """Calculates summary statistics for the data
 
-        returns:
-            (pd.DataFrame): Statistics summary
+        Raises:
+            TypeError: If the feature is not numeric.
+
+        Returns:
+            pd.DataFrame: Summary statistics
         """
         self.get_summary()
 
