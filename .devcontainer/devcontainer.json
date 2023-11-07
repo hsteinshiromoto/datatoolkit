@@ -25,7 +25,8 @@
 		"mgesbert.python-path",
 		"mhutchie.git-graph",
 		"mikestead.dotenv",
-		"ms-python.black-formatter"
+		"ms-azuretools.vscode-docker",
+		"ms-python.black-formatter",
 		"ms-python.isort",
 		"ms-python.python",
 		"ms-python.vscode-pylance",
