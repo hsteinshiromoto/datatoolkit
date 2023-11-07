@@ -39,6 +39,7 @@ class Group:
         self.by = by
         self.data = data
         self.feature = feature or by
+        self.make_groups()
 
     def make_groups(self):
         """Creates groups based on the feature"""
@@ -79,7 +80,6 @@ class Summarize(Group):
     def __init__(self, feature: str, by: list[Union[int, str]], data: pd.DataFrame):
         super().__init__(feature=feature, by=by, data=data)
 
-        self.make_groups()
         self.get_count()
 
     def get_count(self) -> pd.DataFrame:
