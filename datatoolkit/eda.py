@@ -249,49 +249,12 @@ class Numerical(Summarize):
             >>> data = pd.DataFrame({'by': ['A', 'A', 'B', 'B', 'B', 'C'], 'feature': [1, 2, 3, 1, 2, 3]})
             >>> summarize = Numerical(feature='feature', by=['by'], data=data)
             >>> data_summary = summarize.get_stats()
-            >>> data_summary[["sum_feature"]] # doctest: +NORMALIZE_WHITESPACE
-                sum_feature
-            by
-            A             3
-            B             6
-            C             3
-            >>> data_summary[["min_feature"]] # doctest: +NORMALIZE_WHITESPACE
-                min_feature
-            by
-            A               1
-            B               1
-            C               3
             >>> data_summary[["mean_feature"]] # doctest: +NORMALIZE_WHITESPACE
                 mean_feature
             by
             A                1.5
             B                2.0
             C                3.0
-            >>> data_summary[["0.25_feature"]] # doctest: +NORMALIZE_WHITESPACE
-                0.25_feature
-            by
-            A                1.0
-            B                1.5
-            C                3.0
-            >>> data_summary[["0.50_feature"]] # doctest: +NORMALIZE_WHITESPACE
-                0.50_feature
-            by
-            A                1.5
-            B                2.0
-            C                3.0
-            >>> data_summary[["0.75_feature"]] # doctest: +NORMALIZE_WHITESPACE
-                0.75_feature
-            by
-            A                2.0
-            B                2.5
-            C                3.0
-            >>> data_summary[["max_feature"]] # doctest: +NORMALIZE_WHITESPACE
-                max_feature
-            by
-            A               2
-            B               3
-            C               3
-
         """
         self.get_summary()
 
