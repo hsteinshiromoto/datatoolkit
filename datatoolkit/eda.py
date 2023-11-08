@@ -231,14 +231,6 @@ class Numerical(Summarize):
             "max": self.grouped.max,
         }
 
-    def make_bins(self) -> np.ndarray:
-        """Create bins for the data
-
-        Returns:
-            np.ndarray: Array of bin edges
-        """
-        return np.histogram_bin_edges(self.data[self.feature].values, bins=self.bins)
-
     def binarize(self, fun: str = None):
         pass
 
@@ -277,3 +269,71 @@ class Numerical(Summarize):
 
     def __call__(self):
         return self.get_statistics()
+
+
+class Discretize(Summarize):
+    """
+    A class for discretizing data.
+
+    Attributes
+    ----------
+    bins : int | list[float]
+        The number of bins to use or a list of bin edges.
+    labels : list[str]
+        The labels to use for the bins.
+    summary_dict : dict
+        A dictionary of summary statistics to calculate. Defaults to {}.
+
+    Methods
+    -------
+    get_bins()
+        Calculates the bin edges for the data.
+    get_labels()
+        Calculates the labels for the bins.
+    get_summary()
+        Calculates summary statistics for the data.
+
+    Example
+    -------
+        >>> data = pd.DataFrame({'by': ['A', 'A', 'B', 'B', 'B', 'C'], 'feature': [1, 2, 3, 1, 2, 3]})
+        >>> summarize = Discretize(feature='feature', by=['by'], data=data)
+        >>> summary = summarize.get_summary()
+    """
+
+    def __init__(
+        self,
+        feature: str,
+        by: list[Union[int, str]],
+        data: pd.DataFrame,
+        bins: Union[Sequence, str, int] = "auto",
+        labels: list[str] = None,
+        summary_dict: dict = {},
+    ):
+        by = by or self.make_groupby_args()
+        bins = bins or self.get_bins()
+
+        super().__init__(feature=feature, by=by, data=data)
+
+        self.bins = bins
+        self.labels = labels
+        self.summary_dict = summary_dict or {
+            "sum": self.grouped.sum,
+            "min": self.grouped.min,
+            "mean": self.grouped.mean,
+            "max": self.grouped.max,
+        }
+
+    def get_bins(self) -> np.ndarray:
+        """
+        Calculates the bin edges for the data.
+
+        Returns:
+            np.ndarray: Array of bin
+        """
+        return np.histogram_bin_edges(self.data[self.feature].values, bins=self.bins)
+
+    def make_groupby_args(self):
+        """
+        Creates a dictionary of arguments to pass to the groupby function.
+        """
+        return pd.cut(self.data[self.feature].values, bins=self.bins)
