@@ -236,7 +236,7 @@ class Numerical(Summarize):
     def binarize(self, fun: str = None):
         pass
 
-    def get_statistics(self) -> pd.DataFrame:
+    def get_stats(self) -> pd.DataFrame:
         """Calculates summary statistics for the data
 
         Raises:
@@ -244,6 +244,11 @@ class Numerical(Summarize):
 
         Returns:
             pd.DataFrame: Summary statistics
+
+        Example:
+            >>> data = pd.DataFrame({'by': ['A', 'A', 'B', 'B', 'B', 'C'], 'feature': [1, 2, 3, 1, 2, 3]})
+            >>> summarize = Numerical(feature='feature', by=['by'], data=data)
+            >>> summarize.get_stats()
         """
         self.get_summary()
 
