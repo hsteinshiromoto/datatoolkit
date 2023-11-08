@@ -202,6 +202,12 @@ class Numerical(Summarize):
 
     binarize()
         Binarize the data
+
+    Example
+    -------
+        >>> data = pd.DataFrame({'by': ['A', 'A', 'B', 'B', 'B', 'C'], 'feature': [1, 2, 3, 1, 2, 3]})
+        >>> summarize = Numerical(feature='feature', by=['by'], data=data)
+        >>> summary = summarize.get_stats()
     """
 
     def __init__(
