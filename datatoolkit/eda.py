@@ -1,5 +1,5 @@
 from collections.abc import Sequence
-from typing import Union
+from typing import Union, Iterable
 
 import numpy as np
 import pandas as pd
@@ -306,34 +306,29 @@ class Discretize(Summarize):
         by: list[Union[int, str]],
         data: pd.DataFrame,
         bins: Union[Sequence, str, int] = "auto",
-        labels: list[str] = None,
-        summary_dict: dict = {},
     ):
-        by = by or self.make_groupby_args()
-        bins = bins or self.get_bins()
+        bin_edges = self.get_bin_edges(by, data, bins)
+        groupby_args = self.make_groupby_args(by, data, bin_edges)
 
-        super().__init__(feature=feature, by=by, data=data)
+        super().__init__(feature=feature, by=groupby_args, data=data)
 
-        self.bins = bins
-        self.labels = labels
-        self.summary_dict = summary_dict or {
-            "sum": self.grouped.sum,
-            "min": self.grouped.min,
-            "mean": self.grouped.mean,
-            "max": self.grouped.max,
-        }
-
-    def get_bins(self) -> np.ndarray:
+    @staticmethod
+    def get_bin_edges(
+        by: Union[Sequence, str, int],
+        data: pd.DataFrame,
+        bins: Union[Sequence, str, int],
+    ) -> np.ndarray:
         """
         Calculates the bin edges for the data.
 
         Returns:
             np.ndarray: Array of bin
         """
-        return np.histogram_bin_edges(self.data[self.feature].values, bins=self.bins)
+        return np.histogram_bin_edges(data[by], bins=bins)
 
-    def make_groupby_args(self):
+    @staticmethod
+    def make_groupby_args(by: list[Union[int, str]], data: pd.DataFrame, bin_edges: Iterable[np.number]):
         """
         Creates a dictionary of arguments to pass to the groupby function.
         """
-        return pd.cut(self.data[self.feature].values, bins=self.bins)
+        return pd.cut(data[by].values, bins=bin_edges)
