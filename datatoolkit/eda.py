@@ -285,7 +285,7 @@ class Numerical(Summarize):
         return self.get_statistics()
 
 
-class Discretize(Summarize):
+class Discretize(Numerical):
     """
     A class for discretizing data.
 
@@ -311,7 +311,13 @@ class Discretize(Summarize):
     -------
         >>> data = pd.DataFrame({'by': [0, 1/6, 2/6, 3/6, 4/6, 5/6], 'feature': [1, 2, 3, 1, 2, 3]})
         >>> summarize = Discretize(feature='feature', by='by', data=data)
-        >>> summary = summarize.get_summary()
+        >>> data_summary = summarize.get_stats()
+        >>> data_summary[['mean_feature']] # doctest: +NORMALIZE_WHITESPACE
+                        mean_feature
+        (0.0, 0.208]             2.0
+        (0.208, 0.417]           3.0
+        (0.417, 0.625]           1.0
+        (0.625, 0.833]           2.5
     """
 
     @typechecked
