@@ -1,10 +1,18 @@
+import sys
 from collections.abc import Sequence
-from typing import Union, Iterable
+from pathlib import Path
+from typing import Iterable, Union
 
 import numpy as np
 import pandas as pd
 from scipy.stats import entropy
 from typeguard import typechecked
+
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+
+sys.path.append(f"{PROJECT_ROOT}")
+
+from datatoolkit.utils import flatten
 
 
 class Group:
@@ -27,7 +35,12 @@ class Group:
     """
 
     @typechecked
-    def __init__(self, feature: str, by: list[Union[str, int]], data: pd.DataFrame):
+    def __init__(
+        self,
+        feature: str,
+        by: Union[str, Iterable[Union[np.number, str, pd.api.types.CategoricalDtype]]],
+        data: pd.DataFrame,
+    ):
         """
         Initialize the Group class with the specified feature, by group(s), and data.
 
@@ -210,10 +223,11 @@ class Numerical(Summarize):
         >>> summary = summarize.get_stats()
     """
 
+    @typechecked
     def __init__(
         self,
         feature: str,
-        by: list[Union[int, str]],
+        by: Union[str, Iterable[Union[np.number, str, pd.api.types.CategoricalDtype]]],
         data: pd.DataFrame,
         bins: Union[Sequence, str, int] = "auto",
         summary_dict: dict = {},
@@ -295,15 +309,16 @@ class Discretize(Summarize):
 
     Example
     -------
-        >>> data = pd.DataFrame({'by': ['A', 'A', 'B', 'B', 'B', 'C'], 'feature': [1, 2, 3, 1, 2, 3]})
-        >>> summarize = Discretize(feature='feature', by=['by'], data=data)
+        >>> data = pd.DataFrame({'by': [0, 1/6, 2/6, 3/6, 4/6, 5/6], 'feature': [1, 2, 3, 1, 2, 3]})
+        >>> summarize = Discretize(feature='feature', by='by', data=data)
         >>> summary = summarize.get_summary()
     """
 
+    @typechecked
     def __init__(
         self,
         feature: str,
-        by: list[Union[int, str]],
+        by: str,
         data: pd.DataFrame,
         bins: Union[Sequence, str, int] = "auto",
     ):
@@ -314,7 +329,7 @@ class Discretize(Summarize):
 
     @staticmethod
     def get_bin_edges(
-        by: Union[Sequence, str, int],
+        by: str,
         data: pd.DataFrame,
         bins: Union[Sequence, str, int],
     ) -> np.ndarray:
@@ -327,8 +342,14 @@ class Discretize(Summarize):
         return np.histogram_bin_edges(data[by], bins=bins)
 
     @staticmethod
-    def make_groupby_args(by: list[Union[int, str]], data: pd.DataFrame, bin_edges: Iterable[np.number]):
+    def make_groupby_args(
+        by: str,
+        data: pd.DataFrame,
+        bin_edges: Iterable[np.number],
+    ):
         """
         Creates a dictionary of arguments to pass to the groupby function.
         """
-        return pd.cut(data[by].values, bins=bin_edges)
+        flattened = np.array(list(flatten(data[by].values)))
+
+        return pd.cut(flattened, bins=bin_edges)
