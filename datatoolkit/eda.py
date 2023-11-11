@@ -101,7 +101,12 @@ class Summarize(Group):
 
     """
 
-    def __init__(self, feature: str, by: Union[str, Iterable[Union[np.number, str, pd.api.types.CategoricalDtype]]], data: pd.DataFrame):
+    def __init__(
+        self,
+        feature: str,
+        by: Union[str, Iterable[Union[np.number, str, pd.api.types.CategoricalDtype]]],
+        data: pd.DataFrame,
+    ):
         super().__init__(feature=feature, by=by, data=data)
 
         self.get_count()
@@ -324,7 +329,7 @@ class Discretize(Summarize):
     def __init__(
         self,
         feature: str,
-        by: str,
+        by: Union[str, Iterable[Union[np.number, str, pd.api.types.CategoricalDtype]]],
         data: pd.DataFrame,
         bins: Union[Sequence, str, int] = "auto",
     ):
