@@ -101,7 +101,7 @@ class Summarize(Group):
 
     """
 
-    def __init__(self, feature: str, by: list[Union[int, str]], data: pd.DataFrame):
+    def __init__(self, feature: str, by: Union[str, Iterable[Union[np.number, str, pd.api.types.CategoricalDtype]]], data: pd.DataFrame):
         super().__init__(feature=feature, by=by, data=data)
 
         self.get_count()
@@ -285,7 +285,7 @@ class Numerical(Summarize):
         return self.get_statistics()
 
 
-class Discretize(Numerical):
+class Discretize(Summarize):
     """
     A class for discretizing data.
 
