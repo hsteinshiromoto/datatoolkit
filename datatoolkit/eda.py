@@ -242,12 +242,15 @@ class Discretize(Summarize):
         feature: str,
         by: Union[str, Iterable[Union[np.number, str, pd.api.types.CategoricalDtype]]],
         data: pd.DataFrame,
-        bins: Union[Sequence, str, int] = "auto",
+        bins: Union[Sequence, str, int] = None,
     ):
-        bin_edges = self.get_bin_edges(by, data, bins)
-        groupby_args = self.make_groupby_args(by, data, bin_edges)
-
-        super().__init__(feature=feature, by=groupby_args, data=data)
+        if bins:
+            bin_edges = self.get_bin_edges(by, data, bins)
+            groupby_args = self.make_groupby_args(by, data, bin_edges)
+            super().__init__(feature=feature, by=groupby_args, data=data)
+            
+        else:
+            super().__init__(feature=feature, by=by, data=data)
 
     @staticmethod
     def get_bin_edges(
@@ -325,9 +328,6 @@ class Numerical(Discretize):
             0.75: self.grouped.quantile,
             "max": self.grouped.max,
         }
-
-    def binarize(self, fun: str = None):
-        pass
 
     def get_stats(self) -> pd.DataFrame:
         """Calculates summary statistics for the data
