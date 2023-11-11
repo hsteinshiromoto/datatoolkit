@@ -40,6 +40,7 @@ class Group:
         feature: str,
         by: Union[str, Iterable[Union[np.number, str, pd.api.types.CategoricalDtype]]],
         data: pd.DataFrame,
+        bins: Union[Sequence, str, int] = None,
     ):
         """
         Initialize the Group class with the specified feature, by group(s), and data.
@@ -49,10 +50,44 @@ class Group:
             by (list[Union[int, str]]): The column(s) to group the data by.
             data (pd.DataFrame): The input data to analyze.
         """
-        self.by = by
         self.data = data
         self.feature = feature or by
+
+        if bins:
+            bin_edges = self.get_bin_edges(by, data, bins)
+            self.by = self.make_groupby_args(by, data, bin_edges)
+
+        else:
+            self.by = by
+
         self.make_groups()
+
+    @staticmethod
+    def get_bin_edges(
+        by: str,
+        data: pd.DataFrame,
+        bins: Union[Sequence, str, int],
+    ) -> np.ndarray:
+        """
+        Calculates the bin edges for the data.
+
+        Returns:
+            np.ndarray: Array of bin
+        """
+        return np.histogram_bin_edges(data[by], bins=bins)
+
+    @staticmethod
+    def make_groupby_args(
+        by: str,
+        data: pd.DataFrame,
+        bin_edges: Iterable[np.number],
+    ):
+        """
+        Creates a dictionary of arguments to pass to the groupby function.
+        """
+        flattened = np.array(list(flatten(data[by].values)))
+
+        return pd.cut(flattened, bins=bin_edges)
 
     def make_groups(self):
         """Creates groups based on the feature"""
