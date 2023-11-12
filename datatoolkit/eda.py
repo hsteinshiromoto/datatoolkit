@@ -27,8 +27,8 @@ class Discretize:
         bins (Union[Sequence, str, int], optional): The number of bins to use or the edges of the bins. Defaults to None.
 
     Attributes:
-        bins (np.ndarray): The edges of the bins.
-        labels (List[str]): The labels for each bin.
+        make_bins: The edges of the bins.
+        get_labels: The labels for each bin.
 
     Examples:
         >>> import pandas as pd
