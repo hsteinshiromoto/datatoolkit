@@ -1,5 +1,6 @@
 import sys
 from collections.abc import Sequence
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Iterable, Union
 
@@ -17,25 +18,49 @@ from datatoolkit.utils import flatten
 
 @dataclass
 class Discretize:
+    """
+    Discretize a continuous feature into bins.
+
+    Args:
+        feature (str): The name of the feature to discretize.
+        data (pd.DataFrame): The input data.
+        bins (Union[Sequence, str, int], optional): The number of bins to use or the edges of the bins. Defaults to None.
+
+    Attributes:
+        bins (np.ndarray): The edges of the bins.
+        labels (List[str]): The labels for each bin.
+
+    Examples:
+        >>> import pandas as pd
+        >>> df = pd.DataFrame({'A': [1, 2, 3, 4, 5]})
+        >>> d = Discretize('A', df, bins=2)
+        >>> d()
+        >>> d.bin_edges
+        array([1., 3., 5.])
+        >>> d.labels
+        ['1.0-3.0', '3.0-5.0']
+    """
+
     feature: str
     data: pd.DataFrame
-    bins: Union[Sequence, str, int] = None
+    bins: Union[Sequence[np.number], str, int] = None
 
     def __post_init__(self):
-        self.get_bins()
+        self.bins = self.bins or "auto"
+        self.make_bins()
         self.get_labels()
 
-    def get_bins(self):
-        self.bins = np.histogram_bin_edges(self.data[self.feature], bins=self.bins)
+    def make_bins(self):
+        self.bin_edges = np.histogram_bin_edges(self.data[self.feature], bins=self.bins)
 
     def get_labels(self):
         self.labels = [
-            f"{self.bins[i]}-{self.bins[i+1]}" for i in range(len(self.bins))
+            f"{self.bin_edges[i]:.2f}-{self.bin_edges[i + 1]:.2f}"
+            for i in range(len(self.bin_edges) - 1)
         ]
-        self.labels = self.labels[:-1]
 
     def __call__(self):
-        self.get_bins()
+        self.make_bins()
         self.get_labels()
 
 
