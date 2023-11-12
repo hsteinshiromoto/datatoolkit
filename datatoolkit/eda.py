@@ -51,9 +51,15 @@ class Discretize:
         self.get_labels()
 
     def make_bins(self):
+        """
+        Compute the bin edges for the given feature using the specified number of bins.
+        """
         self.bin_edges = np.histogram_bin_edges(self.data[self.feature], bins=self.bins)
 
     def get_labels(self):
+        """
+        Returns a list of labels for each bin in the histogram.
+        """
         self.labels = [
             f"{self.bin_edges[i]:.2f}-{self.bin_edges[i + 1]:.2f}"
             for i in range(len(self.bin_edges) - 1)
