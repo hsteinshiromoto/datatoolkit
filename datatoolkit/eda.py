@@ -47,10 +47,10 @@ class Discretize:
 
     def __post_init__(self):
         self.bins = self.bins or "auto"
-        self.make_bins()
+        self.make_bin_edges()
         self.get_labels()
 
-    def make_bins(self):
+    def make_bin_edges(self):
         """
         Compute the bin edges for the given feature using the specified number of bins.
         """
@@ -66,7 +66,7 @@ class Discretize:
         ]
 
     def __call__(self):
-        self.make_bins()
+        self.make_bin_edges()
         self.get_labels()
 
 
