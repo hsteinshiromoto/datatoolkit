@@ -113,9 +113,19 @@ class Group(Discretize):
     F    360000
     M    320000
     Name: income, dtype: int64
+    >>> group = Group(feature='income', by=['age'], data=df, bins='auto')
+    >>> group.grouped.sum() # doctest: +NORMALIZE_WHITESPACE
+    (25.0, 33.75]     60000
+    (33.75, 42.5]    150000
+    (42.5, 51.25]    190000
+    (51.25, 60.0]    230000
+    Name: income, dtype: int64
     """
 
+    feature: str
     by: Union[str, Iterable[Union[int, str, pd.api.types.CategoricalDtype]]]
+    data: pd.DataFrame
+    bins: Union[Sequence, str, int] = None
 
     @typechecked
     def __post_init__(self):
@@ -136,8 +146,11 @@ class Group(Discretize):
             groupby_args = self.make_datetime_groupby_args(self.by, self.bins)
 
         elif self.bins:
+            bin_edges = self.make_bin_edges(
+                data=self.data, col_name=self.by, bins=self.bins
+            )
             groupby_args = self.make_discretized_groupby_args(
-                self.by, self.data, self.bin_edges
+                self.by, self.data, bin_edges
             )
 
         else:
