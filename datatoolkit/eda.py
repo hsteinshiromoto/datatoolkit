@@ -261,10 +261,7 @@ class Summarize(Group):
 
     """
 
-    def __post_init__(self):
-        self.get_count()
-
-    def get_count(self) -> pd.DataFrame:
+    def get_count(self, summarized_data: pd.DataFrame) -> pd.DataFrame:
         """
         Returns a pandas DataFrame with the count of occurrences of each unique value in the specified feature column.
         Also adds a cumulative count column to the DataFrame.
@@ -275,22 +272,20 @@ class Summarize(Group):
         Example:
             >>> data = pd.DataFrame({'by': ['A', 'A', 'B', 'B', 'B', 'C'], 'feature': [1, 2, 3, 1, 2, 3]})
             >>> summarize = Summarize(feature='feature', by=['by'], data=data)
-            >>> summarize.get_count()  # doctest: +NORMALIZE_WHITESPACE
+            >>> summarize.get_count(summary := pd.DataFrame())  # doctest: +NORMALIZE_WHITESPACE
                 count_feature  cum_count_feature
             by
             A               2                  2
             B               3                  5
             C               1                  6
         """
-        self.summarized_data = self.grouped.count().to_frame(
-            name=f"count_{self.feature}"
-        )
+        summarized_data[f"count_{self.feature}"] = self.grouped.count()
 
-        self.summarized_data[f"cum_count_{self.feature}"] = self.summarized_data[
+        summarized_data[f"cum_count_{self.feature}"] = summarized_data[
             f"count_{self.feature}"
         ].cumsum()
 
-        return self.summarized_data
+        return summarized_data
 
     def get_proportion(self) -> pd.DataFrame:
         """
@@ -348,6 +343,8 @@ class Summarize(Group):
         """
         Generates a summary of the data, including group counts, proportions, and entropy.
         """
+        summarized_data = pd.DataFrame()
+
         self.get_proportion()
         self.get_entropy()
 
