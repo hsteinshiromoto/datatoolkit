@@ -44,11 +44,12 @@ class Discretize:
 
     feature: str
     data: pd.DataFrame
-    bins: Union[Sequence[np.number], str, int] = "auto"
+    bins: Union[Sequence[np.number], str, int] = None
 
     def __post_init__(self):
-        self.make_bin_edges()
-        self.get_labels()
+        if self.bins:
+            self.make_bin_edges()
+            self.get_labels()
 
     def make_bin_edges(self):
         """
@@ -106,6 +107,12 @@ class Group(Discretize):
             2015-03-08    120000
     M       2015-03-01    210000
             2015-03-08    110000
+    Name: income, dtype: int64
+    >>> group = Group(feature='income', by=['gender'], data=df)
+    >>> group.grouped.sum() # doctest: +NORMALIZE_WHITESPACE
+    gender
+    F    360000
+    M    320000
     Name: income, dtype: int64
     """
 
