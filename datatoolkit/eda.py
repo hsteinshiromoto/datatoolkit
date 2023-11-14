@@ -99,6 +99,13 @@ class Group(Discretize):
     ... 'income': [50000, 60000, 70000, 80000, 90000, 100000, 110000, 120000]
     ... })
     >>> group = Group(feature='income', by=['gender', 'date'], data=df, bins='W')
+    >>> group.grouped.sum() # doctest: +NORMALIZE_WHITESPACE
+    gender  date
+    F       2015-03-01    240000
+            2015-03-08    120000
+    M       2015-03-01    210000
+            2015-03-08    110000
+    Name: income, dtype: int64
     """
 
     by: Union[str, Iterable[Union[int, str, pd.api.types.CategoricalDtype]]]
