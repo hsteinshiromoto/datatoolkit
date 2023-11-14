@@ -6,6 +6,7 @@ from typing import Iterable, Union
 
 import numpy as np
 import pandas as pd
+from pandas.api.types import is_datetime64_any_dtype as is_datetime
 from scipy.stats import entropy
 from typeguard import typechecked
 
@@ -70,7 +71,8 @@ class Discretize:
         self.get_labels()
 
 
-class Group:
+@dataclass
+class Group(Discretize):
     """
     A class for creating groups based on a feature and grouping variables.
 
@@ -99,14 +101,13 @@ class Group:
     >>> group = Group(feature='income', by='gender', data=df)
     """
 
+    feature: str
+    by: Union[str, Iterable[Union[int, str, pd.api.types.CategoricalDtype]]]
+    data: pd.DataFrame
+    bins: Union[Sequence, str, int] = None
+
     @typechecked
-    def __init__(
-        self,
-        feature: str,
-        by: Union[str, Iterable[Union[np.number, str, pd.api.types.CategoricalDtype]]],
-        data: pd.DataFrame,
-        bins: Union[Sequence, str, int] = None,
-    ):
+    def __post_init__(self):
         """
         Initialize the Group class with the specified feature, by group(s), and data.
 
@@ -115,31 +116,15 @@ class Group:
             by (list[Union[int, str]]): The column(s) to group the data by.
             data (pd.DataFrame): The input data to analyze.
         """
-        self.data = data
-        self.feature = feature or by
-
-        if bins:
-            bin_edges = self.get_bin_edges(by, data, bins)
-            self.by = self.make_groupby_args(by, data, bin_edges)
+        if self.bins:
+            self.groupby_args = self.make_groupby_args(
+                self.by, self.data, self.bin_edges
+            )
 
         else:
-            self.by = by
+            self.groupby_args = self.by
 
         self.make_groups()
-
-    @staticmethod
-    def get_bin_edges(
-        by: str,
-        data: pd.DataFrame,
-        bins: Union[Sequence, str, int],
-    ) -> np.ndarray:
-        """
-        Calculates the bin edges for the data.
-
-        Returns:
-            np.ndarray: Array of bin
-        """
-        return np.histogram_bin_edges(data[by], bins=bins)
 
     @staticmethod
     def make_groupby_args(
@@ -156,7 +141,7 @@ class Group:
 
     def make_groups(self):
         """Creates groups based on the feature"""
-        self.grouped = self.data.groupby(self.by)[self.feature]
+        self.grouped = self.data.groupby(self.groupby_args)[self.feature]
 
     def __repr__(self):
         return f"{self.__class__.__name__}(data={self.data}, features={self.by})"
