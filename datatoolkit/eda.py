@@ -116,15 +116,16 @@ class Group(Discretize):
             by (list[Union[int, str]]): The column(s) to group the data by.
             data (pd.DataFrame): The input data to analyze.
         """
-        if self.bins:
-            self.groupby_args = self.make_groupby_args(
-                self.by, self.data, self.bin_edges
-            )
+        if self.bins in ["D", "W", "M", "Q", "Y"]:
+            groupby_args = self.make_datetime_groupby_args(self.by, self.bins)
+
+        elif self.bins:
+            groupby_args = self.make_groupby_args(self.by, self.data, self.bin_edges)
 
         else:
-            self.groupby_args = self.by
+            groupby_args = self.by
 
-        self.make_groups()
+        self.make_groups(groupby_args)
 
     @staticmethod
     def make_groupby_args(
@@ -139,9 +140,24 @@ class Group(Discretize):
 
         return pd.cut(flattened, bins=bin_edges)
 
-    def make_groups(self):
+    @staticmethod
+    def make_datetime_groupby_args(
+        by: Union[str, Iterable[Union[int, str, pd.api.types.CategoricalDtype]]],
+        bins: str,
+    ):
+        """
+        Creates a dictionary of arguments to pass to the groupby function.
+        """
+        if bins not in ["D", "W", "M", "Q", "Y"]:
+            raise ValueError(
+                f"Expected freq to be one of 'D', 'W', 'M', 'Q', 'Y', got {bins}"
+            )
+
+        return pd.Grouper(key=by, freq=bins)
+
+    def make_groups(self, groupby_args):
         """Creates groups based on the feature"""
-        self.grouped = self.data.groupby(self.groupby_args)[self.feature]
+        self.grouped = self.data.groupby(groupby_args)[self.feature]
 
     def __repr__(self):
         return f"{self.__class__.__name__}(data={self.data}, features={self.by})"
