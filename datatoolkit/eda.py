@@ -100,10 +100,7 @@ class Group(Discretize):
     >>> group = Group(feature='income', by='gender', data=df)
     """
 
-    feature: str
     by: Union[str, Iterable[Union[int, str, pd.api.types.CategoricalDtype]]]
-    data: pd.DataFrame
-    bins: Union[Sequence, str, int] = None
 
     @typechecked
     def __post_init__(self):
@@ -116,6 +113,13 @@ class Group(Discretize):
             data (pd.DataFrame): The input data to analyze.
         """
         if self.bins in ["D", "W", "M", "Q", "Y"]:
+            datetime_col = [col for col in self.by if is_datetime(self.data[self.by])]
+            self.by = [col for col in self.by if col not in datetime_col]
+
+            self.data.set_index(
+                pd.to_datetime(self.data[datetime_col].dt.date), inplace=True
+            )
+
             groupby_args = self.make_datetime_groupby_args(self.by, self.bins)
 
         elif self.bins:
