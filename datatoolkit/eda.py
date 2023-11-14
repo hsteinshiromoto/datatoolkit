@@ -17,7 +17,7 @@ sys.path.append(f"{PROJECT_ROOT}")
 from datatoolkit.utils import flatten
 
 
-@dataclass
+@dataclass(kw_only=True)
 class Discretize:
     """
     Discretize a continuous feature into bins.
@@ -34,20 +34,19 @@ class Discretize:
     Examples:
         >>> import pandas as pd
         >>> df = pd.DataFrame({'A': [1, 2, 3, 4, 5]})
-        >>> d = Discretize('A', df, bins=2)
+        >>> d = Discretize(feature='A', data=df, bins=2)
         >>> d()
         >>> d.bin_edges
         array([1., 3., 5.])
         >>> d.labels
-        ['1.0-3.0', '3.0-5.0']
+        ['1.00-3.00', '3.00-5.00']
     """
 
     feature: str
     data: pd.DataFrame
-    bins: Union[Sequence[np.number], str, int] = None
+    bins: Union[Sequence[np.number], str, int] = "auto"
 
     def __post_init__(self):
-        self.bins = self.bins or "auto"
         self.make_bin_edges()
         self.get_labels()
 
