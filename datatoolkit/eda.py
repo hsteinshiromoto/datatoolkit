@@ -20,10 +20,10 @@ from datatoolkit.utils import flatten
 @dataclass(kw_only=True)
 class Discretize:
     """
-    Discretize a continuous feature into bins.
+    Discretize a continuous column into bins.
 
     Args:
-        feature (str): The name of the feature to discretize.
+        col_name (str): The name of the column to discretize.
         data (pd.DataFrame): The input data.
         bins (Union[Sequence, str, int], optional): The number of bins to use or the edges of the bins. Defaults to None.
 
@@ -34,28 +34,29 @@ class Discretize:
     Examples:
         >>> import pandas as pd
         >>> df = pd.DataFrame({'A': [1, 2, 3, 4, 5]})
-        >>> d = Discretize(feature='A', data=df, bins=2)
-        >>> d()
-        >>> d.bin_edges
-        array([1., 3., 5.])
-        >>> d.labels
+        >>> d = Discretize()
+        >>> print(bin_edges := d.make_bin_edges(data=df, col_name='A', bins=2))
+        [1. 3. 5.]
+        >>> d.get_labels(bin_edges)
         ['1.00-3.00', '3.00-5.00']
     """
 
-    feature: str
-    data: pd.DataFrame
-    bins: Union[Sequence[np.number], str, int] = None
-
-    def __post_init__(self):
-        if self.bins:
-            self.make_bin_edges()
-            self.get_labels()
-
-    def make_bin_edges(self):
+    @staticmethod
+    def make_bin_edges(
+        data: pd.DataFrame, col_name: str, bins: Union[Sequence, str, int]
+    ) -> np.ndarray[np.number]:
         """
         Compute the bin edges for the given feature using the specified number of bins.
+
+        Args:
+            data (pd.DataFrame): The input data.
+            col_name (str): The name of the column to compute bin edges for.
+            bins (Union[Sequence, str, int]): The number of bins to use or the bin edges.
+
+        Returns:
+            np.ndarray[np.number]: The computed bin edges.
         """
-        self.bin_edges = np.histogram_bin_edges(self.data[self.feature], bins=self.bins)
+        return np.histogram_bin_edges(data[col_name], bins=bins)
 
     def get_labels(self):
         """
