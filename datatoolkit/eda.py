@@ -77,18 +77,19 @@ class Group(Discretize):
 
     Attributes:
     -----------
-    feature : str
-        The feature to group by.
-    by : list[int | str]
-        The variables to group by.
-    data : pd.DataFrame
-        The data to group.
+    by : str | Iterable[int | str | pd.api.types.CategoricalDtype]
+        The column(s) to group the data by.
 
     Methods:
     --------
-    make_groups():
+    __post_init__():
+        Initialize the Group class with the specified feature, by group(s), and data.
+    make_discretized_groupby_args(by: str, data: pd.DataFrame, bin_edges: Iterable[np.number]):
+        Creates a dictionary of arguments to pass to the groupby function for discretized data.
+    make_datetime_groupby_args(by: Union[str, Iterable[Union[int, str]]], bins: str):
+        Creates a dictionary of arguments to pass to the groupby function for datetime data.
+    make_groups(groupby_args):
         Creates groups based on the feature.
-
 
     Example:
     --------
@@ -129,7 +130,9 @@ class Group(Discretize):
             groupby_args = self.make_datetime_groupby_args(self.by, self.bins)
 
         elif self.bins:
-            groupby_args = self.make_groupby_args(self.by, self.data, self.bin_edges)
+            groupby_args = self.make_discretized_groupby_args(
+                self.by, self.data, self.bin_edges
+            )
 
         else:
             groupby_args = self.by
@@ -137,13 +140,21 @@ class Group(Discretize):
         self.make_groups(groupby_args)
 
     @staticmethod
-    def make_groupby_args(
+    def make_discretized_groupby_args(
         by: str,
         data: pd.DataFrame,
         bin_edges: Iterable[np.number],
     ):
         """
-        Creates a dictionary of arguments to pass to the groupby function.
+        Creates a dictionary of arguments to pass to the groupby function for discretized data.
+
+        Args:
+            by (str): The column to group the data by.
+            data (pd.DataFrame): The input data to analyze.
+            bin_edges (Iterable[np.number]): The bin edges to use for discretization.
+
+        Returns:
+            A dictionary of arguments to pass to the groupby function.
         """
         flattened = np.array(list(flatten(data[by].values)))
 
@@ -155,7 +166,14 @@ class Group(Discretize):
         bins: str,
     ):
         """
-        Creates a dictionary of arguments to pass to the groupby function.
+        Creates a dictionary of arguments to pass to the groupby function for datetime data.
+
+        Args:
+            by (Union[str, Iterable[Union[int, str]]]): The column(s) to group the data by.
+            bins (str): The frequency to group the data by.
+
+        Returns:
+            A dictionary of arguments to pass to the groupby function.
         """
         if isinstance(by, Iterable):
             by.extend([pd.Grouper(freq=bins)])
@@ -172,7 +190,12 @@ class Group(Discretize):
             )
 
     def make_groups(self, groupby_args):
-        """Creates groups based on the feature"""
+        """
+        Creates groups based on the feature.
+
+        Args:
+            groupby_args: The arguments to pass to the groupby function.
+        """
         self.grouped = self.data.groupby(groupby_args)[self.feature]
 
     def __repr__(self):
