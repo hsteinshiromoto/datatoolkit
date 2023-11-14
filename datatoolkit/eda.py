@@ -93,11 +93,12 @@ class Group(Discretize):
     Example:
     --------
     >>> df = pd.DataFrame({
+    ... "date": pd.date_range('2015-02-24', periods=8, freq='D'),
     ... 'gender': ['M', 'F', 'M', 'F', 'M', 'F', 'M', 'F'],
     ... 'age': [25, 30, 35, 40, 45, 50, 55, 60],
     ... 'income': [50000, 60000, 70000, 80000, 90000, 100000, 110000, 120000]
     ... })
-    >>> group = Group(feature='income', by='gender', data=df)
+    >>> group = Group(feature='income', by=['gender', 'date'], data=df, bins='W')
     """
 
     by: Union[str, Iterable[Union[int, str, pd.api.types.CategoricalDtype]]]
@@ -113,12 +114,10 @@ class Group(Discretize):
             data (pd.DataFrame): The input data to analyze.
         """
         if self.bins in ["D", "W", "M", "Q", "Y"]:
-            datetime_col = [col for col in self.by if is_datetime(self.data[self.by])]
+            datetime_col = [col for col in self.by if is_datetime(self.data[col])]
             self.by = [col for col in self.by if col not in datetime_col]
 
-            self.data.set_index(
-                pd.to_datetime(self.data[datetime_col].dt.date), inplace=True
-            )
+            self.data.set_index(self.data[datetime_col], inplace=True)
 
             groupby_args = self.make_datetime_groupby_args(self.by, self.bins)
 
