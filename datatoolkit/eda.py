@@ -144,18 +144,22 @@ class Group(Discretize):
 
     @staticmethod
     def make_datetime_groupby_args(
-        by: Union[str, Iterable[Union[int, str, pd.api.types.CategoricalDtype]]],
+        by: Union[str, Iterable[Union[int, str]]],
         bins: str,
     ):
         """
         Creates a dictionary of arguments to pass to the groupby function.
         """
-        if bins not in ["D", "W", "M", "Q", "Y"]:
-            raise ValueError(
-                f"Expected freq to be one of 'D', 'W', 'M', 'Q', 'Y', got {bins}"
-            )
+        if isinstance(by, Iterable):
+            return [pd.Grouper(freq=bins)].extend(by)
 
-        return pd.Grouper(key=by, freq=bins)
+        elif isinstance(by, str):
+            return [pd.Grouper(freq=bins)].append(by)
+
+        else:
+            raise TypeError(
+                f"Expected by to be str or Iterable[Union[int, str]], got {type(by)}"
+            )
 
     def make_groups(self, groupby_args):
         """Creates groups based on the feature"""
