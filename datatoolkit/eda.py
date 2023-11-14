@@ -20,16 +20,11 @@ from datatoolkit.utils import flatten
 @dataclass(kw_only=True)
 class Discretize:
     """
-    Discretize a continuous column into bins.
-
-    Args:
-        col_name (str): The name of the column to discretize.
-        data (pd.DataFrame): The input data.
-        bins (Union[Sequence, str, int], optional): The number of bins to use or the edges of the bins. Defaults to None.
+    A class for discretizing a continuous column into bins.
 
     Attributes:
-        make_bins: The edges of the bins.
-        get_labels: The labels for each bin.
+        make_bin_edges (method): A method that computes the edges of the bins.
+        get_labels (method): A method that returns the labels for each bin.
 
     Examples:
         >>> import pandas as pd
@@ -58,18 +53,21 @@ class Discretize:
         """
         return np.histogram_bin_edges(data[col_name], bins=bins)
 
-    def get_labels(self):
+    @staticmethod
+    def get_labels(bin_edges: np.ndarray[np.number]) -> list[str]:
         """
         Returns a list of labels for each bin in the histogram.
-        """
-        self.labels = [
-            f"{self.bin_edges[i]:.2f}-{self.bin_edges[i + 1]:.2f}"
-            for i in range(len(self.bin_edges) - 1)
-        ]
 
-    def __call__(self):
-        self.make_bin_edges()
-        self.get_labels()
+        Args:
+            bin_edges (np.ndarray[np.number]): The bin edges.
+
+        Returns:
+            list[str]: The labels for each bin in the histogram.
+        """
+        return [
+            f"{bin_edges[i]:.2f}-{bin_edges[i + 1]:.2f}"
+            for i in range(len(bin_edges) - 1)
+        ]
 
 
 @dataclass(kw_only=True)
