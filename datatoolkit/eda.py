@@ -117,7 +117,7 @@ class Group(Discretize):
             datetime_col = [col for col in self.by if is_datetime(self.data[col])]
             self.by = [col for col in self.by if col not in datetime_col]
 
-            self.data.set_index(self.data[datetime_col], inplace=True)
+            self.data.set_index(datetime_col, inplace=True)
 
             groupby_args = self.make_datetime_groupby_args(self.by, self.bins)
 
@@ -151,10 +151,13 @@ class Group(Discretize):
         Creates a dictionary of arguments to pass to the groupby function.
         """
         if isinstance(by, Iterable):
-            return [pd.Grouper(freq=bins)].extend(by)
+            by.extend([pd.Grouper(freq=bins)])
+
+            return by
 
         elif isinstance(by, str):
-            return [pd.Grouper(freq=bins)].append(by)
+            [by].extend([pd.Grouper(freq=bins)])
+            return by
 
         else:
             raise TypeError(
