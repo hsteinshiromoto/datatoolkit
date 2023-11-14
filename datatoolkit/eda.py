@@ -70,7 +70,7 @@ class Discretize:
         self.get_labels()
 
 
-@dataclass
+@dataclass(kw_only=True)
 class Group(Discretize):
     """
     A class for creating groups based on a feature and grouping variables.
