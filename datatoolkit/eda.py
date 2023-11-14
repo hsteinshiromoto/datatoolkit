@@ -205,6 +205,7 @@ class Group(Discretize):
         return f"{self.__class__.__name__}(data={self.data}, features={self.by})"
 
 
+@dataclass(kw_only=True)
 class Summarize(Group):
     """
     A class used to summarize data by groups.
@@ -241,14 +242,7 @@ class Summarize(Group):
 
     """
 
-    def __init__(
-        self,
-        feature: str,
-        by: Union[str, Iterable[Union[np.number, str, pd.api.types.CategoricalDtype]]],
-        data: pd.DataFrame,
-    ):
-        super().__init__(feature=feature, by=by, data=data)
-
+    def __post_init__(self):
         self.get_count()
 
     def get_count(self) -> pd.DataFrame:
