@@ -3,6 +3,9 @@ site_name: DataToolkit Documentation
 theme:
   name: "material"
 
+plugins:
+  - mkdocstrings
+
 nav:
   - DataToolkit Docs: index.md
   - tutorials.md
