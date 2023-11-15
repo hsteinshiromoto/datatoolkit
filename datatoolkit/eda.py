@@ -253,12 +253,25 @@ class Summarize(Group):
     -------
     >>> data = pd.DataFrame({'by': ['A', 'A', 'B', 'B', 'B', 'C'], 'feature': [1, 2, 3, 1, 2, 3]})
     >>> summarize = Summarize(feature='feature', by=['by'], data=data)
-    >>> summary = summarize.get_summary()
-    >>> summary.columns # doctest: +NORMALIZE_WHITESPACE
-        Index(['count_feature', 'cum_count_feature', 'proportions_feature',
-            'cum_proportions_feature', 'entropy_feature'],
-            dtype='object')
-
+    >>> summarized_data = summarize.make_summary()
+    >>> summarized_data[['count_feature', 'cum_count_feature']]  # doctest: +NORMALIZE_WHITESPACE
+        count_feature  cum_count_feature
+    by
+    A               2                  2
+    B               3                  5
+    C               1                  6
+    >>> summarized_data[['proportions_feature', 'cum_proportions_feature']]  # doctest: +NORMALIZE_WHITESPACE
+        proportions_feature  cum_proportions_feature
+    by
+    A              0.333333                 0.333333
+    B              0.500000                 0.833333
+    C              0.166667                 1.000000
+    >>> summarized_data[['entropy_feature']]  # doctest: +NORMALIZE_WHITESPACE
+            entropy_feature
+    by
+    A          0.636514
+    B          1.011404
+    C          0.000000
     """
 
     def get_count(self, summarized_data: pd.DataFrame) -> pd.DataFrame:
@@ -268,16 +281,6 @@ class Summarize(Group):
 
         Returns:
             pd.DataFrame: A DataFrame with the count of occurrences of each unique value in the specified feature column.
-
-        Example:
-            >>> data = pd.DataFrame({'by': ['A', 'A', 'B', 'B', 'B', 'C'], 'feature': [1, 2, 3, 1, 2, 3]})
-            >>> summarize = Summarize(feature='feature', by=['by'], data=data)
-            >>> summarize.get_count(summary := pd.DataFrame())  # doctest: +NORMALIZE_WHITESPACE
-                count_feature  cum_count_feature
-            by
-            A               2                  2
-            B               3                  5
-            C               1                  6
         """
         summarized_data[f"count_{self.feature}"] = self.grouped.count()
 
@@ -287,68 +290,46 @@ class Summarize(Group):
 
         return summarized_data
 
-    def get_proportion(self) -> pd.DataFrame:
+    def get_proportion(self, summarized_data: pd.DataFrame) -> pd.DataFrame:
         """
         Calculates the proportion and cumulative proportion of the feature in the dataset.
         The results are stored in the summarized_data attribute of the Group object.
 
         Returns:
             pd.DataFrame: A DataFrame with the proportion and cumulative proportion of the feature in the dataset.
-
-        Example:
-            >>> data = pd.DataFrame({'by': ['A', 'A', 'B', 'B', 'B', 'C'], 'feature': [1, 2, 3, 1, 2, 3]})
-            >>> summarize = Summarize(feature='feature', by=['by'], data=data)
-            >>> summarize.get_proportion() # doctest: +NORMALIZE_WHITESPACE
-                proportions_feature  cum_proportions_feature
-            by
-            A              0.333333                 0.333333
-            B              0.500000                 0.833333
-            C              0.166667                 1.000000
         """
-        self.summarized_data[f"proportions_{self.feature}"] = (
-            self.summarized_data[f"count_{self.feature}"]
-            / self.summarized_data[f"count_{self.feature}"].sum()
+        summarized_data[f"proportions_{self.feature}"] = (
+            summarized_data[f"count_{self.feature}"]
+            / summarized_data[f"count_{self.feature}"].sum()
         )
 
-        self.summarized_data[f"cum_proportions_{self.feature}"] = self.summarized_data[
+        summarized_data[f"cum_proportions_{self.feature}"] = summarized_data[
             f"proportions_{self.feature}"
         ].cumsum()
 
-        return self.summarized_data[
-            [f"proportions_{self.feature}", f"cum_proportions_{self.feature}"]
-        ]
+        return summarized_data
 
-    def get_entropy(self) -> pd.DataFrame:
+    def get_entropy(self, summarized_data: pd.DataFrame) -> pd.DataFrame:
         """
         Calculates the entropy of the grouped data for the specified feature and adds it to the summarized data.
 
         Returns:
             pd.DataFrame: A DataFrame with the entropy of the feature for each group.
-
-        Example:
-            >>> data = pd.DataFrame({'by': ['A', 'A', 'B', 'B', 'B', 'C'], 'feature': [1, 2, 3, 1, 2, 3]})
-            >>> summarize = Summarize(feature='feature', by=['by'], data=data)
-            >>> summarize.get_entropy() # doctest: +NORMALIZE_WHITESPACE
-                entropy_feature
-            by
-            A          0.636514
-            B          1.011404
-            C          0.000000
         """
-        self.summarized_data[f"entropy_{self.feature}"] = self.grouped.apply(entropy)
+        summarized_data[f"entropy_{self.feature}"] = self.grouped.apply(entropy)
 
-        return self.summarized_data[[f"entropy_{self.feature}"]]
+        return summarized_data
 
-    def get_summary(self):
+    def make_summary(self):
         """
         Generates a summary of the data, including group counts, proportions, and entropy.
         """
         summarized_data = pd.DataFrame()
+        summarized_data = self.get_count(summarized_data)
+        summarized_data = self.get_proportion(summarized_data)
+        summarized_data = self.get_entropy(summarized_data)
 
-        self.get_proportion()
-        self.get_entropy()
-
-        return self.summarized_data
+        return summarized_data
 
 
 # class Discretize(Summarize):
