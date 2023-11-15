@@ -95,6 +95,9 @@ pull:
 pyenv:
 	pyenv install -v ${PYTHON_VERSION}
 	pyenv global ${PYTHON_VERSION}
+
+project_tree:
+	tree -f datatoolkit -I '*.pyc|__pycache__'
 #################################################################################
 # Self Documenting Commands                                                     #
 #################################################################################

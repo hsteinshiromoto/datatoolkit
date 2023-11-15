@@ -18,3 +18,14 @@ your use case by looking at the different pages.
 ## Project Overview
 
 ::: datatoolkit
+
+```
+datatoolkit
+├── datatoolkit/__init__.py
+├── datatoolkit/eda.py
+├── datatoolkit/hypothesis.py
+├── datatoolkit/mock_dataset.py
+├── datatoolkit/model_selection.py
+├── datatoolkit/utils.py
+└── datatoolkit/visualize.py
+```
