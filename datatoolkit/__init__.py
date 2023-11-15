@@ -1,18 +1,18 @@
 __version__ = "0.2.5"
 
-from datatoolkit.eda import Group, Summarize, Numerical
-from datatoolkit.utils import Quantize, QuantizeDatetime, MostFrequent
+from datatoolkit.eda import Group, Numerical, Summarize
+from datatoolkit.hypothesis import SingleSampleTest, TwoSampleTest
 from datatoolkit.mock_dataset import DataTypes, MockData
 from datatoolkit.model_selection import (
-    CostFunction,
-    ClassificationCostFunction,
     BayesianSearchCV,
+    ClassificationCostFunction,
+    CostFunction,
 )
-from datatoolkit.hypothesis import SingleSampleTest, TwoSampleTest
+from datatoolkit.utils import MostFrequent, Quantize, QuantizeDatetime
 from datatoolkit.visualize import (
-    heatmap_4d,
-    line_bar_plot,
     dash_line,
-    hist_box,
     graphplot,
+    heatmap_4d,
+    hist_box,
+    line_bar_plot,
 )
