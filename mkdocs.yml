@@ -10,5 +10,5 @@ nav:
   - DataToolkit Docs: index.md
   - tutorials.md
   - How-To Guides: how-to-guides.md
-  - reference.md
+  - Reference: reference/reference.md
   - explanation.md
