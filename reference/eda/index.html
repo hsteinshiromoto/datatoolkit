@@ -1,0 +1,2863 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.4.8">
+    
+    
+      
+        <title>eda.py - DataToolkit Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.4b4a2bd9.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#edapy" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="DataToolkit Documentation" class="md-header__button md-logo" aria-label="DataToolkit Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            DataToolkit Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              eda.py
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="DataToolkit Documentation" class="md-nav__button md-logo" aria-label="DataToolkit Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    DataToolkit Documentation
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    DataToolkit Docs
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tutorials/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Tutorials
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../how-to-guides.md" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    How-To Guides
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../reference/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Reference
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../explanation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Explanation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#datatoolkit.eda" class="md-nav__link">
+    eda
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#datatoolkit.eda.Discretize" class="md-nav__link">
+    Discretize
+  </a>
+  
+    <nav class="md-nav" aria-label="Discretize">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#datatoolkit.eda.Discretize.get_labels" class="md-nav__link">
+    get_labels()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#datatoolkit.eda.Discretize.make_bin_edges" class="md-nav__link">
+    make_bin_edges()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#datatoolkit.eda.Group" class="md-nav__link">
+    Group
+  </a>
+  
+    <nav class="md-nav" aria-label="Group">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#datatoolkit.eda.Group--attributes" class="md-nav__link">
+    Attributes:
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#datatoolkit.eda.Group--methods" class="md-nav__link">
+    Methods:
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#datatoolkit.eda.Group--example" class="md-nav__link">
+    Example:
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#datatoolkit.eda.Group.__post_init__" class="md-nav__link">
+    __post_init__()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#datatoolkit.eda.Group.make_datetime_groupby_args" class="md-nav__link">
+    make_datetime_groupby_args()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#datatoolkit.eda.Group.make_discretized_groupby_args" class="md-nav__link">
+    make_discretized_groupby_args()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#datatoolkit.eda.Group.make_groups" class="md-nav__link">
+    make_groups()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#datatoolkit.eda.Numerical" class="md-nav__link">
+    Numerical
+  </a>
+  
+    <nav class="md-nav" aria-label="Numerical">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#datatoolkit.eda.Numerical--attributes" class="md-nav__link">
+    Attributes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#datatoolkit.eda.Numerical--methods" class="md-nav__link">
+    Methods
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#datatoolkit.eda.Numerical--example" class="md-nav__link">
+    Example
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#datatoolkit.eda.Numerical.get_stats" class="md-nav__link">
+    get_stats()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#datatoolkit.eda.Summarize" class="md-nav__link">
+    Summarize
+  </a>
+  
+    <nav class="md-nav" aria-label="Summarize">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#datatoolkit.eda.Summarize--attributes" class="md-nav__link">
+    Attributes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#datatoolkit.eda.Summarize--methods" class="md-nav__link">
+    Methods
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#datatoolkit.eda.Summarize--example" class="md-nav__link">
+    Example
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#datatoolkit.eda.Summarize.get_count" class="md-nav__link">
+    get_count()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#datatoolkit.eda.Summarize.get_entropy" class="md-nav__link">
+    get_entropy()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#datatoolkit.eda.Summarize.get_proportion" class="md-nav__link">
+    get_proportion()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#datatoolkit.eda.Summarize.make_summary" class="md-nav__link">
+    make_summary()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="edapy"><code>eda.py</code></h1>
+
+
+<div class="doc doc-object doc-module">
+
+
+
+<a id="datatoolkit.eda"></a>
+  <div class="doc doc-contents first">
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+
+<h2 id="datatoolkit.eda.Discretize" class="doc doc-heading">
+          <code>Discretize</code>
+
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
+  </span>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+
+  
+      <p>A class for discretizing a continuous column into bins.</p>
+
+
+
+  <p><strong>Attributes:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>make_bin_edges</code></td>
+          <td>
+                <code>method</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>A method that computes the edges of the bins.</p>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td><code>get_labels</code></td>
+          <td>
+                <code>method</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>A method that returns the labels for each bin.</p>
+            </div>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+
+<p><strong>Examples:</strong></p>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;A&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">d</span> <span class="o">=</span> <span class="n">Discretize</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">bin_edges</span> <span class="o">:=</span> <span class="n">d</span><span class="o">.</span><span class="n">make_bin_edges</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">df</span><span class="p">,</span> <span class="n">col_name</span><span class="o">=</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
+<span class="go">[1. 3. 5.]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">d</span><span class="o">.</span><span class="n">get_labels</span><span class="p">(</span><span class="n">bin_edges</span><span class="p">)</span>
+<span class="go">[&#39;1.00-3.00&#39;, &#39;3.00-5.00&#39;]</span>
+</code></pre></div>
+
+            <details class="quote">
+              <summary>Source code in <code>datatoolkit/eda.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span>
+<span class="normal">51</span>
+<span class="normal">52</span>
+<span class="normal">53</span>
+<span class="normal">54</span>
+<span class="normal">55</span>
+<span class="normal">56</span>
+<span class="normal">57</span>
+<span class="normal">58</span>
+<span class="normal">59</span>
+<span class="normal">60</span>
+<span class="normal">61</span>
+<span class="normal">62</span>
+<span class="normal">63</span>
+<span class="normal">64</span>
+<span class="normal">65</span>
+<span class="normal">66</span>
+<span class="normal">67</span>
+<span class="normal">68</span>
+<span class="normal">69</span>
+<span class="normal">70</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@dataclass</span><span class="p">(</span><span class="n">kw_only</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">Discretize</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A class for discretizing a continuous column into bins.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        make_bin_edges (method): A method that computes the edges of the bins.</span>
+<span class="sd">        get_labels (method): A method that returns the labels for each bin.</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; import pandas as pd</span>
+<span class="sd">        &gt;&gt;&gt; df = pd.DataFrame({&#39;A&#39;: [1, 2, 3, 4, 5]})</span>
+<span class="sd">        &gt;&gt;&gt; d = Discretize()</span>
+<span class="sd">        &gt;&gt;&gt; print(bin_edges := d.make_bin_edges(data=df, col_name=&#39;A&#39;, bins=2))</span>
+<span class="sd">        [1. 3. 5.]</span>
+<span class="sd">        &gt;&gt;&gt; d.get_labels(bin_edges)</span>
+<span class="sd">        [&#39;1.00-3.00&#39;, &#39;3.00-5.00&#39;]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">make_bin_edges</span><span class="p">(</span>
+        <span class="n">data</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">col_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">bins</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Sequence</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">number</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Compute the bin edges for the given feature using the specified number of bins.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            data (pd.DataFrame): The input data.</span>
+<span class="sd">            col_name (str): The name of the column to compute bin edges for.</span>
+<span class="sd">            bins (Union[Sequence, str, int]): The number of bins to use or the bin edges.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            np.ndarray[np.number]: The computed bin edges.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">histogram_bin_edges</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">col_name</span><span class="p">],</span> <span class="n">bins</span><span class="o">=</span><span class="n">bins</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get_labels</span><span class="p">(</span><span class="n">bin_edges</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">number</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns a list of labels for each bin in the histogram.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            bin_edges (np.ndarray[np.number]): The bin edges.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            list[str]: The labels for each bin in the histogram.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">bin_edges</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">bin_edges</span><span class="p">[</span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">bin_edges</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="p">]</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h3 id="datatoolkit.eda.Discretize.get_labels" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">get_labels</span><span class="p">(</span><span class="n">bin_edges</span><span class="p">)</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-staticmethod"><code>staticmethod</code></small>
+  </span>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Returns a list of labels for each bin in the histogram.</p>
+
+
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>bin_edges</code></td>
+          <td>
+                <code><span title="numpy.ndarray">ndarray</span>[<span title="numpy.number">number</span>]</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>The bin edges.</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code>list[str]</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>list[str]: The labels for each bin in the histogram.</p>
+            </div>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+          <details class="quote">
+            <summary>Source code in <code>datatoolkit/eda.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">56</span>
+<span class="normal">57</span>
+<span class="normal">58</span>
+<span class="normal">59</span>
+<span class="normal">60</span>
+<span class="normal">61</span>
+<span class="normal">62</span>
+<span class="normal">63</span>
+<span class="normal">64</span>
+<span class="normal">65</span>
+<span class="normal">66</span>
+<span class="normal">67</span>
+<span class="normal">68</span>
+<span class="normal">69</span>
+<span class="normal">70</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@staticmethod</span>
+<span class="k">def</span> <span class="nf">get_labels</span><span class="p">(</span><span class="n">bin_edges</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">number</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns a list of labels for each bin in the histogram.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        bin_edges (np.ndarray[np.number]): The bin edges.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        list[str]: The labels for each bin in the histogram.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">[</span>
+        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">bin_edges</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">bin_edges</span><span class="p">[</span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">bin_edges</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="p">]</span>
+</code></pre></div></td></tr></table></div>
+          </details>
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h3 id="datatoolkit.eda.Discretize.make_bin_edges" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">make_bin_edges</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">col_name</span><span class="p">,</span> <span class="n">bins</span><span class="p">)</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-staticmethod"><code>staticmethod</code></small>
+  </span>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Compute the bin edges for the given feature using the specified number of bins.</p>
+
+
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>data</code></td>
+          <td>
+                <code><span title="pandas.DataFrame">DataFrame</span></code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>The input data.</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>col_name</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>The name of the column to compute bin edges for.</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>bins</code></td>
+          <td>
+                <code><span title="typing.Union">Union</span>[<span title="collections.abc.Sequence">Sequence</span>, str, int]</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>The number of bins to use or the bin edges.</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code><span title="numpy.ndarray">ndarray</span>[<span title="numpy.number">number</span>]</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>np.ndarray[np.number]: The computed bin edges.</p>
+            </div>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+          <details class="quote">
+            <summary>Source code in <code>datatoolkit/eda.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span>
+<span class="normal">51</span>
+<span class="normal">52</span>
+<span class="normal">53</span>
+<span class="normal">54</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@staticmethod</span>
+<span class="k">def</span> <span class="nf">make_bin_edges</span><span class="p">(</span>
+    <span class="n">data</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">col_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">bins</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Sequence</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">number</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute the bin edges for the given feature using the specified number of bins.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        data (pd.DataFrame): The input data.</span>
+<span class="sd">        col_name (str): The name of the column to compute bin edges for.</span>
+<span class="sd">        bins (Union[Sequence, str, int]): The number of bins to use or the bin edges.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        np.ndarray[np.number]: The computed bin edges.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">histogram_bin_edges</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">col_name</span><span class="p">],</span> <span class="n">bins</span><span class="o">=</span><span class="n">bins</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+          </details>
+  </div>
+
+</div>
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+
+<h2 id="datatoolkit.eda.Group" class="doc doc-heading">
+          <code>Group</code>
+
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
+  </span>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+          <p class="doc doc-class-bases">
+            Bases: <code><a class="autorefs autorefs-internal" title="datatoolkit.eda.Discretize" href="#datatoolkit.eda.Discretize">Discretize</a></code></p>
+
+  
+      <p>A class for creating groups based on a feature and grouping variables.</p>
+<h4 id="datatoolkit.eda.Group--attributes">Attributes:</h4>
+<p>by : str | Iterable[int | str | pd.api.types.CategoricalDtype]
+    The column(s) to group the data by.</p>
+<h4 id="datatoolkit.eda.Group--methods">Methods:</h4>
+<p><strong>post_init</strong>():
+    Initialize the Group class with the specified feature, by group(s), and data.
+make_discretized_groupby_args(by: str, data: pd.DataFrame, bin_edges: Iterable[np.number]):
+    Creates a dictionary of arguments to pass to the groupby function for discretized data.
+make_datetime_groupby_args(by: Union[str, Iterable[Union[int, str]]], bins: str):
+    Creates a dictionary of arguments to pass to the groupby function for datetime data.
+make_groups(groupby_args):
+    Creates groups based on the feature.</p>
+<h4 id="datatoolkit.eda.Group--example">Example:</h4>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>df = pd.DataFrame({
+... "date": pd.date_range('2015-02-24', periods=8, freq='D'),
+... 'gender': ['M', 'F', 'M', 'F', 'M', 'F', 'M', 'F'],
+... 'age': [25, 30, 35, 40, 45, 50, 55, 60],
+... 'income': [50000, 60000, 70000, 80000, 90000, 100000, 110000, 120000]
+... })
+group = Group(feature='income', by=['gender', 'date'], data=df, bins='W')
+group.grouped.sum() # doctest: +NORMALIZE_WHITESPACE
+gender  date
+F       2015-03-01    240000
+        2015-03-08    120000
+M       2015-03-01    210000
+        2015-03-08    110000
+Name: income, dtype: int64
+group = Group(feature='income', by=['gender'], data=df)
+group.grouped.sum() # doctest: +NORMALIZE_WHITESPACE
+gender
+F    360000
+M    320000
+Name: income, dtype: int64
+group = Group(feature='income', by=['age'], data=df, bins='auto')
+group.grouped.sum() # doctest: +NORMALIZE_WHITESPACE
+(25.0, 33.75]     60000
+(33.75, 42.5]    150000
+(42.5, 51.25]    190000
+(51.25, 60.0]    230000
+Name: income, dtype: int64</p>
+</blockquote>
+</blockquote>
+</blockquote>
+
+            <details class="quote">
+              <summary>Source code in <code>datatoolkit/eda.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 73</span>
+<span class="normal"> 74</span>
+<span class="normal"> 75</span>
+<span class="normal"> 76</span>
+<span class="normal"> 77</span>
+<span class="normal"> 78</span>
+<span class="normal"> 79</span>
+<span class="normal"> 80</span>
+<span class="normal"> 81</span>
+<span class="normal"> 82</span>
+<span class="normal"> 83</span>
+<span class="normal"> 84</span>
+<span class="normal"> 85</span>
+<span class="normal"> 86</span>
+<span class="normal"> 87</span>
+<span class="normal"> 88</span>
+<span class="normal"> 89</span>
+<span class="normal"> 90</span>
+<span class="normal"> 91</span>
+<span class="normal"> 92</span>
+<span class="normal"> 93</span>
+<span class="normal"> 94</span>
+<span class="normal"> 95</span>
+<span class="normal"> 96</span>
+<span class="normal"> 97</span>
+<span class="normal"> 98</span>
+<span class="normal"> 99</span>
+<span class="normal">100</span>
+<span class="normal">101</span>
+<span class="normal">102</span>
+<span class="normal">103</span>
+<span class="normal">104</span>
+<span class="normal">105</span>
+<span class="normal">106</span>
+<span class="normal">107</span>
+<span class="normal">108</span>
+<span class="normal">109</span>
+<span class="normal">110</span>
+<span class="normal">111</span>
+<span class="normal">112</span>
+<span class="normal">113</span>
+<span class="normal">114</span>
+<span class="normal">115</span>
+<span class="normal">116</span>
+<span class="normal">117</span>
+<span class="normal">118</span>
+<span class="normal">119</span>
+<span class="normal">120</span>
+<span class="normal">121</span>
+<span class="normal">122</span>
+<span class="normal">123</span>
+<span class="normal">124</span>
+<span class="normal">125</span>
+<span class="normal">126</span>
+<span class="normal">127</span>
+<span class="normal">128</span>
+<span class="normal">129</span>
+<span class="normal">130</span>
+<span class="normal">131</span>
+<span class="normal">132</span>
+<span class="normal">133</span>
+<span class="normal">134</span>
+<span class="normal">135</span>
+<span class="normal">136</span>
+<span class="normal">137</span>
+<span class="normal">138</span>
+<span class="normal">139</span>
+<span class="normal">140</span>
+<span class="normal">141</span>
+<span class="normal">142</span>
+<span class="normal">143</span>
+<span class="normal">144</span>
+<span class="normal">145</span>
+<span class="normal">146</span>
+<span class="normal">147</span>
+<span class="normal">148</span>
+<span class="normal">149</span>
+<span class="normal">150</span>
+<span class="normal">151</span>
+<span class="normal">152</span>
+<span class="normal">153</span>
+<span class="normal">154</span>
+<span class="normal">155</span>
+<span class="normal">156</span>
+<span class="normal">157</span>
+<span class="normal">158</span>
+<span class="normal">159</span>
+<span class="normal">160</span>
+<span class="normal">161</span>
+<span class="normal">162</span>
+<span class="normal">163</span>
+<span class="normal">164</span>
+<span class="normal">165</span>
+<span class="normal">166</span>
+<span class="normal">167</span>
+<span class="normal">168</span>
+<span class="normal">169</span>
+<span class="normal">170</span>
+<span class="normal">171</span>
+<span class="normal">172</span>
+<span class="normal">173</span>
+<span class="normal">174</span>
+<span class="normal">175</span>
+<span class="normal">176</span>
+<span class="normal">177</span>
+<span class="normal">178</span>
+<span class="normal">179</span>
+<span class="normal">180</span>
+<span class="normal">181</span>
+<span class="normal">182</span>
+<span class="normal">183</span>
+<span class="normal">184</span>
+<span class="normal">185</span>
+<span class="normal">186</span>
+<span class="normal">187</span>
+<span class="normal">188</span>
+<span class="normal">189</span>
+<span class="normal">190</span>
+<span class="normal">191</span>
+<span class="normal">192</span>
+<span class="normal">193</span>
+<span class="normal">194</span>
+<span class="normal">195</span>
+<span class="normal">196</span>
+<span class="normal">197</span>
+<span class="normal">198</span>
+<span class="normal">199</span>
+<span class="normal">200</span>
+<span class="normal">201</span>
+<span class="normal">202</span>
+<span class="normal">203</span>
+<span class="normal">204</span>
+<span class="normal">205</span>
+<span class="normal">206</span>
+<span class="normal">207</span>
+<span class="normal">208</span>
+<span class="normal">209</span>
+<span class="normal">210</span>
+<span class="normal">211</span>
+<span class="normal">212</span>
+<span class="normal">213</span>
+<span class="normal">214</span>
+<span class="normal">215</span>
+<span class="normal">216</span>
+<span class="normal">217</span>
+<span class="normal">218</span>
+<span class="normal">219</span>
+<span class="normal">220</span>
+<span class="normal">221</span>
+<span class="normal">222</span>
+<span class="normal">223</span>
+<span class="normal">224</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@dataclass</span><span class="p">(</span><span class="n">kw_only</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">Group</span><span class="p">(</span><span class="n">Discretize</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A class for creating groups based on a feature and grouping variables.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">    -----------</span>
+<span class="sd">    by : str | Iterable[int | str | pd.api.types.CategoricalDtype]</span>
+<span class="sd">        The column(s) to group the data by.</span>
+
+<span class="sd">    Methods:</span>
+<span class="sd">    --------</span>
+<span class="sd">    __post_init__():</span>
+<span class="sd">        Initialize the Group class with the specified feature, by group(s), and data.</span>
+<span class="sd">    make_discretized_groupby_args(by: str, data: pd.DataFrame, bin_edges: Iterable[np.number]):</span>
+<span class="sd">        Creates a dictionary of arguments to pass to the groupby function for discretized data.</span>
+<span class="sd">    make_datetime_groupby_args(by: Union[str, Iterable[Union[int, str]]], bins: str):</span>
+<span class="sd">        Creates a dictionary of arguments to pass to the groupby function for datetime data.</span>
+<span class="sd">    make_groups(groupby_args):</span>
+<span class="sd">        Creates groups based on the feature.</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; df = pd.DataFrame({</span>
+<span class="sd">    ... &quot;date&quot;: pd.date_range(&#39;2015-02-24&#39;, periods=8, freq=&#39;D&#39;),</span>
+<span class="sd">    ... &#39;gender&#39;: [&#39;M&#39;, &#39;F&#39;, &#39;M&#39;, &#39;F&#39;, &#39;M&#39;, &#39;F&#39;, &#39;M&#39;, &#39;F&#39;],</span>
+<span class="sd">    ... &#39;age&#39;: [25, 30, 35, 40, 45, 50, 55, 60],</span>
+<span class="sd">    ... &#39;income&#39;: [50000, 60000, 70000, 80000, 90000, 100000, 110000, 120000]</span>
+<span class="sd">    ... })</span>
+<span class="sd">    &gt;&gt;&gt; group = Group(feature=&#39;income&#39;, by=[&#39;gender&#39;, &#39;date&#39;], data=df, bins=&#39;W&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; group.grouped.sum() # doctest: +NORMALIZE_WHITESPACE</span>
+<span class="sd">    gender  date</span>
+<span class="sd">    F       2015-03-01    240000</span>
+<span class="sd">            2015-03-08    120000</span>
+<span class="sd">    M       2015-03-01    210000</span>
+<span class="sd">            2015-03-08    110000</span>
+<span class="sd">    Name: income, dtype: int64</span>
+<span class="sd">    &gt;&gt;&gt; group = Group(feature=&#39;income&#39;, by=[&#39;gender&#39;], data=df)</span>
+<span class="sd">    &gt;&gt;&gt; group.grouped.sum() # doctest: +NORMALIZE_WHITESPACE</span>
+<span class="sd">    gender</span>
+<span class="sd">    F    360000</span>
+<span class="sd">    M    320000</span>
+<span class="sd">    Name: income, dtype: int64</span>
+<span class="sd">    &gt;&gt;&gt; group = Group(feature=&#39;income&#39;, by=[&#39;age&#39;], data=df, bins=&#39;auto&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; group.grouped.sum() # doctest: +NORMALIZE_WHITESPACE</span>
+<span class="sd">    (25.0, 33.75]     60000</span>
+<span class="sd">    (33.75, 42.5]    150000</span>
+<span class="sd">    (42.5, 51.25]    190000</span>
+<span class="sd">    (51.25, 60.0]    230000</span>
+<span class="sd">    Name: income, dtype: int64</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">feature</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">by</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">api</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">CategoricalDtype</span><span class="p">]]]</span>
+    <span class="n">data</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span>
+    <span class="n">bins</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Sequence</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="nd">@typechecked</span>
+    <span class="k">def</span> <span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize the Group class with the specified feature, by group(s), and data.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            feature (str): The name of the feature to analyze.</span>
+<span class="sd">            by (list[Union[int, str]]): The column(s) to group the data by.</span>
+<span class="sd">            data (pd.DataFrame): The input data to analyze.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">bins</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;D&quot;</span><span class="p">,</span> <span class="s2">&quot;W&quot;</span><span class="p">,</span> <span class="s2">&quot;M&quot;</span><span class="p">,</span> <span class="s2">&quot;Q&quot;</span><span class="p">,</span> <span class="s2">&quot;Y&quot;</span><span class="p">]:</span>
+            <span class="n">datetime_col</span> <span class="o">=</span> <span class="p">[</span><span class="n">col</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">by</span> <span class="k">if</span> <span class="n">is_datetime</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">col</span><span class="p">])]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">by</span> <span class="o">=</span> <span class="p">[</span><span class="n">col</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">by</span> <span class="k">if</span> <span class="n">col</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">datetime_col</span><span class="p">]</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="n">datetime_col</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+            <span class="n">groupby_args</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_datetime_groupby_args</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">by</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">bins</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">bins</span><span class="p">:</span>
+            <span class="n">bin_edges</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_bin_edges</span><span class="p">(</span>
+                <span class="n">data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">col_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">by</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bins</span>
+            <span class="p">)</span>
+            <span class="n">groupby_args</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_discretized_groupby_args</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">by</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">bin_edges</span>
+            <span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">groupby_args</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">by</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">make_groups</span><span class="p">(</span><span class="n">groupby_args</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">make_discretized_groupby_args</span><span class="p">(</span>
+        <span class="n">by</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">data</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
+        <span class="n">bin_edges</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">number</span><span class="p">],</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Creates a dictionary of arguments to pass to the groupby function for discretized data.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            by (str): The column to group the data by.</span>
+<span class="sd">            data (pd.DataFrame): The input data to analyze.</span>
+<span class="sd">            bin_edges (Iterable[np.number]): The bin edges to use for discretization.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A dictionary of arguments to pass to the groupby function.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">flattened</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">flatten</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">by</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)))</span>
+
+        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">cut</span><span class="p">(</span><span class="n">flattened</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="n">bin_edges</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">make_datetime_groupby_args</span><span class="p">(</span>
+        <span class="n">by</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]],</span>
+        <span class="n">bins</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Creates a dictionary of arguments to pass to the groupby function for datetime data.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            by (Union[str, Iterable[Union[int, str]]]): The column(s) to group the data by.</span>
+<span class="sd">            bins (str): The frequency to group the data by.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A dictionary of arguments to pass to the groupby function.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">by</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">):</span>
+            <span class="n">by</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">pd</span><span class="o">.</span><span class="n">Grouper</span><span class="p">(</span><span class="n">freq</span><span class="o">=</span><span class="n">bins</span><span class="p">)])</span>
+
+            <span class="k">return</span> <span class="n">by</span>
+
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">by</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="p">[</span><span class="n">by</span><span class="p">]</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">pd</span><span class="o">.</span><span class="n">Grouper</span><span class="p">(</span><span class="n">freq</span><span class="o">=</span><span class="n">bins</span><span class="p">)])</span>
+            <span class="k">return</span> <span class="n">by</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Expected by to be str or Iterable[Union[int, str]], got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">by</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">make_groups</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">groupby_args</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Creates groups based on the feature.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            groupby_args: The arguments to pass to the groupby function.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">grouped</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">groupby_args</span><span class="p">)[</span><span class="bp">self</span><span class="o">.</span><span class="n">feature</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">(data=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="si">}</span><span class="s2">, features=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">by</span><span class="si">}</span><span class="s2">)&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">(data=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="si">}</span><span class="s2">, features=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">by</span><span class="si">}</span><span class="s2">)&quot;</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h3 id="datatoolkit.eda.Group.__post_init__" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">__post_init__</span><span class="p">()</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Initialize the Group class with the specified feature, by group(s), and data.</p>
+
+
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>feature</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>The name of the feature to analyze.</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>by</code></td>
+          <td>
+                <code>list[<span title="typing.Union">Union</span>[int, str]]</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>The column(s) to group the data by.</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>data</code></td>
+          <td>
+                <code><span title="pandas.DataFrame">DataFrame</span></code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>The input data to analyze.</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+          <details class="quote">
+            <summary>Source code in <code>datatoolkit/eda.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">130</span>
+<span class="normal">131</span>
+<span class="normal">132</span>
+<span class="normal">133</span>
+<span class="normal">134</span>
+<span class="normal">135</span>
+<span class="normal">136</span>
+<span class="normal">137</span>
+<span class="normal">138</span>
+<span class="normal">139</span>
+<span class="normal">140</span>
+<span class="normal">141</span>
+<span class="normal">142</span>
+<span class="normal">143</span>
+<span class="normal">144</span>
+<span class="normal">145</span>
+<span class="normal">146</span>
+<span class="normal">147</span>
+<span class="normal">148</span>
+<span class="normal">149</span>
+<span class="normal">150</span>
+<span class="normal">151</span>
+<span class="normal">152</span>
+<span class="normal">153</span>
+<span class="normal">154</span>
+<span class="normal">155</span>
+<span class="normal">156</span>
+<span class="normal">157</span>
+<span class="normal">158</span>
+<span class="normal">159</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@typechecked</span>
+<span class="k">def</span> <span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Initialize the Group class with the specified feature, by group(s), and data.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        feature (str): The name of the feature to analyze.</span>
+<span class="sd">        by (list[Union[int, str]]): The column(s) to group the data by.</span>
+<span class="sd">        data (pd.DataFrame): The input data to analyze.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">bins</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;D&quot;</span><span class="p">,</span> <span class="s2">&quot;W&quot;</span><span class="p">,</span> <span class="s2">&quot;M&quot;</span><span class="p">,</span> <span class="s2">&quot;Q&quot;</span><span class="p">,</span> <span class="s2">&quot;Y&quot;</span><span class="p">]:</span>
+        <span class="n">datetime_col</span> <span class="o">=</span> <span class="p">[</span><span class="n">col</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">by</span> <span class="k">if</span> <span class="n">is_datetime</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">col</span><span class="p">])]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">by</span> <span class="o">=</span> <span class="p">[</span><span class="n">col</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">by</span> <span class="k">if</span> <span class="n">col</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">datetime_col</span><span class="p">]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="n">datetime_col</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="n">groupby_args</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_datetime_groupby_args</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">by</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">bins</span><span class="p">)</span>
+
+    <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">bins</span><span class="p">:</span>
+        <span class="n">bin_edges</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_bin_edges</span><span class="p">(</span>
+            <span class="n">data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">col_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">by</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bins</span>
+        <span class="p">)</span>
+        <span class="n">groupby_args</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_discretized_groupby_args</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">by</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">bin_edges</span>
+        <span class="p">)</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">groupby_args</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">by</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">make_groups</span><span class="p">(</span><span class="n">groupby_args</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+          </details>
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h3 id="datatoolkit.eda.Group.make_datetime_groupby_args" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">make_datetime_groupby_args</span><span class="p">(</span><span class="n">by</span><span class="p">,</span> <span class="n">bins</span><span class="p">)</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-staticmethod"><code>staticmethod</code></small>
+  </span>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Creates a dictionary of arguments to pass to the groupby function for datetime data.</p>
+
+
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>by</code></td>
+          <td>
+                <code><span title="typing.Union">Union</span>[str, <span title="typing.Iterable">Iterable</span>[<span title="typing.Union">Union</span>[int, str]]]</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>The column(s) to group the data by.</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>bins</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>The frequency to group the data by.</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>A dictionary of arguments to pass to the groupby function.</p>
+            </div>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+          <details class="quote">
+            <summary>Source code in <code>datatoolkit/eda.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">182</span>
+<span class="normal">183</span>
+<span class="normal">184</span>
+<span class="normal">185</span>
+<span class="normal">186</span>
+<span class="normal">187</span>
+<span class="normal">188</span>
+<span class="normal">189</span>
+<span class="normal">190</span>
+<span class="normal">191</span>
+<span class="normal">192</span>
+<span class="normal">193</span>
+<span class="normal">194</span>
+<span class="normal">195</span>
+<span class="normal">196</span>
+<span class="normal">197</span>
+<span class="normal">198</span>
+<span class="normal">199</span>
+<span class="normal">200</span>
+<span class="normal">201</span>
+<span class="normal">202</span>
+<span class="normal">203</span>
+<span class="normal">204</span>
+<span class="normal">205</span>
+<span class="normal">206</span>
+<span class="normal">207</span>
+<span class="normal">208</span>
+<span class="normal">209</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@staticmethod</span>
+<span class="k">def</span> <span class="nf">make_datetime_groupby_args</span><span class="p">(</span>
+    <span class="n">by</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]],</span>
+    <span class="n">bins</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Creates a dictionary of arguments to pass to the groupby function for datetime data.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        by (Union[str, Iterable[Union[int, str]]]): The column(s) to group the data by.</span>
+<span class="sd">        bins (str): The frequency to group the data by.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        A dictionary of arguments to pass to the groupby function.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">by</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">):</span>
+        <span class="n">by</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">pd</span><span class="o">.</span><span class="n">Grouper</span><span class="p">(</span><span class="n">freq</span><span class="o">=</span><span class="n">bins</span><span class="p">)])</span>
+
+        <span class="k">return</span> <span class="n">by</span>
+
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">by</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="p">[</span><span class="n">by</span><span class="p">]</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">pd</span><span class="o">.</span><span class="n">Grouper</span><span class="p">(</span><span class="n">freq</span><span class="o">=</span><span class="n">bins</span><span class="p">)])</span>
+        <span class="k">return</span> <span class="n">by</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Expected by to be str or Iterable[Union[int, str]], got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">by</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+          </details>
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h3 id="datatoolkit.eda.Group.make_discretized_groupby_args" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">make_discretized_groupby_args</span><span class="p">(</span><span class="n">by</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">bin_edges</span><span class="p">)</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-staticmethod"><code>staticmethod</code></small>
+  </span>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Creates a dictionary of arguments to pass to the groupby function for discretized data.</p>
+
+
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>by</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>The column to group the data by.</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>data</code></td>
+          <td>
+                <code><span title="pandas.DataFrame">DataFrame</span></code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>The input data to analyze.</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>bin_edges</code></td>
+          <td>
+                <code><span title="typing.Iterable">Iterable</span>[<span title="numpy.number">number</span>]</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>The bin edges to use for discretization.</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>A dictionary of arguments to pass to the groupby function.</p>
+            </div>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+          <details class="quote">
+            <summary>Source code in <code>datatoolkit/eda.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">161</span>
+<span class="normal">162</span>
+<span class="normal">163</span>
+<span class="normal">164</span>
+<span class="normal">165</span>
+<span class="normal">166</span>
+<span class="normal">167</span>
+<span class="normal">168</span>
+<span class="normal">169</span>
+<span class="normal">170</span>
+<span class="normal">171</span>
+<span class="normal">172</span>
+<span class="normal">173</span>
+<span class="normal">174</span>
+<span class="normal">175</span>
+<span class="normal">176</span>
+<span class="normal">177</span>
+<span class="normal">178</span>
+<span class="normal">179</span>
+<span class="normal">180</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@staticmethod</span>
+<span class="k">def</span> <span class="nf">make_discretized_groupby_args</span><span class="p">(</span>
+    <span class="n">by</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">data</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
+    <span class="n">bin_edges</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">number</span><span class="p">],</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Creates a dictionary of arguments to pass to the groupby function for discretized data.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        by (str): The column to group the data by.</span>
+<span class="sd">        data (pd.DataFrame): The input data to analyze.</span>
+<span class="sd">        bin_edges (Iterable[np.number]): The bin edges to use for discretization.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        A dictionary of arguments to pass to the groupby function.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">flattened</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">flatten</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">by</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)))</span>
+
+    <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">cut</span><span class="p">(</span><span class="n">flattened</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="n">bin_edges</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+          </details>
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h3 id="datatoolkit.eda.Group.make_groups" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">make_groups</span><span class="p">(</span><span class="n">groupby_args</span><span class="p">)</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Creates groups based on the feature.</p>
+
+
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>groupby_args</code></td>
+          <td>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>The arguments to pass to the groupby function.</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+          <details class="quote">
+            <summary>Source code in <code>datatoolkit/eda.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">211</span>
+<span class="normal">212</span>
+<span class="normal">213</span>
+<span class="normal">214</span>
+<span class="normal">215</span>
+<span class="normal">216</span>
+<span class="normal">217</span>
+<span class="normal">218</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">make_groups</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">groupby_args</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Creates groups based on the feature.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        groupby_args: The arguments to pass to the groupby function.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">grouped</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">groupby_args</span><span class="p">)[</span><span class="bp">self</span><span class="o">.</span><span class="n">feature</span><span class="p">]</span>
+</code></pre></div></td></tr></table></div>
+          </details>
+  </div>
+
+</div>
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+
+<h2 id="datatoolkit.eda.Numerical" class="doc doc-heading">
+          <code>Numerical</code>
+
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+          <p class="doc doc-class-bases">
+            Bases: <code><a class="autorefs autorefs-internal" title="datatoolkit.eda.Summarize" href="#datatoolkit.eda.Summarize">Summarize</a></code></p>
+
+  
+      <p>A class for calculating summary statistics for numerical data.</p>
+<h4 id="datatoolkit.eda.Numerical--attributes">Attributes</h4>
+<p>summary_dict: dict, optional
+    A dictionary of summary statistics to calculate. Defaults to {}.</p>
+<h4 id="datatoolkit.eda.Numerical--methods">Methods</h4>
+<p>get_statistics()
+    Calculates summary statistics for the data.</p>
+<p>make_bins()
+    Create bins for the data</p>
+<p>binarize()
+    Binarize the data</p>
+<h4 id="datatoolkit.eda.Numerical--example">Example</h4>
+<pre><code>&gt;&gt;&gt; data = pd.DataFrame({'by': ['A', 'A', 'B', 'B', 'B', 'C'], 'feature': [1, 2, 3, 1, 2, 3]})
+&gt;&gt;&gt; summarize = Numerical(feature='feature', by=['by'], data=data)
+&gt;&gt;&gt; summary = summarize.get_stats()
+</code></pre>
+
+            <details class="quote">
+              <summary>Source code in <code>datatoolkit/eda.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">414</span>
+<span class="normal">415</span>
+<span class="normal">416</span>
+<span class="normal">417</span>
+<span class="normal">418</span>
+<span class="normal">419</span>
+<span class="normal">420</span>
+<span class="normal">421</span>
+<span class="normal">422</span>
+<span class="normal">423</span>
+<span class="normal">424</span>
+<span class="normal">425</span>
+<span class="normal">426</span>
+<span class="normal">427</span>
+<span class="normal">428</span>
+<span class="normal">429</span>
+<span class="normal">430</span>
+<span class="normal">431</span>
+<span class="normal">432</span>
+<span class="normal">433</span>
+<span class="normal">434</span>
+<span class="normal">435</span>
+<span class="normal">436</span>
+<span class="normal">437</span>
+<span class="normal">438</span>
+<span class="normal">439</span>
+<span class="normal">440</span>
+<span class="normal">441</span>
+<span class="normal">442</span>
+<span class="normal">443</span>
+<span class="normal">444</span>
+<span class="normal">445</span>
+<span class="normal">446</span>
+<span class="normal">447</span>
+<span class="normal">448</span>
+<span class="normal">449</span>
+<span class="normal">450</span>
+<span class="normal">451</span>
+<span class="normal">452</span>
+<span class="normal">453</span>
+<span class="normal">454</span>
+<span class="normal">455</span>
+<span class="normal">456</span>
+<span class="normal">457</span>
+<span class="normal">458</span>
+<span class="normal">459</span>
+<span class="normal">460</span>
+<span class="normal">461</span>
+<span class="normal">462</span>
+<span class="normal">463</span>
+<span class="normal">464</span>
+<span class="normal">465</span>
+<span class="normal">466</span>
+<span class="normal">467</span>
+<span class="normal">468</span>
+<span class="normal">469</span>
+<span class="normal">470</span>
+<span class="normal">471</span>
+<span class="normal">472</span>
+<span class="normal">473</span>
+<span class="normal">474</span>
+<span class="normal">475</span>
+<span class="normal">476</span>
+<span class="normal">477</span>
+<span class="normal">478</span>
+<span class="normal">479</span>
+<span class="normal">480</span>
+<span class="normal">481</span>
+<span class="normal">482</span>
+<span class="normal">483</span>
+<span class="normal">484</span>
+<span class="normal">485</span>
+<span class="normal">486</span>
+<span class="normal">487</span>
+<span class="normal">488</span>
+<span class="normal">489</span>
+<span class="normal">490</span>
+<span class="normal">491</span>
+<span class="normal">492</span>
+<span class="normal">493</span>
+<span class="normal">494</span>
+<span class="normal">495</span>
+<span class="normal">496</span>
+<span class="normal">497</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Numerical</span><span class="p">(</span><span class="n">Summarize</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A class for calculating summary statistics for numerical data.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    summary_dict: dict, optional</span>
+<span class="sd">        A dictionary of summary statistics to calculate. Defaults to {}.</span>
+
+<span class="sd">    Methods</span>
+<span class="sd">    -------</span>
+<span class="sd">    get_statistics()</span>
+<span class="sd">        Calculates summary statistics for the data.</span>
+
+<span class="sd">    make_bins()</span>
+<span class="sd">        Create bins for the data</span>
+
+<span class="sd">    binarize()</span>
+<span class="sd">        Binarize the data</span>
+
+<span class="sd">    Example</span>
+<span class="sd">    -------</span>
+<span class="sd">        &gt;&gt;&gt; data = pd.DataFrame({&#39;by&#39;: [&#39;A&#39;, &#39;A&#39;, &#39;B&#39;, &#39;B&#39;, &#39;B&#39;, &#39;C&#39;], &#39;feature&#39;: [1, 2, 3, 1, 2, 3]})</span>
+<span class="sd">        &gt;&gt;&gt; summarize = Numerical(feature=&#39;feature&#39;, by=[&#39;by&#39;], data=data)</span>
+<span class="sd">        &gt;&gt;&gt; summary = summarize.get_stats()</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="nd">@typechecked</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">feature</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">by</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">number</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">api</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">CategoricalDtype</span><span class="p">]]],</span>
+        <span class="n">data</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
+        <span class="n">bins</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Sequence</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">summary_dict</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{},</span>
+    <span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">feature</span><span class="o">=</span><span class="n">feature</span><span class="p">,</span> <span class="n">by</span><span class="o">=</span><span class="n">by</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">bins</span> <span class="o">=</span> <span class="n">bins</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">summary_dict</span> <span class="o">=</span> <span class="n">summary_dict</span> <span class="ow">or</span> <span class="p">{</span>
+            <span class="s2">&quot;sum&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">grouped</span><span class="o">.</span><span class="n">sum</span><span class="p">,</span>
+            <span class="s2">&quot;min&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">grouped</span><span class="o">.</span><span class="n">min</span><span class="p">,</span>
+            <span class="s2">&quot;mean&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">grouped</span><span class="o">.</span><span class="n">mean</span><span class="p">,</span>
+            <span class="mf">0.25</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">grouped</span><span class="o">.</span><span class="n">quantile</span><span class="p">,</span>
+            <span class="mf">0.5</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">grouped</span><span class="o">.</span><span class="n">median</span><span class="p">,</span>
+            <span class="mf">0.75</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">grouped</span><span class="o">.</span><span class="n">quantile</span><span class="p">,</span>
+            <span class="s2">&quot;max&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">grouped</span><span class="o">.</span><span class="n">max</span><span class="p">,</span>
+        <span class="p">}</span>
+
+    <span class="k">def</span> <span class="nf">get_stats</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculates summary statistics for the data</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            TypeError: If the feature is not numeric.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            pd.DataFrame: Summary statistics</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            &gt;&gt;&gt; data = pd.DataFrame({&#39;by&#39;: [&#39;A&#39;, &#39;A&#39;, &#39;B&#39;, &#39;B&#39;, &#39;B&#39;, &#39;C&#39;], &#39;feature&#39;: [1, 2, 3, 1, 2, 3]})</span>
+<span class="sd">            &gt;&gt;&gt; summarize = Numerical(feature=&#39;feature&#39;, by=[&#39;by&#39;], data=data)</span>
+<span class="sd">            &gt;&gt;&gt; data_summary = summarize.get_stats()</span>
+<span class="sd">            &gt;&gt;&gt; data_summary[[&quot;mean_feature&quot;]] # doctest: +NORMALIZE_WHITESPACE</span>
+<span class="sd">                mean_feature</span>
+<span class="sd">            by</span>
+<span class="sd">            A                1.5</span>
+<span class="sd">            B                2.0</span>
+<span class="sd">            C                3.0</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">get_summary</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">issubdtype</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">feature</span><span class="p">]</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">number</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Expected feature </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">feature</span><span class="si">}</span><span class="s2"> to be numeric&quot;</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">stat</span><span class="p">,</span> <span class="n">fun</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">summary_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">stat</span><span class="p">,</span> <span class="nb">float</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">summarized_data</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">stat</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">feature</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">fun</span><span class="p">(</span><span class="n">stat</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">summarized_data</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">stat</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">feature</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">fun</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">summarized_data</span>
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_statistics</span><span class="p">()</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h3 id="datatoolkit.eda.Numerical.get_stats" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">get_stats</span><span class="p">()</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Calculates summary statistics for the data</p>
+
+
+
+  <p><strong>Raises:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code>TypeError</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>If the feature is not numeric.</p>
+            </div>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code><span title="pandas.DataFrame">DataFrame</span></code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>pd.DataFrame: Summary statistics</p>
+            </div>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+<details class="example" open>
+  <summary>Example</summary>
+  <blockquote>
+<blockquote>
+<blockquote>
+<p>data = pd.DataFrame({'by': ['A', 'A', 'B', 'B', 'B', 'C'], 'feature': [1, 2, 3, 1, 2, 3]})
+summarize = Numerical(feature='feature', by=['by'], data=data)
+data_summary = summarize.get_stats()
+data_summary[["mean_feature"]] # doctest: +NORMALIZE_WHITESPACE
+    mean_feature
+by
+A                1.5
+B                2.0
+C                3.0</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</details>
+          <details class="quote">
+            <summary>Source code in <code>datatoolkit/eda.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">463</span>
+<span class="normal">464</span>
+<span class="normal">465</span>
+<span class="normal">466</span>
+<span class="normal">467</span>
+<span class="normal">468</span>
+<span class="normal">469</span>
+<span class="normal">470</span>
+<span class="normal">471</span>
+<span class="normal">472</span>
+<span class="normal">473</span>
+<span class="normal">474</span>
+<span class="normal">475</span>
+<span class="normal">476</span>
+<span class="normal">477</span>
+<span class="normal">478</span>
+<span class="normal">479</span>
+<span class="normal">480</span>
+<span class="normal">481</span>
+<span class="normal">482</span>
+<span class="normal">483</span>
+<span class="normal">484</span>
+<span class="normal">485</span>
+<span class="normal">486</span>
+<span class="normal">487</span>
+<span class="normal">488</span>
+<span class="normal">489</span>
+<span class="normal">490</span>
+<span class="normal">491</span>
+<span class="normal">492</span>
+<span class="normal">493</span>
+<span class="normal">494</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_stats</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculates summary statistics for the data</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        TypeError: If the feature is not numeric.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        pd.DataFrame: Summary statistics</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">        &gt;&gt;&gt; data = pd.DataFrame({&#39;by&#39;: [&#39;A&#39;, &#39;A&#39;, &#39;B&#39;, &#39;B&#39;, &#39;B&#39;, &#39;C&#39;], &#39;feature&#39;: [1, 2, 3, 1, 2, 3]})</span>
+<span class="sd">        &gt;&gt;&gt; summarize = Numerical(feature=&#39;feature&#39;, by=[&#39;by&#39;], data=data)</span>
+<span class="sd">        &gt;&gt;&gt; data_summary = summarize.get_stats()</span>
+<span class="sd">        &gt;&gt;&gt; data_summary[[&quot;mean_feature&quot;]] # doctest: +NORMALIZE_WHITESPACE</span>
+<span class="sd">            mean_feature</span>
+<span class="sd">        by</span>
+<span class="sd">        A                1.5</span>
+<span class="sd">        B                2.0</span>
+<span class="sd">        C                3.0</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">get_summary</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">issubdtype</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">feature</span><span class="p">]</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">number</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Expected feature </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">feature</span><span class="si">}</span><span class="s2"> to be numeric&quot;</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">stat</span><span class="p">,</span> <span class="n">fun</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">summary_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">stat</span><span class="p">,</span> <span class="nb">float</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">summarized_data</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">stat</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">feature</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">fun</span><span class="p">(</span><span class="n">stat</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">summarized_data</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">stat</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">feature</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">fun</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">summarized_data</span>
+</code></pre></div></td></tr></table></div>
+          </details>
+  </div>
+
+</div>
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+
+<h2 id="datatoolkit.eda.Summarize" class="doc doc-heading">
+          <code>Summarize</code>
+
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
+  </span>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+          <p class="doc doc-class-bases">
+            Bases: <code><a class="autorefs autorefs-internal" title="datatoolkit.eda.Group" href="#datatoolkit.eda.Group">Group</a></code></p>
+
+  
+      <p>A class used to summarize data by groups.</p>
+<h4 id="datatoolkit.eda.Summarize--attributes">Attributes</h4>
+<p>feature : str
+    The name of the feature to be summarized.
+data : pandas.DataFrame
+    The data to be summarized.
+groups : list
+    The list of groups to be used for summarization.</p>
+<h4 id="datatoolkit.eda.Summarize--methods">Methods</h4>
+<p>get_count()
+    Calculates the count of each group.
+get_proportion()
+    Calculates the proportion of each group.
+get_entropy()
+    Calculates the entropy of each group.
+make_summary()
+    Summarizes the data by groups.</p>
+<h4 id="datatoolkit.eda.Summarize--example">Example</h4>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>data = pd.DataFrame({'by': ['A', 'A', 'B', 'B', 'B', 'C'], 'feature': [1, 2, 3, 1, 2, 3]})
+summarize = Summarize(feature='feature', by=['by'], data=data)
+summarized_data = summarize.make_summary()
+summarized_data[['count_feature', 'cum_count_feature']]  # doctest: +NORMALIZE_WHITESPACE
+    count_feature  cum_count_feature
+by
+A               2                  2
+B               3                  5
+C               1                  6
+summarized_data[['proportions_feature', 'cum_proportions_feature']]  # doctest: +NORMALIZE_WHITESPACE
+    proportions_feature  cum_proportions_feature
+by
+A              0.333333                 0.333333
+B              0.500000                 0.833333
+C              0.166667                 1.000000
+summarized_data[['entropy_feature']]  # doctest: +NORMALIZE_WHITESPACE
+        entropy_feature
+by
+A          0.636514
+B          1.011404
+C          0.000000</p>
+</blockquote>
+</blockquote>
+</blockquote>
+
+            <details class="quote">
+              <summary>Source code in <code>datatoolkit/eda.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">227</span>
+<span class="normal">228</span>
+<span class="normal">229</span>
+<span class="normal">230</span>
+<span class="normal">231</span>
+<span class="normal">232</span>
+<span class="normal">233</span>
+<span class="normal">234</span>
+<span class="normal">235</span>
+<span class="normal">236</span>
+<span class="normal">237</span>
+<span class="normal">238</span>
+<span class="normal">239</span>
+<span class="normal">240</span>
+<span class="normal">241</span>
+<span class="normal">242</span>
+<span class="normal">243</span>
+<span class="normal">244</span>
+<span class="normal">245</span>
+<span class="normal">246</span>
+<span class="normal">247</span>
+<span class="normal">248</span>
+<span class="normal">249</span>
+<span class="normal">250</span>
+<span class="normal">251</span>
+<span class="normal">252</span>
+<span class="normal">253</span>
+<span class="normal">254</span>
+<span class="normal">255</span>
+<span class="normal">256</span>
+<span class="normal">257</span>
+<span class="normal">258</span>
+<span class="normal">259</span>
+<span class="normal">260</span>
+<span class="normal">261</span>
+<span class="normal">262</span>
+<span class="normal">263</span>
+<span class="normal">264</span>
+<span class="normal">265</span>
+<span class="normal">266</span>
+<span class="normal">267</span>
+<span class="normal">268</span>
+<span class="normal">269</span>
+<span class="normal">270</span>
+<span class="normal">271</span>
+<span class="normal">272</span>
+<span class="normal">273</span>
+<span class="normal">274</span>
+<span class="normal">275</span>
+<span class="normal">276</span>
+<span class="normal">277</span>
+<span class="normal">278</span>
+<span class="normal">279</span>
+<span class="normal">280</span>
+<span class="normal">281</span>
+<span class="normal">282</span>
+<span class="normal">283</span>
+<span class="normal">284</span>
+<span class="normal">285</span>
+<span class="normal">286</span>
+<span class="normal">287</span>
+<span class="normal">288</span>
+<span class="normal">289</span>
+<span class="normal">290</span>
+<span class="normal">291</span>
+<span class="normal">292</span>
+<span class="normal">293</span>
+<span class="normal">294</span>
+<span class="normal">295</span>
+<span class="normal">296</span>
+<span class="normal">297</span>
+<span class="normal">298</span>
+<span class="normal">299</span>
+<span class="normal">300</span>
+<span class="normal">301</span>
+<span class="normal">302</span>
+<span class="normal">303</span>
+<span class="normal">304</span>
+<span class="normal">305</span>
+<span class="normal">306</span>
+<span class="normal">307</span>
+<span class="normal">308</span>
+<span class="normal">309</span>
+<span class="normal">310</span>
+<span class="normal">311</span>
+<span class="normal">312</span>
+<span class="normal">313</span>
+<span class="normal">314</span>
+<span class="normal">315</span>
+<span class="normal">316</span>
+<span class="normal">317</span>
+<span class="normal">318</span>
+<span class="normal">319</span>
+<span class="normal">320</span>
+<span class="normal">321</span>
+<span class="normal">322</span>
+<span class="normal">323</span>
+<span class="normal">324</span>
+<span class="normal">325</span>
+<span class="normal">326</span>
+<span class="normal">327</span>
+<span class="normal">328</span>
+<span class="normal">329</span>
+<span class="normal">330</span>
+<span class="normal">331</span>
+<span class="normal">332</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@dataclass</span><span class="p">(</span><span class="n">kw_only</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">Summarize</span><span class="p">(</span><span class="n">Group</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A class used to summarize data by groups.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    feature : str</span>
+<span class="sd">        The name of the feature to be summarized.</span>
+<span class="sd">    data : pandas.DataFrame</span>
+<span class="sd">        The data to be summarized.</span>
+<span class="sd">    groups : list</span>
+<span class="sd">        The list of groups to be used for summarization.</span>
+
+<span class="sd">    Methods</span>
+<span class="sd">    -------</span>
+<span class="sd">    get_count()</span>
+<span class="sd">        Calculates the count of each group.</span>
+<span class="sd">    get_proportion()</span>
+<span class="sd">        Calculates the proportion of each group.</span>
+<span class="sd">    get_entropy()</span>
+<span class="sd">        Calculates the entropy of each group.</span>
+<span class="sd">    make_summary()</span>
+<span class="sd">        Summarizes the data by groups.</span>
+
+<span class="sd">    Example</span>
+<span class="sd">    -------</span>
+<span class="sd">    &gt;&gt;&gt; data = pd.DataFrame({&#39;by&#39;: [&#39;A&#39;, &#39;A&#39;, &#39;B&#39;, &#39;B&#39;, &#39;B&#39;, &#39;C&#39;], &#39;feature&#39;: [1, 2, 3, 1, 2, 3]})</span>
+<span class="sd">    &gt;&gt;&gt; summarize = Summarize(feature=&#39;feature&#39;, by=[&#39;by&#39;], data=data)</span>
+<span class="sd">    &gt;&gt;&gt; summarized_data = summarize.make_summary()</span>
+<span class="sd">    &gt;&gt;&gt; summarized_data[[&#39;count_feature&#39;, &#39;cum_count_feature&#39;]]  # doctest: +NORMALIZE_WHITESPACE</span>
+<span class="sd">        count_feature  cum_count_feature</span>
+<span class="sd">    by</span>
+<span class="sd">    A               2                  2</span>
+<span class="sd">    B               3                  5</span>
+<span class="sd">    C               1                  6</span>
+<span class="sd">    &gt;&gt;&gt; summarized_data[[&#39;proportions_feature&#39;, &#39;cum_proportions_feature&#39;]]  # doctest: +NORMALIZE_WHITESPACE</span>
+<span class="sd">        proportions_feature  cum_proportions_feature</span>
+<span class="sd">    by</span>
+<span class="sd">    A              0.333333                 0.333333</span>
+<span class="sd">    B              0.500000                 0.833333</span>
+<span class="sd">    C              0.166667                 1.000000</span>
+<span class="sd">    &gt;&gt;&gt; summarized_data[[&#39;entropy_feature&#39;]]  # doctest: +NORMALIZE_WHITESPACE</span>
+<span class="sd">            entropy_feature</span>
+<span class="sd">    by</span>
+<span class="sd">    A          0.636514</span>
+<span class="sd">    B          1.011404</span>
+<span class="sd">    C          0.000000</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">get_count</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">summarized_data</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns a pandas DataFrame with the count of occurrences of each unique value in the specified feature column.</span>
+<span class="sd">        Also adds a cumulative count column to the DataFrame.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            pd.DataFrame: A DataFrame with the count of occurrences of each unique value in the specified feature column.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">summarized_data</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;count_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">feature</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">grouped</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+
+        <span class="n">summarized_data</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;cum_count_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">feature</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">summarized_data</span><span class="p">[</span>
+            <span class="sa">f</span><span class="s2">&quot;count_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">feature</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">]</span><span class="o">.</span><span class="n">cumsum</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">summarized_data</span>
+
+    <span class="k">def</span> <span class="nf">get_proportion</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">summarized_data</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculates the proportion and cumulative proportion of the feature in the dataset.</span>
+<span class="sd">        The results are stored in the summarized_data attribute of the Group object.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            pd.DataFrame: A DataFrame with the proportion and cumulative proportion of the feature in the dataset.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">summarized_data</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;proportions_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">feature</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">summarized_data</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;count_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">feature</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span>
+            <span class="o">/</span> <span class="n">summarized_data</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;count_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">feature</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+        <span class="p">)</span>
+
+        <span class="n">summarized_data</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;cum_proportions_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">feature</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">summarized_data</span><span class="p">[</span>
+            <span class="sa">f</span><span class="s2">&quot;proportions_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">feature</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">]</span><span class="o">.</span><span class="n">cumsum</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">summarized_data</span>
+
+    <span class="k">def</span> <span class="nf">get_entropy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">summarized_data</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculates the entropy of the grouped data for the specified feature and adds it to the summarized data.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            pd.DataFrame: A DataFrame with the entropy of the feature for each group.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">summarized_data</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;entropy_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">feature</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">grouped</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">entropy</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">summarized_data</span>
+
+    <span class="k">def</span> <span class="nf">make_summary</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generates a summary of the data, including group counts, proportions, and entropy.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">summarized_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+        <span class="n">summarized_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_count</span><span class="p">(</span><span class="n">summarized_data</span><span class="p">)</span>
+        <span class="n">summarized_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_proportion</span><span class="p">(</span><span class="n">summarized_data</span><span class="p">)</span>
+        <span class="n">summarized_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_entropy</span><span class="p">(</span><span class="n">summarized_data</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">summarized_data</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h3 id="datatoolkit.eda.Summarize.get_count" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">get_count</span><span class="p">(</span><span class="n">summarized_data</span><span class="p">)</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Returns a pandas DataFrame with the count of occurrences of each unique value in the specified feature column.
+Also adds a cumulative count column to the DataFrame.</p>
+
+
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code><span title="pandas.DataFrame">DataFrame</span></code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>pd.DataFrame: A DataFrame with the count of occurrences of each unique value in the specified feature column.</p>
+            </div>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+          <details class="quote">
+            <summary>Source code in <code>datatoolkit/eda.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">277</span>
+<span class="normal">278</span>
+<span class="normal">279</span>
+<span class="normal">280</span>
+<span class="normal">281</span>
+<span class="normal">282</span>
+<span class="normal">283</span>
+<span class="normal">284</span>
+<span class="normal">285</span>
+<span class="normal">286</span>
+<span class="normal">287</span>
+<span class="normal">288</span>
+<span class="normal">289</span>
+<span class="normal">290</span>
+<span class="normal">291</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_count</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">summarized_data</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns a pandas DataFrame with the count of occurrences of each unique value in the specified feature column.</span>
+<span class="sd">    Also adds a cumulative count column to the DataFrame.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        pd.DataFrame: A DataFrame with the count of occurrences of each unique value in the specified feature column.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">summarized_data</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;count_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">feature</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">grouped</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+
+    <span class="n">summarized_data</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;cum_count_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">feature</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">summarized_data</span><span class="p">[</span>
+        <span class="sa">f</span><span class="s2">&quot;count_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">feature</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="p">]</span><span class="o">.</span><span class="n">cumsum</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">summarized_data</span>
+</code></pre></div></td></tr></table></div>
+          </details>
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h3 id="datatoolkit.eda.Summarize.get_entropy" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">get_entropy</span><span class="p">(</span><span class="n">summarized_data</span><span class="p">)</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Calculates the entropy of the grouped data for the specified feature and adds it to the summarized data.</p>
+
+
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code><span title="pandas.DataFrame">DataFrame</span></code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>pd.DataFrame: A DataFrame with the entropy of the feature for each group.</p>
+            </div>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+          <details class="quote">
+            <summary>Source code in <code>datatoolkit/eda.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">312</span>
+<span class="normal">313</span>
+<span class="normal">314</span>
+<span class="normal">315</span>
+<span class="normal">316</span>
+<span class="normal">317</span>
+<span class="normal">318</span>
+<span class="normal">319</span>
+<span class="normal">320</span>
+<span class="normal">321</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_entropy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">summarized_data</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculates the entropy of the grouped data for the specified feature and adds it to the summarized data.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        pd.DataFrame: A DataFrame with the entropy of the feature for each group.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">summarized_data</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;entropy_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">feature</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">grouped</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">entropy</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">summarized_data</span>
+</code></pre></div></td></tr></table></div>
+          </details>
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h3 id="datatoolkit.eda.Summarize.get_proportion" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">get_proportion</span><span class="p">(</span><span class="n">summarized_data</span><span class="p">)</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Calculates the proportion and cumulative proportion of the feature in the dataset.
+The results are stored in the summarized_data attribute of the Group object.</p>
+
+
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code><span title="pandas.DataFrame">DataFrame</span></code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>pd.DataFrame: A DataFrame with the proportion and cumulative proportion of the feature in the dataset.</p>
+            </div>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+          <details class="quote">
+            <summary>Source code in <code>datatoolkit/eda.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">293</span>
+<span class="normal">294</span>
+<span class="normal">295</span>
+<span class="normal">296</span>
+<span class="normal">297</span>
+<span class="normal">298</span>
+<span class="normal">299</span>
+<span class="normal">300</span>
+<span class="normal">301</span>
+<span class="normal">302</span>
+<span class="normal">303</span>
+<span class="normal">304</span>
+<span class="normal">305</span>
+<span class="normal">306</span>
+<span class="normal">307</span>
+<span class="normal">308</span>
+<span class="normal">309</span>
+<span class="normal">310</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_proportion</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">summarized_data</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculates the proportion and cumulative proportion of the feature in the dataset.</span>
+<span class="sd">    The results are stored in the summarized_data attribute of the Group object.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        pd.DataFrame: A DataFrame with the proportion and cumulative proportion of the feature in the dataset.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">summarized_data</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;proportions_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">feature</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">summarized_data</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;count_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">feature</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span>
+        <span class="o">/</span> <span class="n">summarized_data</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;count_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">feature</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+    <span class="p">)</span>
+
+    <span class="n">summarized_data</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;cum_proportions_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">feature</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">summarized_data</span><span class="p">[</span>
+        <span class="sa">f</span><span class="s2">&quot;proportions_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">feature</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="p">]</span><span class="o">.</span><span class="n">cumsum</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">summarized_data</span>
+</code></pre></div></td></tr></table></div>
+          </details>
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h3 id="datatoolkit.eda.Summarize.make_summary" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">make_summary</span><span class="p">()</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Generates a summary of the data, including group counts, proportions, and entropy.</p>
+
+          <details class="quote">
+            <summary>Source code in <code>datatoolkit/eda.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">323</span>
+<span class="normal">324</span>
+<span class="normal">325</span>
+<span class="normal">326</span>
+<span class="normal">327</span>
+<span class="normal">328</span>
+<span class="normal">329</span>
+<span class="normal">330</span>
+<span class="normal">331</span>
+<span class="normal">332</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">make_summary</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generates a summary of the data, including group counts, proportions, and entropy.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">summarized_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+    <span class="n">summarized_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_count</span><span class="p">(</span><span class="n">summarized_data</span><span class="p">)</span>
+    <span class="n">summarized_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_proportion</span><span class="p">(</span><span class="n">summarized_data</span><span class="p">)</span>
+    <span class="n">summarized_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_entropy</span><span class="p">(</span><span class="n">summarized_data</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">summarized_data</span>
+</code></pre></div></td></tr></table></div>
+          </details>
+  </div>
+
+</div>
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.81fa17fe.min.js"></script>
+      
+    
+  </body>
+</html>
