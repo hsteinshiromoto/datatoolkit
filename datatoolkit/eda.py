@@ -246,7 +246,7 @@ class Summarize(Group):
         Calculates the proportion of each group.
     get_entropy()
         Calculates the entropy of each group.
-    get_summary()
+    make_summary()
         Summarizes the data by groups.
 
     Example
