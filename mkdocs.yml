@@ -2,3 +2,10 @@ site_name: DataToolkit Documentation
 
 theme:
   name: "material"
+
+nav:
+  - DataToolkit Docs: index.md
+  - tutorials.md
+  - How-To Guides: how-to-guides.md
+  - reference.md
+  - explanation.md
