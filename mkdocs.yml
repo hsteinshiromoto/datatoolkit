@@ -1,0 +1,14 @@
+site_name: DataToolkit Documentation
+
+theme:
+  name: "material"
+
+plugins:
+  - mkdocstrings
+
+nav:
+  - DataToolkit Docs: index.md
+  - tutorials.md
+  - How-To Guides: how-to-guides.md
+  - Reference: reference/reference.md
+  - explanation.md

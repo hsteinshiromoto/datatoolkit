@@ -3,8 +3,7 @@ import operator
 import subprocess
 import sys
 from abc import ABC, abstractmethod
-from collections import Sequence
-from collections.abc import Iterable
+from collections.abc import Callable, Iterable, Sequence
 from pathlib import Path
 from typing import Union
 
@@ -12,6 +11,7 @@ import networkx as nx
 import numpy as np
 import pandas as pd
 import scipy.stats as ss
+from deprecated import deprecated
 from typeguard import typechecked
 
 PROJECT_ROOT = Path(
@@ -27,133 +27,25 @@ sys.path.append(PROJECT_ROOT)
 # from src.make_logger import log_fun
 
 
-class Group(ABC):
-    @typechecked
-    def __init__(
-        self,
-        feature: str,
-        data: pd.DataFrame,
-        secondary_feature: str = None,
-        bins: Union[Sequence, str, int] = "auto",
-    ):
-        """Aggregates data frame and provides summary
+def flatten(array: Iterable[Iterable]) -> Iterable:
+    """Flattens nested iterable
 
-        Args:
-            feature (str): Feature to be agregated
-            data (pd.DataFrame): Data frame containing feature
-            secondary_feature (str, optional): Secondary feature to be agregated. Defaults to None.
-            bins (Union[Sequence, str, int], optional): Bins used to quantize the data. Defaults to "auto".
-        """
-        self.feature = feature
-        self.data = data
-        self.bins = bins
-        self.secondary_feature = secondary_feature or feature
+    Args:
+        array (Iterable[Iterable]): Nested iterable
 
-    def make_bins(self):
-        return np.histogram_bin_edges(self.data[self.feature].values, bins=self.bins)
-
-    @abstractmethod
-    def binarize(self, fun: str = None):
-        pass
-
-    def summarize(self):
-        """Calculates summary statistics in each bin
-
-        Returns:
-            (pd.DataFrame): Statistics summary
-        """
-        grouped = self.data.groupby(self.groupby_args)[self.secondary_feature]
-
-        summary_dict = {
-            "count": grouped.count,
-            "sum": grouped.sum,
-            "min": grouped.min,
-            "mean": grouped.mean,
-            "25%": grouped.quantile,
-            "50%": grouped.median,
-            "75%": grouped.quantile,
-            "max": grouped.max,
-        }
-
-        output = summary_dict["count"]().to_frame(
-            name=f"count_{self.secondary_feature}"
-        )
-        output[f"cum_count_{self.secondary_feature}"] = output[
-            f"count_{self.secondary_feature}"
-        ].cumsum()
-        output[f"proportions_{self.secondary_feature}"] = (
-            output[f"count_{self.secondary_feature}"]
-            / output[f"count_{self.secondary_feature}"].sum()
-        )
-        output[f"cum_proportions_{self.secondary_feature}"] = output[
-            f"proportions_{self.secondary_feature}"
-        ].cumsum()
-
-        if np.issubdtype(self.data[self.secondary_feature].dtype, np.number):
-            output[f"min_{self.secondary_feature}"] = summary_dict["min"]()
-            output[f"mean_{self.secondary_feature}"] = summary_dict["mean"]()
-            output[f"25%_{self.secondary_feature}"] = summary_dict["25%"](0.25)
-            output[f"50%_{self.secondary_feature}"] = summary_dict["50%"]()
-            output[f"75%_{self.secondary_feature}"] = summary_dict["25%"](0.75)
-            output[f"max_{self.secondary_feature}"] = summary_dict["max"]()
-
-        return output
-
-    def __repr__(self):
-        return f"{self.__class__.__name__}(data={self.data}, feature={self.feature})"
-
-    def __str__(self):
-        return f"{self.__class__.__name__}(data={self.data}, feature={self.feature})"
-
-    def __call__(self, fun: str = None):
-        return self.binarize(fun)
-
-
-class Quantize(Group):
-    """Quantize data frame
+    Yields:
+        Iterable: Flattened iterable
 
     Example:
-        >>> data = pd.DataFrame(np.random.rand(10), columns=["A"])
-        >>> quantized_data = Quantize(data=data, feature="A")
-        >>> _ = quantized_data()
-        >>> _ = quantized_data.summarize()
+        >>> a = [1, ['a', 'b']]
+        >>> list(flatten(a))
+        [1, 'a', 'b']
     """
-
-    def binarize(self, fun: str = None):
-        if isinstance(self.bins, (str, int, Sequence)):
-            self.bins = self.make_bins()
-
-        self.groupby_args = pd.cut(self.data[self.feature].values, bins=self.bins)
-
-        output = pd.DataFrame(self.groupby_args, columns=["intervals"])
-        output["quantized"] = output["intervals"].apply(lambda x: x.mid)
-        output[self.feature] = self.data[self.feature].values
-
-        return output
-
-
-class QuantizeDatetime(Group):
-    """Quantize datetime data frame
-
-    Example:
-        >>> data = pd.DataFrame(np.arange(datetime(1985,7,1), datetime(2015,7,1), timedelta(days=1)).astype(datetime), columns=["A"])
-        >>> quantized_data = QuantizeDatetime(data=data, feature="A", bins="M")
-        >>> _ = quantized_data("count")
-        >>> _ = quantized_data.summarize()
-    """
-
-    bin_time_freq = ["D", "W", "M", "Q", "Y"]
-
-    def binarize(self, fun: str = None):
-        if self.bins not in self.bin_time_freq:
-            msg = f"{self.bins} is not a valid bin time frequency."
-            raise ValueError(msg)
-
-        self.groupby_args = pd.Grouper(key=self.feature, freq=self.bins)
-
-        return getattr(
-            self.data.groupby(self.groupby_args)[self.secondary_feature], fun
-        )()
+    for x in array:
+        if isinstance(x, Iterable) and not isinstance(x, (str, bytes)):
+            yield from flatten(x)
+        else:
+            yield x
 
 
 # @log_fun
@@ -366,21 +258,38 @@ def make_graph(
     return G
 
 
-def make_distribution(distribution_name: str, params: dict):
-    """Returns SciPy statistical distribution object
+def make_distributions(
+    parameters: dict[str, dict[str, Union[str, tuple, Iterable]]]
+) -> dict[str, Union[Callable, Iterable]]:
+    """Returns SciPy statistical distribution objects.
 
     Args:
-        distribution_name (str): Name of the distribution.
-        params (dict): Distribution parameters.
+        parameters (dict[str, dict[str, Union[str, tuple, Iterable]]]): Distribution parameters.
 
     Returns:
-        _type_: _description_
+        dict[str, Union[Callable, Iterable]]: Distribution objects
 
     Example:
-        >>> params = {"loc": 1, "scale": 0.05}
-        >>> half_norm = make_distribution("halfnorm", params)
-        >>> half_norm.stats(moments='mvsk')
-        (array(1.03989423), array(0.00090845), array(0.99527175), array(0.8691773))
+        >>> parameters = {
+        ...    "min_weight_fraction_leaf": {"distribution": "norm", "args": (0.25, 0.01)},
+        ...    "criterion": {"distribution": "choice", "args": ["gini", "entropy"]} }
+        >>> distr_dict = make_distributions(parameters)
+        >>> distr_dict["min_weight_fraction_leaf"].stats(moments='mvsk')
+        (array(0.25), array(0.0001), array(0.), array(0.))
+        >>> distr_dict["criterion"]
+        ['gini', 'entropy']
     """
-    dist = getattr(ss, distribution_name)
-    return dist(**params)
+    params_dict = {}
+    for parameter, description in parameters.items():
+        try:
+            distr = getattr(ss, description["distribution"])
+
+        except AttributeError:
+            distribution = description["args"]
+
+        else:
+            distribution = distr(*description["args"])
+
+        params_dict[parameter] = distribution
+
+    return params_dict

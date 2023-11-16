@@ -53,11 +53,11 @@ RUN pyenv install $PYTHON_VERSION && pyenv global $PYTHON_VERSION
 # ---
 # Copy Container Setup Scripts
 # ---
-COPY poetry.lock /usr/local/poetry.lock
+# COPY poetry.lock /usr/local/poetry.lock
 COPY pyproject.toml /usr/local/pyproject.toml
 
 # Get poetry
-RUN curl -sSL https://install.python-poetry.org | python3 -
+RUN pip install poetry
 ENV PATH="${PATH}:$HOME/.poetry/bin"
 ENV PATH="${PATH}:$HOME/.local/bin"
 
@@ -66,6 +66,9 @@ RUN poetry config virtualenvs.create false\
 && poetry install --no-interaction --no-ansi
 
 ENV PATH="${PATH}:$HOME/.local/bin"
+
+# Add plugin to update the package versions [1]
+RUN poetry self add poetry-plugin-up
 
 # Need for Pytest
 ENV PATH="${PATH}:${PYENV_ROOT}/versions/$PYTHON_VERSION/bin"

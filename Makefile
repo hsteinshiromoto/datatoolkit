@@ -19,7 +19,7 @@ BUILD_DATE = $(shell date +%Y%m%d-%H:%M:%S)
 
 BASE_IMAGE_TAG=$(shell git ls-files -s Dockerfile.base | awk '{print $$2}' | cut -c1-16)
 APP_IMAGE_TAG=$(shell git ls-files -s Dockerfile | awk '{print $$2}' | cut -c1-16)
-PYTHON_VERSION="3.9.16"
+PYTHON_VERSION="3.11.6"
 
 # ---
 # Sphix documentation settings
@@ -85,9 +85,7 @@ hooks:
 
 ## Sphinx documentation
 docs:
-	@$(SPHINXBUILD) -M html "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
-	cp -r docs/html/* docs/ && rm -R docs/html
-	poetry export -f requirements.txt --output requirements.txt --without-hashes --with dev
+	mkdocs gh-deploy
 
 pull:
 	docker pull ghcr.io/hsteinshiromoto/datatoolkit/datatoolkit:latest
@@ -95,6 +93,9 @@ pull:
 pyenv:
 	pyenv install -v ${PYTHON_VERSION}
 	pyenv global ${PYTHON_VERSION}
+
+project_tree:
+	tree -f datatoolkit -I '*.pyc|__pycache__'
 #################################################################################
 # Self Documenting Commands                                                     #
 #################################################################################

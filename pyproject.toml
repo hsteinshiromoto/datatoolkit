@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "datatoolkit"
-version = '0.2.5'
+version = '0.3.0'
 description="A collection of tools for visualization and data processing for exploratory data analysis"
 readme = "README.md"
 authors = ["Humberto STEIN SHIROMOTO <h.stein.shiromoto@gmail.com>"]
@@ -8,31 +8,60 @@ license = "MIT"
 
 [tool.poetry.dependencies]
 python = ">=3.9,<4"
-bokeh = "^2.4.0"
-networkx = "^2.6.3"
+bokeh = "^2.4.3"
+networkx = "^2.8.8"
 seaborn = "^0.11.2"
 statsmodels = "^0.13.0"
-typeguard = "^2.12.1"
+typeguard = "^2.13.3"
 hyperopt = "^0.2.7"
-scikit-learn = "^1.2.0"
-
-[tool.poetry.dev-dependencies]
-bumpversion = "^0.6.0"
-Deprecated = "^1.2.13"
-icecream = "^2.1.1"
-ipykernel = "^6.4.1"
-pytest = "^6.2.5"
-rope = "^0.20.1"
-twine = "^3.4.2"
-Sphinx = "^4.2.0"
-sphinx-rtd-theme = "^1.0.0"
-black = "^22.10.0"
-watermark = "^2.3.1"
+scikit-learn = "^1.3.2"
 
 [tool.poetry.group.dev.dependencies]
+bumpversion = "^0.6.0"
+Deprecated = "^1.2.14"
+icecream = "^2.1.3"
+ipykernel = "^6.26.0"
+pytest = "^6.2.5"
+rope = "^0.20.1"
+twine = "^3.8.0"
+Sphinx = "^4.5.0"
+sphinx-rtd-theme = "^1.3.0"
+black = "^22.12.0"
+watermark = "^2.4.3"
 myst-parser = "^0.18.1"
 sphinxcontrib-napoleon = "^0.7"
+isort = "^5.12.0"
+mkdocs = "^1.5.3"
+mkdocstrings = {extras = ["python"], version = "^0.24.0"}
+mkdocs-material = "^9.4.8"
+
+[tool.black]
+quiet = true
+
+[tool.isort]
+profile = "black"
+
+[tool.pytest.ini_options]
+testpaths = [
+    "tests", "datatoolkit"
+]
+pythonpath = [
+    ".", "datatoolkit"
+]
+addopts = """
+--strict-markers
+--doctest-modules 
+--doctest-report
+ndiff
+-r sxX
+--show-capture=log
+"""
+
+cache_dir = ".cache/pytest/"
+
+markers = []
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
+

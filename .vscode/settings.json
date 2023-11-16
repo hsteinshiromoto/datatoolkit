@@ -1,5 +1,14 @@
 {
     "restructuredtext.confPath": "${workspaceFolder}/docs/source",
     "esbonio.sphinx.confDir": "${workspaceFolder}/docs/source",
-    "editor.formatOnSave": true
+    "editor.formatOnSave": true,
+    "[python]": {
+        "editor.defaultFormatter": "ms-python.black-formatter"
+    },
+    "python.formatting.provider": "none",
+    "python.testing.pytestArgs": [
+        "."
+    ],
+    "python.testing.unittestEnabled": false,
+    "python.testing.pytestEnabled": true
 }

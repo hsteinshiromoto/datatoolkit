@@ -1,17 +1,29 @@
-__version__ = "0.2.5"
+"""Manipulation of data
 
-from datatoolkit.utils import Quantize, QuantizeDatetime, MostFrequent
+Modules exported by this package:
+
+- `eda`: Provides several functions for data manipulation.
+- `hypothesis`: Provides several functions for different hypothesis tests.
+- `mock_dataset`: Provides generator of data frame containing random data.
+- `model_selection`: Provides cross validation using Bayesian optimization, and cost functionals.
+- `visualize`: Provides data visualization tools.
+"""
+
+__version__ = "0.3.0"
+
+from datatoolkit.eda import Group, Numerical, Summarize
+from datatoolkit.hypothesis import SingleSampleTest, TwoSampleTest
 from datatoolkit.mock_dataset import DataTypes, MockData
 from datatoolkit.model_selection import (
-    CostFunction,
-    ClassificationCostFunction,
     BayesianSearchCV,
+    ClassificationCostFunction,
+    CostFunction,
 )
-from datatoolkit.hypothesis import SingleSampleTest, TwoSampleTest
+from datatoolkit.utils import MostFrequent
 from datatoolkit.visualize import (
-    heatmap_4d,
-    line_bar_plot,
     dash_line,
-    hist_box,
     graphplot,
+    heatmap_4d,
+    hist_box,
+    line_bar_plot,
 )
