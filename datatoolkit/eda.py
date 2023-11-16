@@ -332,85 +332,6 @@ class Summarize(Group):
         return summarized_data
 
 
-# class Discretize(Summarize):
-#     """
-#     A class for discretizing data.
-
-#     Attributes
-#     ----------
-#     bins : int | list[float]
-#         The number of bins to use or a list of bin edges.
-#     labels : list[str]
-#         The labels to use for the bins.
-#     summary_dict : dict
-#         A dictionary of summary statistics to calculate. Defaults to {}.
-
-#     Methods
-#     -------
-#     get_bins()
-#         Calculates the bin edges for the data.
-#     get_labels()
-#         Calculates the labels for the bins.
-#     get_summary()
-#         Calculates summary statistics for the data.
-
-#     Example
-#     -------
-#         >>> data = pd.DataFrame({'by': [0, 1/6, 2/6, 3/6, 4/6, 5/6], 'feature': [1, 2, 3, 1, 2, 3]})
-#         >>> summarize = Discretize(feature='feature', by=['by'], data=data)
-#         >>> data_summary = summarize.get_summary()
-#         >>> data_summary[['entropy_feature']] # doctest: +NORMALIZE_WHITESPACE
-#                         entropy_feature
-#         (0.0, 0.208]           0.000000
-#         (0.208, 0.417]         0.000000
-#         (0.417, 0.625]         0.000000
-#         (0.625, 0.833]         0.673012
-#     """
-
-#     @typechecked
-#     def __init__(
-#         self,
-#         feature: str,
-#         by: Union[str, Iterable[Union[np.number, str, pd.api.types.CategoricalDtype]]],
-#         data: pd.DataFrame,
-#         bins: Union[Sequence, str, int] = None,
-#     ):
-#         if bins:
-#             bin_edges = self.get_bin_edges(by, data, bins)
-#             groupby_args = self.make_groupby_args(by, data, bin_edges)
-#             super().__init__(feature=feature, by=groupby_args, data=data)
-
-#         else:
-#             super().__init__(feature=feature, by=by, data=data)
-
-#     @staticmethod
-#     def get_bin_edges(
-#         by: str,
-#         data: pd.DataFrame,
-#         bins: Union[Sequence, str, int],
-#     ) -> np.ndarray:
-#         """
-#         Calculates the bin edges for the data.
-
-#         Returns:
-#             np.ndarray: Array of bin
-#         """
-#         return np.histogram_bin_edges(data[by], bins=bins)
-
-#     @staticmethod
-#     def make_groupby_args(
-#         by: str,
-#         data: pd.DataFrame,
-#         bin_edges: Iterable[np.number],
-#     ):
-#         """
-#         Creates a dictionary of arguments to pass to the groupby function.
-#         """
-#         flattened = np.array(list(flatten(data[by].values)))
-
-#         return pd.cut(flattened, bins=bin_edges)
-
-
 @dataclass(kw_only=True)
 class Numerical(Summarize):
     """
@@ -481,8 +402,7 @@ class Numerical(Summarize):
         return summarized_data
 
     def make_num_summary(self):
-        """Makes numerical summary
-        """
+        """Makes numerical summary"""
         summarized_data = self.make_summary()
         summarized_data = self.get_stats(summarized_data)
 
