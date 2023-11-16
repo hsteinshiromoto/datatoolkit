@@ -1,8 +1,8 @@
 import sys
 from collections.abc import Sequence
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Iterable, Union
+from typing import Callable, Dict, Iterable, Optional, Union
 
 import numpy as np
 import pandas as pd
@@ -411,6 +411,7 @@ class Summarize(Group):
 #         return pd.cut(flattened, bins=bin_edges)
 
 
+@dataclass(kw_only=True)
 class Numerical(Summarize):
     """
     A class for calculating summary statistics for numerical data.
@@ -434,23 +435,21 @@ class Numerical(Summarize):
     Example
     -------
         >>> data = pd.DataFrame({'by': ['A', 'A', 'B', 'B', 'B', 'C'], 'feature': [1, 2, 3, 1, 2, 3]})
-        >>> summarize = Numerical(feature='feature', by=['by'], data=data)
-        >>> summary = summarize.get_stats()
+        >>> numerical = Numerical(feature='feature', by=['by'], data=data)
+        >>> numerical.make_num_summary()['mean_feature'] # doctest: +NORMALIZE_WHITESPACE
+        by
+        A    1.5
+        B    2.0
+        C    3.0
+        Name: mean_feature, dtype: float64
     """
 
-    @typechecked
-    def __init__(
-        self,
-        feature: str,
-        by: Union[str, Iterable[Union[np.number, str, pd.api.types.CategoricalDtype]]],
-        data: pd.DataFrame,
-        bins: Union[Sequence, str, int] = None,
-        summary_dict: dict = {},
-    ):
-        super().__init__(feature=feature, by=by, data=data)
+    summary_dict: Optional[Dict[str, Callable]] = field(default_factory=dict)
 
-        self.bins = bins
-        self.summary_dict = summary_dict or {
+    def __post_init__(self):
+        super().__post_init__()
+
+        self.summary_dict = self.summary_dict or {
             "sum": self.grouped.sum,
             "min": self.grouped.min,
             "mean": self.grouped.mean,
@@ -460,7 +459,7 @@ class Numerical(Summarize):
             "max": self.grouped.max,
         }
 
-    def get_stats(self) -> pd.DataFrame:
+    def get_stats(self, summarized_data: pd.DataFrame) -> pd.DataFrame:
         """Calculates summary statistics for the data
 
         Raises:
@@ -468,30 +467,23 @@ class Numerical(Summarize):
 
         Returns:
             pd.DataFrame: Summary statistics
-
-        Example:
-            >>> data = pd.DataFrame({'by': ['A', 'A', 'B', 'B', 'B', 'C'], 'feature': [1, 2, 3, 1, 2, 3]})
-            >>> summarize = Numerical(feature='feature', by=['by'], data=data)
-            >>> data_summary = summarize.get_stats()
-            >>> data_summary[["mean_feature"]] # doctest: +NORMALIZE_WHITESPACE
-                mean_feature
-            by
-            A                1.5
-            B                2.0
-            C                3.0
         """
-        self.get_summary()
 
         if not np.issubdtype(self.data[self.feature].dtype, np.number):
             raise TypeError(f"Expected feature {self.feature} to be numeric")
 
         for stat, fun in self.summary_dict.items():
             if isinstance(stat, float):
-                self.summarized_data[f"{stat}_{self.feature}"] = fun(stat)
+                summarized_data[f"{stat}_{self.feature}"] = fun(stat)
             else:
-                self.summarized_data[f"{stat}_{self.feature}"] = fun()
+                summarized_data[f"{stat}_{self.feature}"] = fun()
 
-        return self.summarized_data
+        return summarized_data
 
-    def __call__(self):
-        return self.get_statistics()
+    def make_num_summary(self):
+        """Makes numerical summary
+        """
+        summarized_data = self.make_summary()
+        summarized_data = self.get_stats(summarized_data)
+
+        return summarized_data
