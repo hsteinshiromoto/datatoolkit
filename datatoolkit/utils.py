@@ -37,9 +37,9 @@ def flatten(array: Iterable[Iterable]) -> Iterable:
         Iterable: Flattened iterable
 
     Example:
-        >>> a = [1, [a, b]]
+        >>> a = [1, ['a', 'b']]
         >>> list(flatten(a))
-        [1, a, b]
+        [1, 'a', 'b']
     """
     for x in array:
         if isinstance(x, Iterable) and not isinstance(x, (str, bytes)):
