@@ -1,4 +1,5 @@
 import pathlib
+
 from setuptools import setup
 
 # The directory containing this file
@@ -19,7 +20,7 @@ docs_extras = [
 # This call to setup() does all the work
 setup(
     name="datatoolkit",
-    version="0.2.5",
+    version="0.3.0",
     description="A collection of tools for visualization and data processing for exploratory data analysis.",
     long_description=README,
     long_description_content_type="text/markdown",

@@ -9,7 +9,7 @@ Modules exported by this package:
 - `visualize`: Provides data visualization tools.
 """
 
-__version__ = "0.2.5"
+__version__ = "0.3.0"
 
 from datatoolkit.eda import Group, Numerical, Summarize
 from datatoolkit.hypothesis import SingleSampleTest, TwoSampleTest
