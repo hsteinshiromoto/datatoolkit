@@ -85,9 +85,7 @@ hooks:
 
 ## Sphinx documentation
 docs:
-	@$(SPHINXBUILD) -M html "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
-	cp -r docs/html/* docs/ && rm -R docs/html
-	poetry export -f requirements.txt --output requirements.txt --without-hashes --with dev
+	mkdocs gh-deploy
 
 pull:
 	docker pull ghcr.io/hsteinshiromoto/datatoolkit/datatoolkit:latest
@@ -95,6 +93,9 @@ pull:
 pyenv:
 	pyenv install -v ${PYTHON_VERSION}
 	pyenv global ${PYTHON_VERSION}
+
+project_tree:
+	tree -f datatoolkit -I '*.pyc|__pycache__'
 #################################################################################
 # Self Documenting Commands                                                     #
 #################################################################################
