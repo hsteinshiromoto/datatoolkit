@@ -19,7 +19,7 @@ from datatoolkit.model_selection import (
     ClassificationCostFunction,
     CostFunction,
 )
-from datatoolkit.utils import MostFrequent, Quantize, QuantizeDatetime
+from datatoolkit.utils import MostFrequent
 from datatoolkit.visualize import (
     dash_line,
     graphplot,
